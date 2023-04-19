@@ -2,43 +2,37 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
 func main() {
-	var naturalNum int
-	var discountRate float64
+	fmt.Print("전세금액을 입력하세요: ")
+	leasePrice, err := strconv.Atoi(getUserInput())
 
-	for {
-		fmt.Print("첫 번째 숫자(자연수)를 입력하세요: ")
-		input, err := strconv.Atoi(getUserInput())
-
-		if err != nil || input <= 0 {
-			fmt.Println("잘못된 입력입니다. 자연수를 입력하세요.")
-			continue
-		}
-
-		naturalNum = input
-		break
+	if err != nil || leasePrice <= 0 {
+		fmt.Println("잘못된 입력입니다. 자연수를 입력하세요.")
+		return
 	}
 
-	for {
-		fmt.Print("두 번째 숫자(할인율)를 입력하세요: ")
-		input, err := strconv.ParseFloat(getUserInput(), 64)
+	fmt.Print("연이율을 입력하세요: ")
+	interestRate, err := strconv.ParseFloat(getUserInput(), 64)
 
-		if err != nil || input <= 0 {
-			fmt.Println("잘못된 입력입니다. 양의 실수를 입력하세요.")
-			continue
-		}
-
-		discountRate = input
-		break
+	if err != nil || interestRate <= 0 {
+		fmt.Println("잘못된 입력입니다. 양의 실수를 입력하세요.")
+		return
 	}
 
-	discount := float64(naturalNum) * (discountRate / 100)
-	payment := float64(naturalNum) - discount
-	result := int(payment)
-	fmt.Printf("최종 지불 금액은 %d 입니다.", result)
+	monthlyInterest := calculateMonthlyInterest(leasePrice, interestRate)
+
+	fmt.Printf("매달 지불해야 할 이자는 %.2f 원입니다.", monthlyInterest)
+}
+
+func calculateMonthlyInterest(leasePrice int, interestRate float64) float64 {
+	monthlyInterestRate := interestRate / 12.0 / 100.0
+	monthlyInterest := float64(leasePrice) * monthlyInterestRate
+	monthlyInterest = math.Round(monthlyInterest)
+	return monthlyInterest
 }
 
 func getUserInput() string {
