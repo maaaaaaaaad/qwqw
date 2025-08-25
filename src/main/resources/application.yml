@@ -1,8 +1,7 @@
+server:
+  port: 8080
 spring:
   application:
     name: jello-mark-server
   config:
     import: "optional:classpath:application-dev.yml"
-
-# For local development overrides, create application-dev.yml (ignored by git).
-# It will be auto-loaded if present (no profile needed). To use profile-specific behavior instead, remove the import and run with: --spring.profiles.active=dev
