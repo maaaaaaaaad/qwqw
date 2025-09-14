@@ -1,4 +1,4 @@
-package com.mad.jellomarkserver.domain.model.member
+package com.mad.jellomarkserver.member.domain.model
 
 @JvmInline
 value class Email private constructor(val value: String) {

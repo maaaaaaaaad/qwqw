@@ -1,6 +1,6 @@
-package com.mad.jellomarkserver.domain.model
+package com.mad.jellomarkserver.member.domain.model
 
-import com.mad.jellomarkserver.domain.model.member.Email
+import com.mad.jellomarkserver.member.domain.model.Email
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
