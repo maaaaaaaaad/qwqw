@@ -1,9 +1,9 @@
-package com.mad.jellomarkserver.domain.model
+package com.mad.jellomarkserver.member.domain.model
 
-import com.mad.jellomarkserver.domain.model.member.Email
-import com.mad.jellomarkserver.domain.model.member.Member
-import com.mad.jellomarkserver.domain.model.member.MemberId
-import com.mad.jellomarkserver.domain.model.member.Nickname
+import com.mad.jellomarkserver.member.domain.model.Email
+import com.mad.jellomarkserver.member.domain.model.Member
+import com.mad.jellomarkserver.member.domain.model.MemberId
+import com.mad.jellomarkserver.member.domain.model.Nickname
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
