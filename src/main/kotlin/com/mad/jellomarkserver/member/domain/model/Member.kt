@@ -1,4 +1,4 @@
-package com.mad.jellomarkserver.domain.model.member
+package com.mad.jellomarkserver.member.domain.model
 
 import java.time.Clock
 import java.time.Instant
