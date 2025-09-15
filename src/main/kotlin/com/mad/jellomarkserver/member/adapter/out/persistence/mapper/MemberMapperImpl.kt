@@ -1,11 +1,11 @@
 package com.mad.jellomarkserver.member.adapter.out.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.out.persistence.entity.MemberJpaEntity
-import com.mad.jellomarkserver.member.domain.model.BusinessRegistrationNumber
-import com.mad.jellomarkserver.member.domain.model.Email
-import com.mad.jellomarkserver.member.domain.model.Member
-import com.mad.jellomarkserver.member.domain.model.MemberId
-import com.mad.jellomarkserver.member.domain.model.Nickname
+import com.mad.jellomarkserver.member.core.domain.model.BusinessRegistrationNumber
+import com.mad.jellomarkserver.member.core.domain.model.Email
+import com.mad.jellomarkserver.member.core.domain.model.Member
+import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.member.core.domain.model.Nickname
 import org.springframework.stereotype.Component
 
 @Component

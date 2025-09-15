@@ -1,4 +1,4 @@
-package com.mad.jellomarkserver.member.domain.model
+package com.mad.jellomarkserver.member.core.domain.model
 
 @JvmInline
 value class BusinessRegistrationNumber private constructor(val value: String) {
