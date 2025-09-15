@@ -4,4 +4,6 @@ import com.mad.jellomarkserver.member.adapter.out.persistence.entity.MemberJpaEn
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
-interface MemberRepository : JpaRepository<MemberJpaEntity, UUID>
+interface MemberRepository : JpaRepository<MemberJpaEntity, UUID> {
+    fun existsByEmail(email: String): Boolean
+}
