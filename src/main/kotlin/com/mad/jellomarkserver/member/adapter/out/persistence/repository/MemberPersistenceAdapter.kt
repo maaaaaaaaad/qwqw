@@ -7,8 +7,8 @@ import com.mad.jellomarkserver.member.port.driven.MemberPort
 import org.springframework.stereotype.Component
 
 @Component
-class MemberRepositoryImpl(
-    private val jpaRepository: MemberRepository,
+class MemberPersistenceAdapter(
+    private val jpaRepository: MemberJpaRepository,
     private val mapper: MemberMapper
 ) : MemberPort {
     override fun existsByEmail(email: Email): Boolean {

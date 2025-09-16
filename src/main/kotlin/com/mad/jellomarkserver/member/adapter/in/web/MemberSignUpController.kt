@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class MemberSignUpController(
     private val signUpMemberUseCase: SignUpMemberUseCase
 ) {
-    @PostMapping
+    @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     fun signUp(@RequestBody request: MemberSignUpRequest): MemberResponse {
         val command = SignUpMemberCommand(
