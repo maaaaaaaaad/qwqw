@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.core.application
 
 import com.mad.jellomarkserver.member.core.domain.exception.BusinessNumberException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateBrnException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
 import com.mad.jellomarkserver.member.core.domain.model.BusinessRegistrationNumber
 import com.mad.jellomarkserver.member.core.domain.model.Email
@@ -26,6 +27,9 @@ class SignUpMemberUseCaseImpl(
                 ?: throw BusinessNumberException()
 
             MemberType.CONSUMER -> null
+        }
+        if (brn != null && memberPort.existsByBusinessRegistrationNumber(brn)) {
+            throw DuplicateBrnException(brn.value)
         }
         val member = Member.create(nickname, email, memberType, brn)
         return memberPort.save(member)
