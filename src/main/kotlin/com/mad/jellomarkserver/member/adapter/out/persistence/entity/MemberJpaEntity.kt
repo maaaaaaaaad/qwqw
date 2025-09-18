@@ -20,6 +20,9 @@ class MemberJpaEntity(
     @Column(name = "email", nullable = false, length = 255)
     var email: String,
 
+    @Column(name = "member_type", nullable = false, length = 20)
+    var memberType: String,
+
     @Column(name = "business_registration_number", length = 20)
     var businessRegistrationNumber: String?,
 
