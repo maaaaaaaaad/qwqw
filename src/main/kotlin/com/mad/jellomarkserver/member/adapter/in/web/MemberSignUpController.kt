@@ -22,6 +22,7 @@ class MemberSignUpController(
         val command = SignUpMemberCommand(
             nickname = request.nickname,
             email = request.email,
+            memberType = request.memberType,
             businessRegistrationNumber = request.businessRegistrationNumber
         )
         val member = signUpMemberUseCase.signUp(command)

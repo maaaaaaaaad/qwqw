@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.e2e
 
 import com.mad.jellomarkserver.member.adapter.`in`.web.request.MemberSignUpRequest
+import com.mad.jellomarkserver.member.core.domain.model.MemberType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,6 +36,7 @@ class MemberSignUpE2ETest {
         val body = MemberSignUpRequest(
             nickname = "maduser",
             email = "mad@example.com",
+            memberType = MemberType.CONSUMER,
             businessRegistrationNumber = null
         )
 
@@ -58,11 +60,13 @@ class MemberSignUpE2ETest {
         val first = MemberSignUpRequest(
             nickname = "first",
             email = "dup@example.com",
+            memberType = MemberType.CONSUMER,
             businessRegistrationNumber = null
         )
         val second = MemberSignUpRequest(
             nickname = "second",
             email = "dup@example.com",
+            memberType = MemberType.CONSUMER,
             businessRegistrationNumber = null
         )
 
@@ -72,7 +76,6 @@ class MemberSignUpE2ETest {
 
         val r2 =
             rest.exchange(url("/api/members/sign-up"), HttpMethod.POST, HttpEntity(second, headers), Map::class.java)
-
         assertThat(r2.statusCode).isEqualTo(HttpStatus.CONFLICT)
         val err = r2.body
         if (err != null) {
@@ -85,6 +88,7 @@ class MemberSignUpE2ETest {
         val body = MemberSignUpRequest(
             nickname = "user1",
             email = "not-an-email",
+            memberType = MemberType.CONSUMER,
             businessRegistrationNumber = null
         )
         val response = rest.exchange(
@@ -104,6 +108,7 @@ class MemberSignUpE2ETest {
         val body = MemberSignUpRequest(
             nickname = "user2",
             email = "   ",
+            memberType = MemberType.CONSUMER,
             businessRegistrationNumber = null
         )
         val response = rest.exchange(
@@ -115,5 +120,48 @@ class MemberSignUpE2ETest {
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
         val err = response.body!!
         assertThat(err["code"]).isEqualTo("INVALID_ARGUMENT")
+    }
+
+    @Test
+    fun `success signup for owner with business registration number`() {
+        val body = MemberSignUpRequest(
+            nickname = "owner1",
+            email = "owner1@example.com",
+            memberType = MemberType.OWNER,
+            businessRegistrationNumber = "123-45-67890"
+        )
+
+        val response = rest.exchange(
+            url("/api/members/sign-up"),
+            HttpMethod.POST,
+            HttpEntity(body, headers),
+            Map::class.java
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
+        val json = response.body!!
+        assertThat(json["memberType"]).isEqualTo("OWNER")
+        assertThat(json["businessRegistrationNumber"]).isEqualTo("1234567890")
+    }
+
+    @Test
+    fun `422 when owner without business registration number`() {
+        val body = MemberSignUpRequest(
+            nickname = "owner2",
+            email = "owner2@example.com",
+            memberType = MemberType.OWNER,
+            businessRegistrationNumber = null
+        )
+        val response = rest.exchange(
+            url("/api/members/sign-up"),
+            HttpMethod.POST,
+            HttpEntity(body, headers),
+            Map::class.java
+        )
+
+        println(response)
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        val err = response.body!!
+        assertThat(err["code"]).isEqualTo("BUSINESS_NUMBER_INVALID")
     }
 }
