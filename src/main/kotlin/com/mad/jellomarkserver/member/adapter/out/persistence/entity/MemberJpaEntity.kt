@@ -4,11 +4,21 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 import java.util.UUID
 
 @Entity
-@Table(name = "members")
+@Table(
+    name = "members", uniqueConstraints = [
+        UniqueConstraint(name = "uk_members_nickname", columnNames = ["nickname"]),
+        UniqueConstraint(name = "uk_members_email", columnNames = ["email"]),
+        UniqueConstraint(
+            name = "uk_members_business_registration_number",
+            columnNames = ["business_registration_number"]
+        )
+    ]
+)
 class MemberJpaEntity(
     @Id
     @Column(name = "id", nullable = false)
