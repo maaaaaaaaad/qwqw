@@ -1,1 +1,1 @@
-rootProject.name = "jello-mark-server"
+rootProject.name = "jello-mark-backend"
