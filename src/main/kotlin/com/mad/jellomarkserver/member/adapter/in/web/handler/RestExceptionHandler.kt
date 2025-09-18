@@ -2,7 +2,9 @@ package com.mad.jellomarkserver.member.adapter.`in`.web.handler
 
 import com.mad.jellomarkserver.member.adapter.`in`.web.response.ErrorResponse
 import com.mad.jellomarkserver.member.core.domain.exception.BusinessNumberException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateBrnException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateNicknameException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -18,6 +20,24 @@ class RestExceptionHandler {
         val body = ErrorResponse(
             code = "MEMBER_DUPLICATE_EMAIL",
             message = ex.message ?: "Duplicate email"
+        )
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
+    }
+
+    @ExceptionHandler(DuplicateNicknameException::class)
+    fun handleDuplicateEmail(ex: DuplicateNicknameException): ResponseEntity<ErrorResponse> {
+        val body = ErrorResponse(
+            code = "MEMBER_DUPLICATE_NICKNAME",
+            message = ex.message ?: "Duplicate nickname"
+        )
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
+    }
+
+    @ExceptionHandler(DuplicateBrnException::class)
+    fun handleDuplicateEmail(ex: DuplicateBrnException): ResponseEntity<ErrorResponse> {
+        val body = ErrorResponse(
+            code = "SHOP_DUPLICATE_BUSINESS_REGISTRATION_NUMBER",
+            message = ex.message ?: "Duplicate Business Registration Number"
         )
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
     }
