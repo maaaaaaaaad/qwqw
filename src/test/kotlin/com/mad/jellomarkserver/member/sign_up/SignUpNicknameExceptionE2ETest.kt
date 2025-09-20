@@ -30,7 +30,7 @@ class SignUpNicknameExceptionE2ETest {
     private final val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
 
     @Test
-    fun `409 nickname`() {
+    fun `409 when owner duplicate nickname`() {
         val first = MemberSignUpRequest(
             nickname = "mad",
             email = "email1@example.com",
@@ -54,5 +54,27 @@ class SignUpNicknameExceptionE2ETest {
 
         val err = r2.body!!
         assertThat(err["code"]).isEqualTo("MEMBER_DUPLICATE_NICKNAME")
+    }
+
+    @Test
+    fun `422 when blank nickname`() {
+        val member = MemberSignUpRequest(
+            nickname = "",
+            email = "email1@example.com",
+            memberType = MemberType.CONSUMER,
+            businessRegistrationNumber = null
+        )
+
+        val response =
+            rest.exchange(
+                url("/api/members/sign-up"),
+                HttpMethod.POST,
+                HttpEntity(member, headers),
+                Map::class.java
+            )
+
+        val err = response.body!!
+        assertThat(err["code"]).isEqualTo("INVALID_ARGUMENT")
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
     }
 }
