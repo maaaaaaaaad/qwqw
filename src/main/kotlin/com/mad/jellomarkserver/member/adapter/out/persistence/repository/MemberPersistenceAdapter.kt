@@ -4,6 +4,7 @@ import com.mad.jellomarkserver.member.adapter.out.persistence.mapper.MemberMappe
 import com.mad.jellomarkserver.member.core.domain.model.BusinessRegistrationNumber
 import com.mad.jellomarkserver.member.core.domain.model.Email
 import com.mad.jellomarkserver.member.core.domain.model.Member
+import com.mad.jellomarkserver.member.core.domain.model.Nickname
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import org.springframework.stereotype.Component
 
@@ -18,6 +19,10 @@ class MemberPersistenceAdapter(
 
     override fun existsByBusinessRegistrationNumber(businessRegistrationNumber: BusinessRegistrationNumber): Boolean {
         return jpaRepository.existsByBusinessRegistrationNumber(businessRegistrationNumber.value)
+    }
+
+    override fun existsByNickname(nickname: Nickname): Boolean {
+        return jpaRepository.existsByNickname(nickname.value)
     }
 
     override fun save(member: Member): Member {
