@@ -7,4 +7,5 @@ import java.util.UUID
 interface MemberJpaRepository : JpaRepository<MemberJpaEntity, UUID> {
     fun existsByEmail(email: String): Boolean
     fun existsByBusinessRegistrationNumber(businessRegistrationNumber: String): Boolean
+    fun existsByNickname(nickname: String): Boolean
 }
