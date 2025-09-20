@@ -18,7 +18,13 @@ class Member private constructor(
             return Member(MemberId.new(), nickname, email, MemberType.CONSUMER, null, now, now)
         }
 
-        fun create(nickname: Nickname, email: Email, memberType: MemberType, businessRegistrationNumber: BusinessRegistrationNumber?, clock: Clock = Clock.systemUTC()): Member {
+        fun create(
+            nickname: Nickname,
+            email: Email,
+            memberType: MemberType,
+            businessRegistrationNumber: BusinessRegistrationNumber?,
+            clock: Clock = Clock.systemUTC()
+        ): Member {
             val now = Instant.now(clock)
             return Member(MemberId.new(), nickname, email, memberType, businessRegistrationNumber, now, now)
         }
@@ -57,7 +63,9 @@ class Member private constructor(
         return Member(id, nickname, newEmail, memberType, businessRegistrationNumber, createdAt, now)
     }
 
-    fun changeBusinessRegistrationNumber(newBusinessRegistrationNumber: BusinessRegistrationNumber?, clock: Clock = Clock.systemUTC()): Member {
+    fun changeBusinessRegistrationNumber(
+        newBusinessRegistrationNumber: BusinessRegistrationNumber?, clock: Clock = Clock.systemUTC()
+    ): Member {
         val now = Instant.now(clock)
         return Member(id, nickname, email, memberType, newBusinessRegistrationNumber, createdAt, now)
     }
