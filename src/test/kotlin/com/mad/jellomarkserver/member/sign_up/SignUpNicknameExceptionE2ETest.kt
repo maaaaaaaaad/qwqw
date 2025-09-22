@@ -57,7 +57,7 @@ class SignUpNicknameExceptionE2ETest {
     }
 
     @Test
-    fun `422 when blank nickname`() {
+    fun `422 when invalid nickname`() {
         val member = MemberSignUpRequest(
             nickname = "",
             email = "email1@example.com",
