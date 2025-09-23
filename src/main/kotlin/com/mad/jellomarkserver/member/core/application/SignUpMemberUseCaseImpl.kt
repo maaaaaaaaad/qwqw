@@ -10,6 +10,7 @@ import com.mad.jellomarkserver.member.port.driven.MemberPort
 import com.mad.jellomarkserver.member.port.driving.SignUpMemberCommand
 import com.mad.jellomarkserver.member.port.driving.SignUpMemberUseCase
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 
 @Service
@@ -17,7 +18,7 @@ class SignUpMemberUseCaseImpl(
     private val memberPort: MemberPort
 ) : SignUpMemberUseCase {
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     override fun signUp(command: SignUpMemberCommand): Member {
         val email = Email.of(command.email)
         val nickname = Nickname.of(command.nickname)
