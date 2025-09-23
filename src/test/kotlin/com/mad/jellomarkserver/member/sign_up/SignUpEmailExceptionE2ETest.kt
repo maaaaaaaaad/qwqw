@@ -53,10 +53,9 @@ class SignUpEmailExceptionE2ETest {
         val r2 =
             rest.exchange(url("/api/members/sign-up"), HttpMethod.POST, HttpEntity(second, headers), Map::class.java)
         assertThat(r2.statusCode).isEqualTo(HttpStatus.CONFLICT)
-        val err = r2.body
-        if (err != null) {
-            assertThat(err["code"]).isIn("MEMBER_DUPLICATE_EMAIL", "error")
-        }
+        val err = r2.body!!
+        assertThat(err["title"]).isEqualTo("Conflict")
+        assertThat(err["status"]).isEqualTo(HttpStatus.CONFLICT.value())
     }
 
     @Test
