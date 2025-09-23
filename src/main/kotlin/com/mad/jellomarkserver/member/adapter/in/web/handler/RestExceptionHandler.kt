@@ -6,6 +6,7 @@ import com.mad.jellomarkserver.member.core.domain.exception.DuplicateBrnExceptio
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateNicknameException
 import org.springframework.http.HttpStatus
+import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -16,16 +17,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 class RestExceptionHandler {
     @ExceptionHandler(DuplicateEmailException::class)
-    fun handleDuplicateEmail(ex: DuplicateEmailException): ResponseEntity<ErrorResponse> {
-        val body = ErrorResponse(
-            code = "MEMBER_DUPLICATE_EMAIL",
-            message = ex.message ?: "Duplicate email"
-        )
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
+    fun handleDuplicateEmail(ex: DuplicateEmailException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+        return problemDetail
     }
 
     @ExceptionHandler(DuplicateNicknameException::class)
-    fun handleDuplicateEmail(ex: DuplicateNicknameException): ResponseEntity<ErrorResponse> {
+    fun handleDuplicateMemberNickname(ex: DuplicateNicknameException): ResponseEntity<ErrorResponse> {
         val body = ErrorResponse(
             code = "MEMBER_DUPLICATE_NICKNAME",
             message = ex.message ?: "Duplicate nickname"
@@ -34,7 +32,7 @@ class RestExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateBrnException::class)
-    fun handleDuplicateEmail(ex: DuplicateBrnException): ResponseEntity<ErrorResponse> {
+    fun handleDuplicateBusinessNumber(ex: DuplicateBrnException): ResponseEntity<ErrorResponse> {
         val body = ErrorResponse(
             code = "SHOP_DUPLICATE_BUSINESS_REGISTRATION_NUMBER",
             message = ex.message ?: "Duplicate Business Registration Number"
