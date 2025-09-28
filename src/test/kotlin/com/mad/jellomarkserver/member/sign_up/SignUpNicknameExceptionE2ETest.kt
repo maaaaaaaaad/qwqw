@@ -1,7 +1,6 @@
 package com.mad.jellomarkserver.member.sign_up
 
 import com.mad.jellomarkserver.member.adapter.`in`.web.request.MemberSignUpRequest
-import com.mad.jellomarkserver.member.core.domain.model.MemberType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,14 +33,10 @@ class SignUpNicknameExceptionE2ETest {
         val first = MemberSignUpRequest(
             nickname = "mad",
             email = "email1@example.com",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
         val second = MemberSignUpRequest(
             nickname = "mad",
             email = "email2@example.com",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
 
         val r1 =
@@ -61,8 +56,6 @@ class SignUpNicknameExceptionE2ETest {
         val member = MemberSignUpRequest(
             nickname = "",
             email = "email1@example.com",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
 
         val response =

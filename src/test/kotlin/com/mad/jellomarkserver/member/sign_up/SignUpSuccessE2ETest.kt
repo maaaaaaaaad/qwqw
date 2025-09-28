@@ -1,7 +1,6 @@
 package com.mad.jellomarkserver.member.sign_up
 
 import com.mad.jellomarkserver.member.adapter.`in`.web.request.MemberSignUpRequest
-import com.mad.jellomarkserver.member.core.domain.model.MemberType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,8 +35,6 @@ class SignUpSuccessE2ETest {
         val body = MemberSignUpRequest(
             nickname = "maduser",
             email = "mad@example.com",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
 
         val response = rest.exchange(
@@ -53,27 +50,5 @@ class SignUpSuccessE2ETest {
         assertThat(json["nickname"]).isEqualTo("maduser")
         assertThat(json["email"]).isEqualTo("mad@example.com")
         assertThat(json.keys).containsAll(listOf("createdAt", "updatedAt"))
-    }
-
-    @Test
-    fun `success signup for owner with business registration number`() {
-        val body = MemberSignUpRequest(
-            nickname = "owner1",
-            email = "owner1@example.com",
-            memberType = MemberType.OWNER,
-            businessRegistrationNumber = "123-45-67890"
-        )
-
-        val response = rest.exchange(
-            url("/api/members/sign-up"),
-            HttpMethod.POST,
-            HttpEntity(body, headers),
-            Map::class.java
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
-        val json = response.body!!
-        assertThat(json["memberType"]).isEqualTo("OWNER")
-        assertThat(json["businessRegistrationNumber"]).isEqualTo("1234567890")
     }
 }

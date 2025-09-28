@@ -1,7 +1,6 @@
 package com.mad.jellomarkserver.member.sign_up
 
 import com.mad.jellomarkserver.member.adapter.`in`.web.request.MemberSignUpRequest
-import com.mad.jellomarkserver.member.core.domain.model.MemberType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,14 +35,10 @@ class SignUpEmailExceptionE2ETest {
         val first = MemberSignUpRequest(
             nickname = "first",
             email = "dup@example.com",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
         val second = MemberSignUpRequest(
             nickname = "second",
             email = "dup@example.com",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
 
         val r1 =
@@ -63,8 +58,6 @@ class SignUpEmailExceptionE2ETest {
         val body = MemberSignUpRequest(
             nickname = "user1",
             email = "not-an-email",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
         val response = rest.exchange(
             url("/api/members/sign-up"),
@@ -83,8 +76,6 @@ class SignUpEmailExceptionE2ETest {
         val body = MemberSignUpRequest(
             nickname = "user2",
             email = "   ",
-            memberType = MemberType.CONSUMER,
-            businessRegistrationNumber = null
         )
         val response = rest.exchange(
             url("/api/members/sign-up"),
