@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.member.sign_up
 
-import com.mad.jellomarkserver.member.adapter.`in`.web.request.MemberSignUpRequest
+import com.mad.jellomarkserver.member.adapter.driving.web.request.MemberSignUpRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
