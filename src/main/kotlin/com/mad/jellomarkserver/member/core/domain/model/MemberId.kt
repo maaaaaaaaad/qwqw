@@ -2,7 +2,8 @@ package com.mad.jellomarkserver.member.core.domain.model
 
 import java.util.UUID
 
-data class MemberId private constructor(val value: UUID) {
+@JvmInline
+value class MemberId private constructor(val value: UUID) {
     companion object {
         fun new(): MemberId = MemberId(UUID.randomUUID())
         fun from(value: UUID?): MemberId {
