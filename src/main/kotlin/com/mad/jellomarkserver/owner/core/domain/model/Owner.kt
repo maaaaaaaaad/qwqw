@@ -1,20 +1,22 @@
 package com.mad.jellomarkserver.owner.core.domain.model
 
+import java.time.Clock
 import java.time.Instant
 
 class Owner private constructor(
     val id: OwnerId,
+    val businessNumber: BusinessNumber,
     val createdAt: Instant,
     val updatedAt: Instant,
 ) {
     companion object {
-        fun create(): Owner {
-            val now = Instant.now()
-            return Owner(OwnerId.new(), now, now)
+        fun create(businessNumber: BusinessNumber, clock: Clock = Clock.systemUTC()): Owner {
+            val now = Instant.now(clock)
+            return Owner(OwnerId.new(), businessNumber, now, now)
         }
 
-        fun reconstruct(id: OwnerId, createdAt: Instant, updatedAt: Instant): Owner {
-            return Owner(id, createdAt, updatedAt)
+        fun reconstruct(id: OwnerId, businessNumber: BusinessNumber, createdAt: Instant, updatedAt: Instant): Owner {
+            return Owner(id, businessNumber, createdAt, updatedAt)
         }
     }
 
