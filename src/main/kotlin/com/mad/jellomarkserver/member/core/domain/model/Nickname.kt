@@ -1,5 +1,7 @@
 package com.mad.jellomarkserver.member.core.domain.model
 
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidNicknameException
+
 @JvmInline
 value class Nickname private constructor(val value: String) {
     companion object {
@@ -12,7 +14,8 @@ value class Nickname private constructor(val value: String) {
                 return Nickname(trimmed)
 
             } catch (ex: Exception) {
-                throw ex //Nickname Invalid exception 필요함
+                if (ex is IllegalArgumentException) InvalidNicknameException(input)
+                throw ex
             }
         }
     }
