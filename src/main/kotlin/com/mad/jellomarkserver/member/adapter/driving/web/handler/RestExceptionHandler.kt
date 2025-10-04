@@ -1,8 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driving.web.handler
 
 import com.mad.jellomarkserver.member.adapter.driving.web.response.ErrorResponse
-import com.mad.jellomarkserver.member.core.domain.exception.BusinessNumberException
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateBrnException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidBusinessNumberException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateNicknameException
 import org.springframework.http.HttpStatus
@@ -31,17 +30,8 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
     }
 
-    @ExceptionHandler(DuplicateBrnException::class)
-    fun handleDuplicateBusinessNumber(ex: DuplicateBrnException): ResponseEntity<ErrorResponse> {
-        val body = ErrorResponse(
-            code = "SHOP_DUPLICATE_BUSINESS_REGISTRATION_NUMBER",
-            message = ex.message ?: "Duplicate Business Registration Number"
-        )
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
-    }
-
-    @ExceptionHandler(BusinessNumberException::class)
-    fun handleInvalidBusinessNumber(ex: BusinessNumberException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(InvalidBusinessNumberException::class)
+    fun handleInvalidBusinessNumber(ex: InvalidBusinessNumberException): ResponseEntity<ErrorResponse> {
         val body = ErrorResponse(
             code = "BUSINESS_NUMBER_INVALID",
             message = ex.message ?: "Invalid Business Number"
