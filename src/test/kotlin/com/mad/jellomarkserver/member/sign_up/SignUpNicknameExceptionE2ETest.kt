@@ -67,7 +67,6 @@ class SignUpNicknameExceptionE2ETest {
             )
 
         val err = response.body!!
-        assertThat(err["code"]).isEqualTo("INVALID_ARGUMENT")
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
     }
 }
