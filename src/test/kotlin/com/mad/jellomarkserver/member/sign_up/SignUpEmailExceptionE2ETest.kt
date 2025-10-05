@@ -68,14 +68,14 @@ class SignUpEmailExceptionE2ETest {
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
         val err = response.body!!
-        assertThat(err["code"]).isEqualTo("INVALID_ARGUMENT")
+        assertThat(err["code"]).isEqualTo("MEMBER_EMAIL_INVALID")
     }
 
     @Test
-    fun `422 when email is blank`() {
+    fun `422 when email is null`() {
         val body = MemberSignUpRequest(
             nickname = "user2",
-            email = "   ",
+            email = ""
         )
         val response = rest.exchange(
             url("/api/members/sign-up"),
@@ -85,6 +85,6 @@ class SignUpEmailExceptionE2ETest {
         )
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
         val err = response.body!!
-        assertThat(err["code"]).isEqualTo("INVALID_ARGUMENT")
+        assertThat(err["code"]).isEqualTo("MEMBER_EMAIL_INVALID")
     }
 }
