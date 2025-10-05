@@ -52,7 +52,7 @@ class SignUpNicknameExceptionE2ETest {
     }
 
     @Test
-    fun `422 when invalid nickname`() {
+    fun `422 when invalid nickname by null`() {
         val member = MemberSignUpRequest(
             nickname = "",
             email = "email1@example.com",
@@ -67,6 +67,7 @@ class SignUpNicknameExceptionE2ETest {
             )
 
         val err = response.body!!
+        assertThat(err["code"]).isEqualTo("MEMBER_NICKNAME_INVALID")
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
     }
 }
