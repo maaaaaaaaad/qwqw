@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-class RestExceptionHandler {
+class OwnerRestExceptionHandler {
     @ExceptionHandler(InvalidBusinessNumberException::class)
     fun handleInvalidBusinessNumber(ex: InvalidBusinessNumberException): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
