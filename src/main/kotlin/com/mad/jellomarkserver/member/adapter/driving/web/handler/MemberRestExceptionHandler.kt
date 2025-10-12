@@ -25,22 +25,10 @@ class MemberRestExceptionHandler {
         return problemDetail
     }
 
-    @ExceptionHandler(InvalidEmailException::class)
-    fun handleInvalidNickname(ex: InvalidEmailException): ResponseEntity<ErrorResponse> {
-        val body = ErrorResponse(
-            code = "MEMBER_EMAIL_INVALID",
-            message = ex.message ?: "Invalid Member Email"
-        )
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body)
-    }
-
     @ExceptionHandler(InvalidNicknameException::class)
-    fun handleInvalidNickname(ex: InvalidNicknameException): ResponseEntity<ErrorResponse> {
-        val body = ErrorResponse(
-            code = "MEMBER_NICKNAME_INVALID",
-            message = ex.message ?: "Invalid Member Nickname"
-        )
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body)
+    fun handleInvalidNickname(ex: InvalidNicknameException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+        return problemDetail
     }
 
     @ExceptionHandler(Exception::class)
