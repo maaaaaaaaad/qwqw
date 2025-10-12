@@ -48,7 +48,7 @@ class SignUpNicknameExceptionE2ETest {
         assertThat(r2.statusCode).isEqualTo(HttpStatus.CONFLICT)
 
         val err = r2.body!!
-        assertThat(err["code"]).isEqualTo("MEMBER_DUPLICATE_NICKNAME")
+        assertThat(err["title"]).isEqualTo("Conflict")
     }
 
     @Test

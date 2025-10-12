@@ -20,12 +20,9 @@ class MemberRestExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateNicknameException::class)
-    fun handleDuplicateMemberNickname(ex: DuplicateNicknameException): ResponseEntity<ErrorResponse> {
-        val body = ErrorResponse(
-            code = "MEMBER_DUPLICATE_NICKNAME",
-            message = ex.message ?: "Duplicate nickname"
-        )
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body)
+    fun handleDuplicateMemberNickname(ex: DuplicateNicknameException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+        return problemDetail
     }
 
     @ExceptionHandler(InvalidEmailException::class)
