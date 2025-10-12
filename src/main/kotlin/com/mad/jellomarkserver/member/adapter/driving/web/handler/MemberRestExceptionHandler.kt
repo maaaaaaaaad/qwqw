@@ -19,6 +19,12 @@ class MemberRestExceptionHandler {
         return problemDetail
     }
 
+    @ExceptionHandler(InvalidEmailException::class)
+    fun handleInvalidEmail(ex: InvalidEmailException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+        return problemDetail
+    }
+
     @ExceptionHandler(DuplicateNicknameException::class)
     fun handleDuplicateMemberNickname(ex: DuplicateNicknameException): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)

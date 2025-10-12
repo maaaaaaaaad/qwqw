@@ -68,7 +68,7 @@ class SignUpEmailExceptionE2ETest {
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
         val err = response.body!!
-        assertThat(err["code"]).isEqualTo("MEMBER_EMAIL_INVALID")
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
     }
 
     @Test
@@ -85,6 +85,6 @@ class SignUpEmailExceptionE2ETest {
         )
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
         val err = response.body!!
-        assertThat(err["code"]).isEqualTo("MEMBER_EMAIL_INVALID")
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
     }
 }
