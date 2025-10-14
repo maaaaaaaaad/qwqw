@@ -123,4 +123,20 @@ class MemberMapperImplTest {
         assertEquals(original.createdAt, roundTripped.createdAt)
         assertEquals(original.updatedAt, roundTripped.updatedAt)
     }
+
+    @Test
+    fun `should trim nickname and email when mapping`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "  Nick12  ",
+            email = "  test@example.com  ",
+            createdAt = Instant.parse("2020-01-01T00:00:00Z"),
+            updatedAt = Instant.parse("2020-01-02T00:00:00Z")
+        )
+
+        val domain = memberMapper.toDomain(entity)
+
+        assertEquals("Nick12", domain.nickname.value)
+        assertEquals("test@example.com", domain.email.value)
+    }
 }
