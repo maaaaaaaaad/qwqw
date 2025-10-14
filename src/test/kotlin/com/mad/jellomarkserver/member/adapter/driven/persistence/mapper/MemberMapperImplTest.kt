@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
 import com.mad.jellomarkserver.member.core.domain.model.Email
+import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.Nickname
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -83,5 +84,24 @@ class MemberMapperImplTest {
         assertEquals(Email.of(email), result.email)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
+    }
+
+    @Test
+    fun `should correctly map Member to MemberJpaEntity`() {
+        val id = MemberId.from(UUID.randomUUID())
+        val nickname = Nickname.of("Nick123")
+        val email = Email.of("test@example.com")
+        val createdAt = Instant.parse("2024-01-01T00:00:00Z")
+        val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
+
+        val domain = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+
+        val entity = memberMapper.toEntity(domain)
+
+        assertEquals(id.value, entity.id)
+        assertEquals(nickname.value, entity.nickname)
+        assertEquals(email.value, entity.email)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
     }
 }
