@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidNicknameException
 import com.mad.jellomarkserver.member.core.domain.model.Email
 import com.mad.jellomarkserver.member.core.domain.model.Member
@@ -153,6 +154,21 @@ class MemberMapperImplTest {
         )
 
         assertThrows<InvalidNicknameException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw when email is invalid`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "Aa",
+            email = "invalid@@example..com",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertThrows<InvalidEmailException> {
             memberMapper.toDomain(entity)
         }
     }
