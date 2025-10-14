@@ -1,12 +1,14 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidNicknameException
 import com.mad.jellomarkserver.member.core.domain.model.Email
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.Nickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.util.UUID
 
@@ -138,5 +140,20 @@ class MemberMapperImplTest {
 
         assertEquals("Nick12", domain.nickname.value)
         assertEquals("test@example.com", domain.email.value)
+    }
+
+    @Test
+    fun `should throw when nickname is invalid`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "a",
+            email = "test@example.com",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertThrows<InvalidNicknameException> {
+            memberMapper.toDomain(entity)
+        }
     }
 }
