@@ -104,4 +104,23 @@ class MemberMapperImplTest {
         assertEquals(createdAt, entity.createdAt)
         assertEquals(updatedAt, entity.updatedAt)
     }
+
+    @Test
+    fun `domain - entity - domain round-trip should keep values`() {
+        val id = MemberId.from(UUID.randomUUID())
+        val nickname = Nickname.of("Aa")
+        val email = Email.of("a@a.com")
+        val createdAt = Instant.parse("2020-01-01T00:00:00Z")
+        val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
+        val original = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+
+        val entity = memberMapper.toEntity(original)
+        val roundTripped = memberMapper.toDomain(entity)
+
+        assertEquals(original.id, roundTripped.id)
+        assertEquals(original.nickname, roundTripped.nickname)
+        assertEquals(original.email, roundTripped.email)
+        assertEquals(original.createdAt, roundTripped.createdAt)
+        assertEquals(original.updatedAt, roundTripped.updatedAt)
+    }
 }
