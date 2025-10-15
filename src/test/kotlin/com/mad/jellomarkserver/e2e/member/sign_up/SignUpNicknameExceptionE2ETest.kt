@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -40,14 +41,22 @@ class SignUpNicknameExceptionE2ETest {
         )
 
         val r1 =
-            rest.exchange(url("/api/members/sign-up"), HttpMethod.POST, HttpEntity(first, headers), Map::class.java)
+            rest.exchange(
+                url("/api/members/sign-up"),
+                HttpMethod.POST,
+                HttpEntity(first, headers),
+                object : ParameterizedTypeReference<Map<String, Any?>>() {})
         assertThat(r1.statusCode).isEqualTo(HttpStatus.CREATED)
 
         val r2 =
-            rest.exchange(url("/api/members/sign-up"), HttpMethod.POST, HttpEntity(second, headers), Map::class.java)
+            rest.exchange(
+                url("/api/members/sign-up"),
+                HttpMethod.POST,
+                HttpEntity(second, headers),
+                object : ParameterizedTypeReference<Map<String, Any?>>() {})
         assertThat(r2.statusCode).isEqualTo(HttpStatus.CONFLICT)
 
-        val err = r2.body!!
+        val err = requireNotNull(r2.body)
         assertThat(err["title"]).isEqualTo("Conflict")
     }
 
@@ -63,10 +72,10 @@ class SignUpNicknameExceptionE2ETest {
                 url("/api/members/sign-up"),
                 HttpMethod.POST,
                 HttpEntity(member, headers),
-                Map::class.java
+                object : ParameterizedTypeReference<Map<String, Any?>>() {}
             )
 
-        val err = response.body!!
+        val err = requireNotNull(response.body)
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
         assertThat(err["title"]).isEqualTo("Unprocessable Entity")
     }
