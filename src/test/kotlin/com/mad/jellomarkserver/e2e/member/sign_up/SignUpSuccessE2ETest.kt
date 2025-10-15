@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -28,7 +29,7 @@ class SignUpSuccessE2ETest {
     lateinit var rest: TestRestTemplate
     private fun url(path: String) = "http://localhost:$port$path"
 
-    private final val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
+    private val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
 
     @Test
     fun `success signup for general member`() {
@@ -41,11 +42,11 @@ class SignUpSuccessE2ETest {
             url("/api/members/sign-up"),
             HttpMethod.POST,
             HttpEntity(body, headers),
-            Map::class.java
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
-        val json = response.body!!
+        val json = requireNotNull(response.body)
         assertThat(json["id"]).isNotNull()
         assertThat(json["nickname"]).isEqualTo("maduser")
         assertThat(json["email"]).isEqualTo("mad@example.com")
