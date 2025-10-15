@@ -9,9 +9,9 @@ import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.Nickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.util.UUID
+import kotlin.test.assertFailsWith
 
 class MemberMapperImplTest {
 
@@ -22,8 +22,8 @@ class MemberMapperImplTest {
         val id = UUID.randomUUID()
         val nickname = "Nick123"
         val email = "test@example.com"
-        val createdAt = Instant.now()
-        val updatedAt = Instant.now()
+        val createdAt = Instant.parse("2025-01-01T00:00:00Z")
+        val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
         val memberJpaEntity = MemberJpaEntity(
             id = id,
             nickname = nickname,
@@ -153,7 +153,7 @@ class MemberMapperImplTest {
             updatedAt = Instant.EPOCH
         )
 
-        assertThrows<InvalidNicknameException> {
+        assertFailsWith<InvalidNicknameException> {
             memberMapper.toDomain(entity)
         }
     }
@@ -168,7 +168,7 @@ class MemberMapperImplTest {
             updatedAt = Instant.EPOCH
         )
 
-        assertThrows<InvalidEmailException> {
+        assertFailsWith<InvalidEmailException> {
             memberMapper.toDomain(entity)
         }
     }
