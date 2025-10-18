@@ -1,5 +1,6 @@
 package com.mad.jellomarkserver.owner.adapter.driving.web.handler
 
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicatePhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.exception.InvalidBusinessNumberException
 import com.mad.jellomarkserver.owner.core.domain.exception.InvalidPhoneNumberException
 import org.springframework.http.HttpStatus
@@ -18,6 +19,12 @@ class OwnerRestExceptionHandler {
     @ExceptionHandler(InvalidPhoneNumberException::class)
     fun handleInvalidPhoneNumber(ex: InvalidPhoneNumberException): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+        return problemDetail
+    }
+
+    @ExceptionHandler(DuplicatePhoneNumberException::class)
+    fun handleDuplicatePhoneNumber(ex: DuplicatePhoneNumberException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
         return problemDetail
     }
 }
