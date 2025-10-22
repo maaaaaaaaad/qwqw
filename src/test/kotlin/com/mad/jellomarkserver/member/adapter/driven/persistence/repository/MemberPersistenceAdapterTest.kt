@@ -13,16 +13,10 @@ import com.mad.jellomarkserver.member.core.domain.model.Nickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Captor
-import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.stubbing.Answer
 import org.springframework.dao.DataIntegrityViolationException
 import java.time.Instant
 import java.util.UUID
