@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.exception
 
-class DuplicateBusinessNumberException(businessNumber: String) :
+class DuplicateOwnerBusinessNumberException(businessNumber: String) :
     RuntimeException(
         "Duplicate business number: $businessNumber"
     ) {

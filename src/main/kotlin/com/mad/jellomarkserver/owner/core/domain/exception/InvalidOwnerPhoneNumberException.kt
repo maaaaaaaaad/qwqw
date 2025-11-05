@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.exception
 
-class InvalidPhoneNumberException(phoneNumber: String) :
+class InvalidOwnerPhoneNumberException(phoneNumber: String) :
     RuntimeException(
         "Invalid phone number: $phoneNumber"
     ) {

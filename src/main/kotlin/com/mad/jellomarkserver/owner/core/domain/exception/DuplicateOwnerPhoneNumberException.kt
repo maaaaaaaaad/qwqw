@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.exception
 
-class DuplicatePhoneNumberException(phoneNumber: String) :
+class DuplicateOwnerPhoneNumberException(phoneNumber: String) :
     RuntimeException(
         "Duplicate phone number: $phoneNumber"
     ) {

@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.model
 
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
 
 @JvmInline
 value class OwnerPhoneNumber private constructor(val value: String) {
@@ -13,7 +13,7 @@ value class OwnerPhoneNumber private constructor(val value: String) {
                 require(pattern.matches(trimmed))
                 return OwnerPhoneNumber(trimmed)
             } catch (ex: IllegalArgumentException) {
-                throw InvalidPhoneNumberException(trimmed)
+                throw InvalidOwnerPhoneNumberException(trimmed)
             }
         }
     }

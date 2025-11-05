@@ -4,8 +4,8 @@ import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslatorImpl
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.entity.OwnerJpaEntity
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.mapper.OwnerMapper
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateBusinessNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicatePhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerBusinessNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
@@ -490,7 +490,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateBusinessNumberException> {
+        val thrownException = assertFailsWith<DuplicateOwnerBusinessNumberException> {
             adapter.save(owner)
         }
 
@@ -521,7 +521,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicatePhoneNumberException> {
+        val thrownException = assertFailsWith<DuplicateOwnerPhoneNumberException> {
             adapter.save(owner)
         }
 
@@ -552,7 +552,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateBusinessNumberException> {
+        val thrownException = assertFailsWith<DuplicateOwnerBusinessNumberException> {
             adapter.save(owner)
         }
 
@@ -581,7 +581,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicatePhoneNumberException> {
+        val thrownException = assertFailsWith<DuplicateOwnerPhoneNumberException> {
             adapter.save(owner)
         }
 
@@ -610,7 +610,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateBusinessNumberException> {
+        val thrownException = assertFailsWith<DuplicateOwnerBusinessNumberException> {
             adapter.save(owner)
         }
 
@@ -639,7 +639,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicatePhoneNumberException> {
+        val thrownException = assertFailsWith<DuplicateOwnerPhoneNumberException> {
             adapter.save(owner)
         }
 
@@ -668,7 +668,7 @@ class OwnerPersistenceAdapterTest {
         `when`(mapper.toEntity(owner)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        assertFailsWith<DuplicateBusinessNumberException> {
+        assertFailsWith<DuplicateOwnerBusinessNumberException> {
             adapter.save(owner)
         }
     }

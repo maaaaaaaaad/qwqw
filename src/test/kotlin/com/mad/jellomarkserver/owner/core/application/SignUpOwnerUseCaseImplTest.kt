@@ -1,9 +1,9 @@
 package com.mad.jellomarkserver.owner.core.application
 
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateBusinessNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicatePhoneNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidBusinessNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerBusinessNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerCommand
@@ -38,7 +38,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "010-1234-5678"
         )
 
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             useCase.signUp(command)
         }
     }
@@ -50,7 +50,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "010-1234-5678"
         )
 
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             useCase.signUp(command)
         }
     }
@@ -62,7 +62,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "010-1234-5678"
         )
 
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             useCase.signUp(command)
         }
     }
@@ -74,7 +74,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "010-1234-5678"
         )
 
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             useCase.signUp(command)
         }
     }
@@ -86,7 +86,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "   "
         )
 
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             useCase.signUp(command)
         }
     }
@@ -98,7 +98,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = ""
         )
 
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             useCase.signUp(command)
         }
     }
@@ -110,7 +110,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "01012345678"
         )
 
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             useCase.signUp(command)
         }
     }
@@ -122,7 +122,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "010 1234 5678"
         )
 
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             useCase.signUp(command)
         }
     }
@@ -134,7 +134,7 @@ class SignUpOwnerUseCaseImplTest {
             phoneNumber = "090-1234-5678"
         )
 
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             useCase.signUp(command)
         }
     }
@@ -153,9 +153,9 @@ class SignUpOwnerUseCaseImplTest {
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
-        ).thenThrow(DuplicateBusinessNumberException("123456789"))
+        ).thenThrow(DuplicateOwnerBusinessNumberException("123456789"))
 
-        val exception = assertFailsWith<DuplicateBusinessNumberException> {
+        val exception = assertFailsWith<DuplicateOwnerBusinessNumberException> {
             useCase.signUp(command)
         }
 
@@ -176,9 +176,9 @@ class SignUpOwnerUseCaseImplTest {
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
-        ).thenThrow(DuplicatePhoneNumberException("010-1234-5678"))
+        ).thenThrow(DuplicateOwnerPhoneNumberException("010-1234-5678"))
 
-        val exception = assertFailsWith<DuplicatePhoneNumberException> {
+        val exception = assertFailsWith<DuplicateOwnerPhoneNumberException> {
             useCase.signUp(command)
         }
 

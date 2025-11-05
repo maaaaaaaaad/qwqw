@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.model
 
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
@@ -159,112 +159,112 @@ class PhoneNumberTest {
 
     @Test
     fun `should throw when phone number is blank`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("")
         }
     }
 
     @Test
     fun `should throw when phone number is only whitespace`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("   ")
         }
     }
 
     @Test
     fun `should throw when phone number has no hyphens`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("01012345678")
         }
     }
 
     @Test
     fun `should throw when phone number has invalid area code 012`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("012-1234-5678")
         }
     }
 
     @Test
     fun `should throw when phone number has invalid area code 015`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("015-1234-5678")
         }
     }
 
     @Test
     fun `should throw when phone number has invalid regional code 034`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("034-1234-5678")
         }
     }
 
     @Test
     fun `should throw when phone number has invalid regional code 056`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("056-1234-5678")
         }
     }
 
     @Test
     fun `should throw when middle part has too few digits`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010-12-5678")
         }
     }
 
     @Test
     fun `should throw when middle part has too many digits`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010-12345-5678")
         }
     }
 
     @Test
     fun `should throw when last part has too few digits`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010-1234-567")
         }
     }
 
     @Test
     fun `should throw when last part has too many digits`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010-1234-56789")
         }
     }
 
     @Test
     fun `should throw when phone number contains non-digit characters`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010-abcd-5678")
         }
     }
 
     @Test
     fun `should throw when phone number has wrong format with dots`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010.1234.5678")
         }
     }
 
     @Test
     fun `should throw when phone number has wrong format with spaces`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("010 1234 5678")
         }
     }
 
     @Test
     fun `should throw when phone number starts with 1`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("1234-5678")
         }
     }
 
     @Test
     fun `should throw when phone number is international format`() {
-        assertFailsWith<InvalidPhoneNumberException> {
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
             OwnerPhoneNumber.of("+82-10-1234-5678")
         }
     }

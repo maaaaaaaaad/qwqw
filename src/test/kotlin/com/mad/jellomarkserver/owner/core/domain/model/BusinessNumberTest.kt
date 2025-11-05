@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.model
 
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidBusinessNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
@@ -123,14 +123,14 @@ class BusinessNumberTest {
 
     @Test
     fun `should throw when business number is blank`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("")
         }
     }
 
     @Test
     fun `should throw when business number is only whitespace`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("   ")
         }
 
@@ -138,119 +138,119 @@ class BusinessNumberTest {
 
     @Test
     fun `should throw when business number is only tab`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("\t")
         }
     }
 
     @Test
     fun `should throw when business number is only newline`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("\n")
         }
     }
 
     @Test
     fun `should throw when business number has 1 character`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("1")
         }
     }
 
     @Test
     fun `should throw when business number has 2 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("12")
         }
     }
 
     @Test
     fun `should throw when business number has 3 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("123")
         }
     }
 
     @Test
     fun `should throw when business number has 4 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("1234")
         }
     }
 
     @Test
     fun `should throw when business number has 5 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("12345")
         }
     }
 
     @Test
     fun `should throw when business number has 6 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("123456")
         }
     }
 
     @Test
     fun `should throw when business number has 7 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("1234567")
         }
     }
 
     @Test
     fun `should throw when business number has 8 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("12345678")
         }
     }
 
     @Test
     fun `should throw when business number has 10 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("1234567890")
         }
     }
 
     @Test
     fun `should throw when business number has 11 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("12345678901")
         }
     }
 
     @Test
     fun `should throw when business number has 12 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("123456789012")
         }
     }
 
     @Test
     fun `should throw when business number has 15 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("123456789012345")
         }
     }
 
     @Test
     fun `should throw when business number has 20 characters`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("12345678901234567890")
         }
     }
 
     @Test
     fun `should throw when trimmed business number is too short after removing whitespace`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("  12345678  ")
         }
     }
 
     @Test
     fun `should throw when trimmed business number is too long after removing whitespace`() {
-        assertFailsWith<InvalidBusinessNumberException> {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
             BusinessNumber.of("  1234567890  ")
         }
     }
