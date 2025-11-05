@@ -2,7 +2,7 @@ package com.mad.jellomarkserver.owner.core.application
 
 import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
-import com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerCommand
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerUseCase
@@ -18,8 +18,8 @@ class SignUpOwnerUseCaseImpl(
     @Transactional(isolation = Isolation.READ_COMMITTED)
     override fun signUp(command: SignUpOwnerCommand): Owner {
         val businessNumber = BusinessNumber.of(command.businessNumber)
-        val phoneNumber = PhoneNumber.of(command.phoneNumber)
-        val owner = Owner.create(businessNumber, phoneNumber)
+        val ownerPhoneNumber = OwnerPhoneNumber.of(command.phoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber)
         return ownerPort.save(owner)
     }
 }

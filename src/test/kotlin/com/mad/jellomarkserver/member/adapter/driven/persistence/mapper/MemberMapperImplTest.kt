@@ -1,12 +1,12 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidEmailException
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidNicknameException
-import com.mad.jellomarkserver.member.core.domain.model.Email
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.member.core.domain.model.Nickname
+import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -35,8 +35,8 @@ class MemberMapperImplTest {
         val result = memberMapper.toDomain(memberJpaEntity)
 
         assertEquals(MemberId.from(id), result.id)
-        assertEquals(Nickname.of(nickname), result.nickname)
-        assertEquals(Email.of(email), result.email)
+        assertEquals(MemberNickname.of(nickname), result.memberNickname)
+        assertEquals(MemberEmail.of(email), result.memberEmail)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -59,8 +59,8 @@ class MemberMapperImplTest {
         val result = memberMapper.toDomain(memberJpaEntity)
 
         assertEquals(MemberId.from(id), result.id)
-        assertEquals(Nickname.of(nickname), result.nickname)
-        assertEquals(Email.of(email), result.email)
+        assertEquals(MemberNickname.of(nickname), result.memberNickname)
+        assertEquals(MemberEmail.of(email), result.memberEmail)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -83,8 +83,8 @@ class MemberMapperImplTest {
         val result = memberMapper.toDomain(memberJpaEntity)
 
         assertEquals(MemberId.from(id), result.id)
-        assertEquals(Nickname.of(nickname), result.nickname)
-        assertEquals(Email.of(email), result.email)
+        assertEquals(MemberNickname.of(nickname), result.memberNickname)
+        assertEquals(MemberEmail.of(email), result.memberEmail)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -92,18 +92,18 @@ class MemberMapperImplTest {
     @Test
     fun `should correctly map Member to MemberJpaEntity`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("Nick123")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("Nick123")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
 
-        val domain = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val domain = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = memberMapper.toEntity(domain)
 
         assertEquals(id.value, entity.id)
-        assertEquals(nickname.value, entity.nickname)
-        assertEquals(email.value, entity.email)
+        assertEquals(memberNickname.value, entity.nickname)
+        assertEquals(memberEmail.value, entity.email)
         assertEquals(createdAt, entity.createdAt)
         assertEquals(updatedAt, entity.updatedAt)
     }
@@ -111,18 +111,18 @@ class MemberMapperImplTest {
     @Test
     fun `domain - entity - domain round-trip should keep values`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("Aa")
-        val email = Email.of("a@a.com")
+        val memberNickname = MemberNickname.of("Aa")
+        val memberEmail = MemberEmail.of("a@a.com")
         val createdAt = Instant.parse("2020-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
-        val original = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val original = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = memberMapper.toEntity(original)
         val roundTripped = memberMapper.toDomain(entity)
 
         assertEquals(original.id, roundTripped.id)
-        assertEquals(original.nickname, roundTripped.nickname)
-        assertEquals(original.email, roundTripped.email)
+        assertEquals(original.memberNickname, roundTripped.memberNickname)
+        assertEquals(original.memberEmail, roundTripped.memberEmail)
         assertEquals(original.createdAt, roundTripped.createdAt)
         assertEquals(original.updatedAt, roundTripped.updatedAt)
     }
@@ -139,8 +139,8 @@ class MemberMapperImplTest {
 
         val domain = memberMapper.toDomain(entity)
 
-        assertEquals("Nick12", domain.nickname.value)
-        assertEquals("test@example.com", domain.email.value)
+        assertEquals("Nick12", domain.memberNickname.value)
+        assertEquals("test@example.com", domain.memberEmail.value)
     }
 
     @Test
@@ -153,7 +153,7 @@ class MemberMapperImplTest {
             updatedAt = Instant.EPOCH
         )
 
-        assertFailsWith<InvalidNicknameException> {
+        assertFailsWith<InvalidMemberNicknameException> {
             memberMapper.toDomain(entity)
         }
     }
@@ -168,7 +168,7 @@ class MemberMapperImplTest {
             updatedAt = Instant.EPOCH
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             memberMapper.toDomain(entity)
         }
     }

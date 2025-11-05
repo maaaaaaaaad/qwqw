@@ -15,8 +15,8 @@ data class MemberResponse(
         fun from(member: Member): MemberResponse {
             return MemberResponse(
                 id = member.id.value,
-                nickname = member.nickname.value,
-                email = member.email.value,
+                nickname = member.memberNickname.value,
+                email = member.memberEmail.value,
                 createdAt = member.createdAt,
                 updatedAt = member.updatedAt
             )

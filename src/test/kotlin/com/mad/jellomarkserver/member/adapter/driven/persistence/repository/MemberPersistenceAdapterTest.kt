@@ -4,12 +4,12 @@ import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslatorImpl
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
 import com.mad.jellomarkserver.member.adapter.driven.persistence.mapper.MemberMapper
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateNicknameException
-import com.mad.jellomarkserver.member.core.domain.model.Email
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.member.core.domain.model.Nickname
+import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -43,16 +43,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member successfully`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -72,16 +72,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with minimum valid values`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("ab")
-        val email = Email.of("a@a.co")
+        val memberNickname = MemberNickname.of("ab")
+        val memberEmail = MemberEmail.of("a@a.co")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -98,16 +98,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with maximum length values`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("12345678")
-        val email = Email.of("a".repeat(243) + "@example.com")
+        val memberNickname = MemberNickname.of("12345678")
+        val memberEmail = MemberEmail.of("a".repeat(243) + "@example.com")
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -124,16 +124,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with special characters in nickname`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("user_123")
-        val email = Email.of("user@example.com")
+        val memberNickname = MemberNickname.of("user_123")
+        val memberEmail = MemberEmail.of("user@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -150,16 +150,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with special characters in email`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("user+tag@mail.example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("user+tag@mail.example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -176,16 +176,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with Korean nickname`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("한글닉네임")
-        val email = Email.of("user@example.com")
+        val memberNickname = MemberNickname.of("한글닉네임")
+        val memberEmail = MemberEmail.of("user@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -202,16 +202,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with different created and updated timestamps`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-06-01T12:30:45Z")
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -229,24 +229,24 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should correctly handle round-trip with mapper`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("rtripmap")
-        val email = Email.of("rtripmap@example.com")
+        val memberNickname = MemberNickname.of("rtripmap")
+        val memberEmail = MemberEmail.of("rtripmap@example.com")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
-        val originalMember = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val originalMember = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
 
         val reconstructedMember = Member.reconstruct(
             MemberId.from(entity.id),
-            Nickname.of(entity.nickname),
-            Email.of(entity.email),
+            MemberNickname.of(entity.nickname),
+            MemberEmail.of(entity.email),
             entity.createdAt,
             entity.updatedAt
         )
@@ -258,8 +258,8 @@ class MemberPersistenceAdapterTest {
         val result = adapter.save(originalMember)
 
         assertEquals(originalMember.id, result.id)
-        assertEquals(originalMember.nickname, result.nickname)
-        assertEquals(originalMember.email, result.email)
+        assertEquals(originalMember.memberNickname, result.memberNickname)
+        assertEquals(originalMember.memberEmail, result.memberEmail)
         assertEquals(originalMember.createdAt, result.createdAt)
         assertEquals(originalMember.updatedAt, result.updatedAt)
     }
@@ -268,32 +268,32 @@ class MemberPersistenceAdapterTest {
     fun `should save multiple members with different values`() {
         val member1 = Member.reconstruct(
             MemberId.from(UUID.randomUUID()),
-            Nickname.of("user1"),
-            Email.of("user1@example.com"),
+            MemberNickname.of("user1"),
+            MemberEmail.of("user1@example.com"),
             Instant.parse("2025-01-01T00:00:00Z"),
             Instant.parse("2025-01-01T00:00:00Z")
         )
 
         val member2 = Member.reconstruct(
             MemberId.from(UUID.randomUUID()),
-            Nickname.of("user2"),
-            Email.of("user2@example.com"),
+            MemberNickname.of("user2"),
+            MemberEmail.of("user2@example.com"),
             Instant.parse("2025-02-01T00:00:00Z"),
             Instant.parse("2025-02-01T00:00:00Z")
         )
 
         val entity1 = MemberJpaEntity(
             id = member1.id.value,
-            nickname = member1.nickname.value,
-            email = member1.email.value,
+            nickname = member1.memberNickname.value,
+            email = member1.memberEmail.value,
             createdAt = member1.createdAt,
             updatedAt = member1.updatedAt
         )
 
         val entity2 = MemberJpaEntity(
             id = member2.id.value,
-            nickname = member2.nickname.value,
-            email = member2.email.value,
+            nickname = member2.memberNickname.value,
+            email = member2.memberEmail.value,
             createdAt = member2.createdAt,
             updatedAt = member2.updatedAt
         )
@@ -316,16 +316,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with uppercase email`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("TEST@EXAMPLE.COM")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("TEST@EXAMPLE.COM")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -342,16 +342,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with numeric nickname`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("12345678")
-        val email = Email.of("numeric@example.com")
+        val memberNickname = MemberNickname.of("12345678")
+        val memberEmail = MemberEmail.of("numeric@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -368,16 +368,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with subdomain email`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("user@mail.example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("user@mail.example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -394,16 +394,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with all zeros UUID`() {
         val id = MemberId.from(UUID(0, 0))
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -420,16 +420,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should save member with high precision timestamp`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.parse("2025-01-01T12:34:56.123456789Z")
         val updatedAt = Instant.parse("2025-01-01T12:34:56.987654321Z")
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -446,16 +446,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateEmailException when email constraint is violated`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("duplicate@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("duplicate@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -465,7 +465,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateEmailException> {
+        val thrownException = assertFailsWith<DuplicateMemberEmailException> {
             adapter.save(member)
         }
 
@@ -477,16 +477,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateNicknameException when nickname constraint is violated`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("dupname")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("dupname")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -496,7 +496,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateNicknameException> {
+        val thrownException = assertFailsWith<DuplicateMemberNicknameException> {
             adapter.save(member)
         }
 
@@ -508,16 +508,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateEmailException with correct email value`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("user123")
-        val email = Email.of("admin@test.com")
+        val memberNickname = MemberNickname.of("user123")
+        val memberEmail = MemberEmail.of("admin@test.com")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -527,7 +527,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateEmailException> {
+        val thrownException = assertFailsWith<DuplicateMemberEmailException> {
             adapter.save(member)
         }
 
@@ -537,16 +537,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateNicknameException with correct nickname value`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("admin123")
-        val email = Email.of("user@test.com")
+        val memberNickname = MemberNickname.of("admin123")
+        val memberEmail = MemberEmail.of("user@test.com")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -556,7 +556,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateNicknameException> {
+        val thrownException = assertFailsWith<DuplicateMemberNicknameException> {
             adapter.save(member)
         }
 
@@ -566,16 +566,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateEmailException for email with special characters`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("user+tag@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("user+tag@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -585,7 +585,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateEmailException> {
+        val thrownException = assertFailsWith<DuplicateMemberEmailException> {
             adapter.save(member)
         }
 
@@ -595,16 +595,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateNicknameException for nickname with special characters`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("user_123")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("user_123")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -614,7 +614,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        val thrownException = assertFailsWith<DuplicateNicknameException> {
+        val thrownException = assertFailsWith<DuplicateMemberNicknameException> {
             adapter.save(member)
         }
 
@@ -624,16 +624,16 @@ class MemberPersistenceAdapterTest {
     @Test
     fun `should call constraintTranslator when DataIntegrityViolationException occurs`() {
         val id = MemberId.from(UUID.randomUUID())
-        val nickname = Nickname.of("testuser")
-        val email = Email.of("test@example.com")
+        val memberNickname = MemberNickname.of("testuser")
+        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, nickname, email, createdAt, updatedAt)
+        val member = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
-            nickname = nickname.value,
-            email = email.value,
+            nickname = memberNickname.value,
+            email = memberEmail.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -643,7 +643,7 @@ class MemberPersistenceAdapterTest {
         `when`(mapper.toEntity(member)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
 
-        assertFailsWith<DuplicateEmailException> {
+        assertFailsWith<DuplicateMemberEmailException> {
             adapter.save(member)
         }
     }

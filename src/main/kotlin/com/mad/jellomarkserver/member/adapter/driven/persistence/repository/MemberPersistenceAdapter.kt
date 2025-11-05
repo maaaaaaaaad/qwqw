@@ -2,8 +2,8 @@ package com.mad.jellomarkserver.member.adapter.driven.persistence.repository
 
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.member.adapter.driven.persistence.mapper.MemberMapper
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateNicknameException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import org.springframework.dao.DataIntegrityViolationException
@@ -23,8 +23,8 @@ class MemberPersistenceAdapter(
         } catch (e: DataIntegrityViolationException) {
             constraintTranslator.translateAndThrow(
                 e, mapOf(
-                    "uk_members_email" to { DuplicateEmailException(member.email.value) },
-                    "uk_members_nickname" to { DuplicateNicknameException(member.nickname.value) },
+                    "uk_members_email" to { DuplicateMemberEmailException(member.memberEmail.value) },
+                    "uk_members_nickname" to { DuplicateMemberNicknameException(member.memberNickname.value) },
                 )
             )
         }

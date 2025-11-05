@@ -6,18 +6,18 @@ import java.time.Instant
 class Owner private constructor(
     val id: OwnerId,
     val businessNumber: BusinessNumber,
-    val phoneNumber: PhoneNumber,
+    val ownerPhoneNumber: OwnerPhoneNumber,
     val createdAt: Instant,
     val updatedAt: Instant,
 ) {
     companion object {
-        fun create(businessNumber: BusinessNumber, phoneNumber: PhoneNumber, clock: Clock = Clock.systemUTC()): Owner {
+        fun create(businessNumber: BusinessNumber, ownerPhoneNumber: OwnerPhoneNumber, clock: Clock = Clock.systemUTC()): Owner {
             val now = Instant.now(clock)
-            return Owner(OwnerId.new(), businessNumber, phoneNumber, now, now)
+            return Owner(OwnerId.new(), businessNumber, ownerPhoneNumber, now, now)
         }
 
-        fun reconstruct(id: OwnerId, businessNumber: BusinessNumber, phoneNumber: PhoneNumber, createdAt: Instant, updatedAt: Instant): Owner {
-            return Owner(id, businessNumber, phoneNumber, createdAt, updatedAt)
+        fun reconstruct(id: OwnerId, businessNumber: BusinessNumber, ownerPhoneNumber: OwnerPhoneNumber, createdAt: Instant, updatedAt: Instant): Owner {
+            return Owner(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
         }
     }
 

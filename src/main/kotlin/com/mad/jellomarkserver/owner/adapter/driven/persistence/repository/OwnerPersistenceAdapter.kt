@@ -24,7 +24,7 @@ class OwnerPersistenceAdapter(
             constraintTranslator.translateAndThrow(
                 e, mapOf(
                     "uk_owners_business_number" to { DuplicateBusinessNumberException(owner.businessNumber.value) },
-                    "uk_owners_phone_number" to { DuplicatePhoneNumberException(owner.phoneNumber.value) },
+                    "uk_owners_phone_number" to { DuplicatePhoneNumberException(owner.ownerPhoneNumber.value) },
                 )
             )
         }

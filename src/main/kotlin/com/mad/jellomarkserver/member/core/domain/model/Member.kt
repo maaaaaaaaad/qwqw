@@ -5,25 +5,25 @@ import java.time.Instant
 
 class Member private constructor(
     val id: MemberId,
-    val nickname: Nickname,
-    val email: Email,
+    val memberNickname: MemberNickname,
+    val memberEmail: MemberEmail,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
     companion object {
-        fun create(nickname: Nickname, email: Email, clock: Clock = Clock.systemUTC()): Member {
+        fun create(memberNickname: MemberNickname, memberEmail: MemberEmail, clock: Clock = Clock.systemUTC()): Member {
             val now = Instant.now(clock)
-            return Member(MemberId.new(), nickname, email, now, now)
+            return Member(MemberId.new(), memberNickname, memberEmail, now, now)
         }
 
         fun reconstruct(
             id: MemberId,
-            nickname: Nickname,
-            email: Email,
+            memberNickname: MemberNickname,
+            memberEmail: MemberEmail,
             createdAt: Instant,
             updatedAt: Instant
         ): Member {
-            return Member(id, nickname, email, createdAt, updatedAt)
+            return Member(id, memberNickname, memberEmail, createdAt, updatedAt)
         }
     }
 

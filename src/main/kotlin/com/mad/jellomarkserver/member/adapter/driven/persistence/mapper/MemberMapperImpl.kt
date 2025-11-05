@@ -1,10 +1,10 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
-import com.mad.jellomarkserver.member.core.domain.model.Email
+import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.member.core.domain.model.Nickname
+import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,8 +12,8 @@ class MemberMapperImpl : MemberMapper {
     override fun toEntity(domain: Member): MemberJpaEntity {
         return MemberJpaEntity(
             id = domain.id.value,
-            nickname = domain.nickname.value,
-            email = domain.email.value,
+            nickname = domain.memberNickname.value,
+            email = domain.memberEmail.value,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt
         )
@@ -21,12 +21,12 @@ class MemberMapperImpl : MemberMapper {
 
     override fun toDomain(entity: MemberJpaEntity): Member {
         val id = MemberId.from(entity.id)
-        val nickname = Nickname.of(entity.nickname)
-        val email = Email.of(entity.email)
+        val memberNickname = MemberNickname.of(entity.nickname)
+        val memberEmail = MemberEmail.of(entity.email)
         return Member.reconstruct(
             id = id,
-            nickname = nickname,
-            email = email,
+            memberNickname = memberNickname,
+            memberEmail = memberEmail,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt
         )

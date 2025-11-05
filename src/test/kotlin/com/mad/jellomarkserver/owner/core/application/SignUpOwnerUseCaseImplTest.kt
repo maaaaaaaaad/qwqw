@@ -150,7 +150,7 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenThrow(DuplicateBusinessNumberException("123456789"))
@@ -173,7 +173,7 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenThrow(DuplicatePhoneNumberException("010-1234-5678"))
@@ -196,7 +196,7 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenAnswer { invocation ->
@@ -220,12 +220,12 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("010-1234-5678", owner.phoneNumber.value)
+            assertEquals("010-1234-5678", owner.ownerPhoneNumber.value)
             owner
         }
 
@@ -244,7 +244,7 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("abc123xyz"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenAnswer { invocation ->
@@ -268,7 +268,7 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("12-34.567"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenAnswer { invocation ->
@@ -292,7 +292,7 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("ABCDEFGHI"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("010-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678")
                 )
             )
         ).thenAnswer { invocation ->
@@ -316,12 +316,12 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("02-1234-5678")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("02-1234-5678")
                 )
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("02-1234-5678", owner.phoneNumber.value)
+            assertEquals("02-1234-5678", owner.ownerPhoneNumber.value)
             owner
         }
 
@@ -340,12 +340,12 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("031-123-4567")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("031-123-4567")
                 )
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("031-123-4567", owner.phoneNumber.value)
+            assertEquals("031-123-4567", owner.ownerPhoneNumber.value)
             owner
         }
 
@@ -364,12 +364,12 @@ class SignUpOwnerUseCaseImplTest {
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
                     com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
-                    com.mad.jellomarkserver.owner.core.domain.model.PhoneNumber.of("011-123-4567")
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("011-123-4567")
                 )
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("011-123-4567", owner.phoneNumber.value)
+            assertEquals("011-123-4567", owner.ownerPhoneNumber.value)
             owner
         }
 

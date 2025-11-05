@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.member.core.domain.exception
 
-class DuplicateNicknameException(nickname: String) :
+class DuplicateMemberNicknameException(nickname: String) :
     RuntimeException(
         "Nickname already in use: $nickname"
     ) {

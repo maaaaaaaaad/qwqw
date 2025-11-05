@@ -1,12 +1,12 @@
 package com.mad.jellomarkserver.member.core.application
 
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateEmailException
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateNicknameException
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidEmailException
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidNicknameException
-import com.mad.jellomarkserver.member.core.domain.model.Email
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.Nickname
+import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import com.mad.jellomarkserver.member.port.driving.SignUpMemberCommand
 import com.mad.jellomarkserver.member.port.driving.SignUpMemberUseCase
@@ -40,7 +40,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@example.com"
         )
 
-        assertFailsWith<InvalidNicknameException> {
+        assertFailsWith<InvalidMemberNicknameException> {
             useCase.signUp(command)
         }
     }
@@ -52,7 +52,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@example.com"
         )
 
-        assertFailsWith<InvalidNicknameException> {
+        assertFailsWith<InvalidMemberNicknameException> {
             useCase.signUp(command)
         }
     }
@@ -64,7 +64,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@example.com"
         )
 
-        assertFailsWith<InvalidNicknameException> {
+        assertFailsWith<InvalidMemberNicknameException> {
             useCase.signUp(command)
         }
     }
@@ -76,7 +76,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@example.com"
         )
 
-        assertFailsWith<InvalidNicknameException> {
+        assertFailsWith<InvalidMemberNicknameException> {
             useCase.signUp(command)
         }
     }
@@ -88,7 +88,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@example.com"
         )
 
-        assertFailsWith<InvalidNicknameException> {
+        assertFailsWith<InvalidMemberNicknameException> {
             useCase.signUp(command)
         }
     }
@@ -100,7 +100,7 @@ class SignUpMemberUseCaseImplTest {
             email = "   "
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -112,7 +112,7 @@ class SignUpMemberUseCaseImplTest {
             email = ""
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -124,7 +124,7 @@ class SignUpMemberUseCaseImplTest {
             email = "testexample.com"
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -136,7 +136,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@"
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -148,7 +148,7 @@ class SignUpMemberUseCaseImplTest {
             email = "@example.com"
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -160,7 +160,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@example"
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -172,7 +172,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@@example.com"
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
@@ -187,8 +187,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -198,8 +198,8 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("testuser", result.nickname.value)
-        assertEquals("test@example.com", result.email.value)
+        assertEquals("testuser", result.memberNickname.value)
+        assertEquals("test@example.com", result.memberEmail.value)
     }
 
     @Test
@@ -212,8 +212,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("ab"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("ab"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -223,8 +223,8 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("ab", result.nickname.value)
-        assertEquals("test@example.com", result.email.value)
+        assertEquals("ab", result.memberNickname.value)
+        assertEquals("test@example.com", result.memberEmail.value)
     }
 
     @Test
@@ -237,8 +237,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("12345678"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("12345678"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -248,8 +248,8 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("12345678", result.nickname.value)
-        assertEquals("test@example.com", result.email.value)
+        assertEquals("12345678", result.memberNickname.value)
+        assertEquals("test@example.com", result.memberEmail.value)
     }
 
     @Test
@@ -262,8 +262,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("user_123"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("user_123"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -273,7 +273,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("user_123", result.nickname.value)
+        assertEquals("user_123", result.memberNickname.value)
     }
 
     @Test
@@ -286,8 +286,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test+tag@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test+tag@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -297,7 +297,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("test+tag@example.com", result.email.value)
+        assertEquals("test+tag@example.com", result.memberEmail.value)
     }
 
     @Test
@@ -310,8 +310,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test@mail.example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test@mail.example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -321,7 +321,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("test@mail.example.com", result.email.value)
+        assertEquals("test@mail.example.com", result.memberEmail.value)
     }
 
     @Test
@@ -334,8 +334,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("TEST@EXAMPLE.COM")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("TEST@EXAMPLE.COM")
                 )
             )
         ).thenAnswer { invocation ->
@@ -345,7 +345,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("TEST@EXAMPLE.COM", result.email.value)
+        assertEquals("TEST@EXAMPLE.COM", result.memberEmail.value)
     }
 
     @Test
@@ -358,8 +358,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("12345678"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("12345678"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -369,7 +369,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("12345678", result.nickname.value)
+        assertEquals("12345678", result.memberNickname.value)
     }
 
     @Test
@@ -382,8 +382,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -393,7 +393,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("testuser", result.nickname.value)
+        assertEquals("testuser", result.memberNickname.value)
     }
 
     @Test
@@ -406,8 +406,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -417,7 +417,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("test@example.com", result.email.value)
+        assertEquals("test@example.com", result.memberEmail.value)
     }
 
     @Test
@@ -430,13 +430,13 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("duplicate@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("duplicate@example.com")
                 )
             )
-        ).thenThrow(DuplicateEmailException("duplicate@example.com"))
+        ).thenThrow(DuplicateMemberEmailException("duplicate@example.com"))
 
-        val exception = assertFailsWith<DuplicateEmailException> {
+        val exception = assertFailsWith<DuplicateMemberEmailException> {
             useCase.signUp(command)
         }
 
@@ -453,13 +453,13 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("dupname"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("dupname"),
+                    MemberEmail.of("test@example.com")
                 )
             )
-        ).thenThrow(DuplicateNicknameException("dupname"))
+        ).thenThrow(DuplicateMemberNicknameException("dupname"))
 
-        val exception = assertFailsWith<DuplicateNicknameException> {
+        val exception = assertFailsWith<DuplicateMemberNicknameException> {
             useCase.signUp(command)
         }
 
@@ -476,13 +476,13 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("admin@test.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("admin@test.com")
                 )
             )
-        ).thenThrow(DuplicateEmailException("admin@test.com"))
+        ).thenThrow(DuplicateMemberEmailException("admin@test.com"))
 
-        val exception = assertFailsWith<DuplicateEmailException> {
+        val exception = assertFailsWith<DuplicateMemberEmailException> {
             useCase.signUp(command)
         }
 
@@ -499,13 +499,13 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("admin123"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("admin123"),
+                    MemberEmail.of("test@example.com")
                 )
             )
-        ).thenThrow(DuplicateNicknameException("admin123"))
+        ).thenThrow(DuplicateMemberNicknameException("admin123"))
 
-        val exception = assertFailsWith<DuplicateNicknameException> {
+        val exception = assertFailsWith<DuplicateMemberNicknameException> {
             useCase.signUp(command)
         }
 
@@ -522,8 +522,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -546,8 +546,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -570,8 +570,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("user-123"),
-                    Email.of("test@example.com")
+                    MemberNickname.of("user-123"),
+                    MemberEmail.of("test@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -581,7 +581,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("user-123", result.nickname.value)
+        assertEquals("user-123", result.memberNickname.value)
     }
 
     @Test
@@ -594,8 +594,8 @@ class SignUpMemberUseCaseImplTest {
         `when`(
             memberPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Member.create(
-                    Nickname.of("testuser"),
-                    Email.of("test.user@example.com")
+                    MemberNickname.of("testuser"),
+                    MemberEmail.of("test.user@example.com")
                 )
             )
         ).thenAnswer { invocation ->
@@ -605,7 +605,7 @@ class SignUpMemberUseCaseImplTest {
         val result = useCase.signUp(command)
 
         assertNotNull(result)
-        assertEquals("test.user@example.com", result.email.value)
+        assertEquals("test.user@example.com", result.memberEmail.value)
     }
 
     @Test
@@ -615,7 +615,7 @@ class SignUpMemberUseCaseImplTest {
             email = "test@test@example.com"
         )
 
-        assertFailsWith<InvalidEmailException> {
+        assertFailsWith<InvalidMemberEmailException> {
             useCase.signUp(command)
         }
     }
