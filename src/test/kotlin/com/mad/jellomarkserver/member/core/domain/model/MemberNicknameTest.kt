@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
 
-class NicknameTest {
+class MemberNicknameTest {
 
     @Test
     fun `should create Nickname with valid 2 character nickname`() {
