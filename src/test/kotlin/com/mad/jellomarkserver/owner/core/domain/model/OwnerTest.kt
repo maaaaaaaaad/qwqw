@@ -138,8 +138,8 @@ class OwnerTest {
         val owner = Owner.create(businessNumber, ownerPhoneNumber)
 
         val after = Instant.now()
-        assert(owner.createdAt in before..after)
-        assert(owner.updatedAt in before..after)
+        org.junit.jupiter.api.Assertions.assertTrue(owner.createdAt in before..after)
+        org.junit.jupiter.api.Assertions.assertTrue(owner.updatedAt in before..after)
     }
 
     @Test
