@@ -1,10 +1,7 @@
 package com.mad.jellomarkserver.owner.adapter.driving.web.handler
 
 import com.mad.jellomarkserver.member.adapter.driving.web.response.ErrorResponse
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerNicknameException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
@@ -27,6 +24,12 @@ class OwnerRestExceptionHandler {
 
     @ExceptionHandler(DuplicateOwnerPhoneNumberException::class)
     fun handleDuplicatePhoneNumber(ex: DuplicateOwnerPhoneNumberException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+        return problemDetail
+    }
+
+    @ExceptionHandler(DuplicateOwnerBusinessNumberException::class)
+    fun handleDuplicateBusinessNumber(ex: DuplicateOwnerBusinessNumberException): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
         return problemDetail
     }
