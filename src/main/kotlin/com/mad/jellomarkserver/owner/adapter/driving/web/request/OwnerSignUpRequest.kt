@@ -1,4 +1,6 @@
 package com.mad.jellomarkserver.owner.adapter.driving.web.request
 
-class OwnerSignUpRequest {
-}
+data class OwnerSignUpRequest(
+    val businessNumber: String,
+    val phoneNumber: String,
+)
