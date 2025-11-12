@@ -42,3 +42,4 @@ out/
 # Ignore local development config
 src/main/resources/application-dev.yml
 *.md
+.claude
