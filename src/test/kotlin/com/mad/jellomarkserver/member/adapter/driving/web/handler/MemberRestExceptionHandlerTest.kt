@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driving.web.handler
 
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -17,5 +18,15 @@ class MemberRestExceptionHandlerTest {
 
         assertEquals(HttpStatus.CONFLICT.value(), result.status)
         assertEquals("Email already in use: test@example.com", result.detail)
+    }
+
+    @Test
+    fun `should handle InvalidMemberEmailException with UNPROCESSABLE_ENTITY status`() {
+        val exception = InvalidMemberEmailException("invalid-email")
+
+        val result = handler.handleInvalidEmail(exception)
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
+        assertEquals("Invalid email invalid-email", result.detail)
     }
 }
