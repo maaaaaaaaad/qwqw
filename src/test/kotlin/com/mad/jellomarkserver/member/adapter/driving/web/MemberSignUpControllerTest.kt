@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driving.web
 
 import com.mad.jellomarkserver.member.adapter.driving.web.request.MemberSignUpRequest
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
@@ -55,6 +56,21 @@ class MemberSignUpControllerTest {
         )
 
         assertFailsWith<InvalidMemberEmailException> {
+            controller.signUp(request)
+        }
+    }
+
+    @Test
+    fun `should throw DuplicateMemberEmailException when email already exists`() {
+        val useCase = SignUpMemberUseCase { throw DuplicateMemberEmailException("test@example.com") }
+        val controller = MemberSignUpController(useCase)
+
+        val request = MemberSignUpRequest(
+            nickname = "testuser",
+            email = "test@example.com"
+        )
+
+        assertFailsWith<DuplicateMemberEmailException> {
             controller.signUp(request)
         }
     }
