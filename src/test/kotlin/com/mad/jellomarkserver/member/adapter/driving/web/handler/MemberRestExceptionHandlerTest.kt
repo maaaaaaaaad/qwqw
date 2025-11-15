@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driving.web.handler
 
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -28,5 +29,15 @@ class MemberRestExceptionHandlerTest {
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
         assertEquals("Invalid email invalid-email", result.detail)
+    }
+
+    @Test
+    fun `should handle DuplicateMemberNicknameException with CONFLICT status`() {
+        val exception = DuplicateMemberNicknameException("testuser")
+
+        val result = handler.handleDuplicateMemberNickname(exception)
+
+        assertEquals(HttpStatus.CONFLICT.value(), result.status)
+        assertEquals("Nickname already in use: testuser", result.detail)
     }
 }
