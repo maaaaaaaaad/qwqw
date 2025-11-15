@@ -51,4 +51,15 @@ class MemberRestExceptionHandlerTest {
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
         assertEquals("Invalid nickname: a", result.detail)
     }
+
+    @Test
+    fun `should handle generic Exception with INTERNAL_SERVER_ERROR status`() {
+        val exception = Exception("Unexpected error")
+
+        val result = handler.handleGeneric(exception)
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.statusCode)
+        assertEquals("INTERNAL_SERVER_ERROR", result.body?.code)
+        assertEquals("Unexpected server error", result.body?.message)
+    }
 }
