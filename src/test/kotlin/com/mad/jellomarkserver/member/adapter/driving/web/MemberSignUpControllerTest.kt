@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driving.web
 
 import com.mad.jellomarkserver.member.adapter.driving.web.request.MemberSignUpRequest
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.util.*
+import kotlin.test.assertFailsWith
 
 class MemberSignUpControllerTest {
 
@@ -40,5 +42,20 @@ class MemberSignUpControllerTest {
         assertEquals("test@example.com", response.email)
         assertEquals(createdAt, response.createdAt)
         assertEquals(createdAt, response.updatedAt)
+    }
+
+    @Test
+    fun `should throw InvalidMemberEmailException when email is invalid`() {
+        val useCase = SignUpMemberUseCase { throw InvalidMemberEmailException("invalid-email") }
+        val controller = MemberSignUpController(useCase)
+
+        val request = MemberSignUpRequest(
+            nickname = "testuser",
+            email = "invalid-email"
+        )
+
+        assertFailsWith<InvalidMemberEmailException> {
+            controller.signUp(request)
+        }
     }
 }
