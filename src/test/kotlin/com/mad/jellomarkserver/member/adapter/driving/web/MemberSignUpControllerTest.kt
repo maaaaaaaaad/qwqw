@@ -3,6 +3,7 @@ package com.mad.jellomarkserver.member.adapter.driving.web
 import com.mad.jellomarkserver.member.adapter.driving.web.request.MemberSignUpRequest
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.model.Member
 import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
@@ -71,6 +72,21 @@ class MemberSignUpControllerTest {
         )
 
         assertFailsWith<DuplicateMemberEmailException> {
+            controller.signUp(request)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberNicknameException when nickname is invalid`() {
+        val useCase = SignUpMemberUseCase { throw InvalidMemberNicknameException("a") }
+        val controller = MemberSignUpController(useCase)
+
+        val request = MemberSignUpRequest(
+            nickname = "a",
+            email = "test@example.com"
+        )
+
+        assertFailsWith<InvalidMemberNicknameException> {
             controller.signUp(request)
         }
     }
