@@ -106,4 +106,19 @@ class MemberSignUpControllerTest {
             controller.signUp(request)
         }
     }
+
+    @Test
+    fun `should throw RuntimeException when unexpected error occurs`() {
+        val useCase = SignUpMemberUseCase { throw RuntimeException("Unexpected error") }
+        val controller = MemberSignUpController(useCase)
+
+        val request = MemberSignUpRequest(
+            nickname = "testuser",
+            email = "test@example.com"
+        )
+
+        assertFailsWith<RuntimeException> {
+            controller.signUp(request)
+        }
+    }
 }
