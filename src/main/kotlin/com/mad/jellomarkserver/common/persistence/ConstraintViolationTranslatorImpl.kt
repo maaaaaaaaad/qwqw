@@ -18,7 +18,9 @@ class ConstraintViolationTranslatorImpl : ConstraintViolationTranslator {
         val normalized = normalizeConstraintName(rawName)
 
         if (normalized != null) {
-            mappings[normalized]?.let { throw it.invoke() }
+            mappings[normalized]?.let {
+                throw it.invoke()
+            }
         }
 
         val s = (rawName ?: "").lowercase()
@@ -40,6 +42,6 @@ class ConstraintViolationTranslatorImpl : ConstraintViolationTranslator {
             .lowercase()
             .substringAfterLast('.')
             .substringBefore(' ')
-            .replace(Regex("_index_\\d+$"), "")
+            .replace(Regex("_index_[a-z0-9]+$"), "")
     }
 }
