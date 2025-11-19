@@ -30,31 +30,43 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
     @Test
     fun `409 duplicate phone number`() {
         val first = OwnerSignUpRequest(
-            businessNumber = "111111111",
-            phoneNumber = "010-1234-5678"
+            businessNumber = "111111111", phoneNumber = "010-1234-5678"
         )
         val second = OwnerSignUpRequest(
-            businessNumber = "222222222",
-            phoneNumber = "010-1234-5678"
+            businessNumber = "222222222", phoneNumber = "010-1234-5678"
         )
 
         val r1 = rest.exchange(
             url("/api/owners/sign-up"),
             HttpMethod.POST,
             HttpEntity(first, headers),
-            object : ParameterizedTypeReference<Map<String, Any?>>() {}
-        )
+            object : ParameterizedTypeReference<Map<String, Any?>>() {})
         assertThat(r1.statusCode).isEqualTo(HttpStatus.CREATED)
 
         val r2 = rest.exchange(
             url("/api/owners/sign-up"),
             HttpMethod.POST,
             HttpEntity(second, headers),
-            object : ParameterizedTypeReference<Map<String, Any?>>() {}
-        )
+            object : ParameterizedTypeReference<Map<String, Any?>>() {})
         assertThat(r2.statusCode).isEqualTo(HttpStatus.CONFLICT)
         val err = requireNotNull(r2.body)
         assertThat(err["title"]).isEqualTo("Conflict")
         assertThat(err["status"]).isEqualTo(HttpStatus.CONFLICT.value())
+    }
+
+    @Test
+    fun `422 when phone number format is invalid`() {
+        val body = OwnerSignUpRequest(
+            businessNumber = "123456789", phoneNumber = "invalid-phone"
+        )
+        val response = rest.exchange(
+            url("/api/owners/sign-up"),
+            HttpMethod.POST,
+            HttpEntity(body, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {})
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        val err = requireNotNull(response.body)
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
     }
 }
