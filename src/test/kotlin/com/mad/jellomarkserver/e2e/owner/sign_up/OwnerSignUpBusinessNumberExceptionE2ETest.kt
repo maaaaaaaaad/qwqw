@@ -57,4 +57,22 @@ class OwnerSignUpBusinessNumberExceptionE2ETest {
         assertThat(err["title"]).isEqualTo("Conflict")
         assertThat(err["status"]).isEqualTo(HttpStatus.CONFLICT.value())
     }
+
+    @Test
+    fun `422 when business number format is invalid`() {
+        val body = OwnerSignUpRequest(
+            businessNumber = "12345",
+            phoneNumber = "010-1234-5678"
+        )
+        val response = rest.exchange(
+            url("/api/owners/sign-up"),
+            HttpMethod.POST,
+            HttpEntity(body, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        val err = requireNotNull(response.body)
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
+    }
 }
