@@ -6,6 +6,7 @@ import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumb
 import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -28,6 +29,7 @@ class OwnerMapperImplTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -52,6 +54,7 @@ class OwnerMapperImplTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -76,6 +79,7 @@ class OwnerMapperImplTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -97,7 +101,7 @@ class OwnerMapperImplTest {
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
 
-        val domain = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val domain = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = ownerMapper.toEntity(domain)
 
@@ -115,7 +119,7 @@ class OwnerMapperImplTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.parse("2020-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
-        val original = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val original = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = ownerMapper.toEntity(original)
         val roundTripped = ownerMapper.toDomain(entity)
@@ -133,6 +137,7 @@ class OwnerMapperImplTest {
             id = UUID.randomUUID(),
             businessNumber = "  123456789  ",
             phoneNumber = "  010-1234-5678  ",
+            nickname = "test",
             createdAt = Instant.parse("2020-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2020-01-02T00:00:00Z")
         )
@@ -149,6 +154,7 @@ class OwnerMapperImplTest {
             id = UUID.randomUUID(),
             businessNumber = "12345678",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -164,6 +170,7 @@ class OwnerMapperImplTest {
             id = UUID.randomUUID(),
             businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -179,6 +186,7 @@ class OwnerMapperImplTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "invalid-phone",
+            nickname = "test",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -194,6 +202,7 @@ class OwnerMapperImplTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "01012345678",
+            nickname = "test",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )

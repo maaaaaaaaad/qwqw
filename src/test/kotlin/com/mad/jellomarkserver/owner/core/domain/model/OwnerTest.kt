@@ -1,5 +1,6 @@
 package com.mad.jellomarkserver.owner.core.domain.model
 
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -16,7 +17,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("123456789")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertNotNull(owner.id)
         assertEquals(businessNumber, owner.businessNumber)
@@ -31,7 +32,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("101234567")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -41,7 +42,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("abc123def")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -51,7 +52,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("ABCDEFGHI")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -61,7 +62,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("abcdefghi")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -71,7 +72,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("!@#$%^&*(")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -81,7 +82,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("123-45-67")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -91,7 +92,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("123.456.7")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -101,7 +102,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("000000000")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -111,7 +112,7 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("999999999")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -123,7 +124,7 @@ class OwnerTest {
         val fixedInstant = Instant.parse("2025-01-01T00:00:00Z")
         val fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"))
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber, fixedClock)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), fixedClock)
 
         assertEquals(fixedInstant, owner.createdAt)
         assertEquals(fixedInstant, owner.updatedAt)
@@ -135,7 +136,7 @@ class OwnerTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val before = Instant.now()
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         val after = Instant.now()
         org.junit.jupiter.api.Assertions.assertTrue(owner.createdAt in before..after)
@@ -150,7 +151,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(id, owner.id)
         assertEquals(businessNumber, owner.businessNumber)
@@ -167,7 +168,7 @@ class OwnerTest {
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(id, owner.id)
         assertEquals(businessNumber, owner.businessNumber)
@@ -184,7 +185,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(createdAt, owner.createdAt)
         assertEquals(updatedAt, owner.updatedAt)
@@ -198,7 +199,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-06-01T12:30:45Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(createdAt, owner.createdAt)
         assertEquals(updatedAt, owner.updatedAt)
@@ -213,7 +214,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T12:34:56.123456789Z")
         val updatedAt = Instant.parse("2025-01-01T12:34:56.987654321Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(createdAt, owner.createdAt)
         assertEquals(updatedAt, owner.updatedAt)
@@ -227,7 +228,7 @@ class OwnerTest {
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(id, owner.id)
     }
@@ -241,8 +242,8 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner1 = Owner.reconstruct(id, businessNumber1, ownerPhoneNumber, createdAt, updatedAt)
-        val owner2 = Owner.reconstruct(id, businessNumber2, ownerPhoneNumber, createdAt, updatedAt)
+        val owner1 = Owner.reconstruct(id, businessNumber1, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
+        val owner2 = Owner.reconstruct(id, businessNumber2, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(owner1, owner2)
     }
@@ -256,29 +257,29 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner1 = Owner.reconstruct(id1, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
-        val owner2 = Owner.reconstruct(id2, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner1 = Owner.reconstruct(id1, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
+        val owner2 = Owner.reconstruct(id2, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertNotEquals(owner1, owner2)
     }
 
     @Test
     fun `should be equal to itself`() {
-        val owner = Owner.create(BusinessNumber.of("123456789"), OwnerPhoneNumber.of("010-1234-5678"))
+        val owner = Owner.create(BusinessNumber.of("123456789"), OwnerPhoneNumber.of("010-1234-5678"), OwnerNickname.of("test"))
 
         assertEquals(owner, owner)
     }
 
     @Test
     fun `should not be equal to null`() {
-        val owner = Owner.create(BusinessNumber.of("123456789"), OwnerPhoneNumber.of("010-1234-5678"))
+        val owner = Owner.create(BusinessNumber.of("123456789"), OwnerPhoneNumber.of("010-1234-5678"), OwnerNickname.of("test"))
 
         assertNotEquals(owner, null)
     }
 
     @Test
     fun `should not be equal to different type`() {
-        val owner = Owner.create(BusinessNumber.of("123456789"), OwnerPhoneNumber.of("010-1234-5678"))
+        val owner = Owner.create(BusinessNumber.of("123456789"), OwnerPhoneNumber.of("010-1234-5678"), OwnerNickname.of("test"))
 
         assertNotEquals(owner, "string")
     }
@@ -292,8 +293,8 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner1 = Owner.reconstruct(id, businessNumber1, ownerPhoneNumber, createdAt, updatedAt)
-        val owner2 = Owner.reconstruct(id, businessNumber2, ownerPhoneNumber, createdAt, updatedAt)
+        val owner1 = Owner.reconstruct(id, businessNumber1, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
+        val owner2 = Owner.reconstruct(id, businessNumber2, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(owner1.hashCode(), owner2.hashCode())
     }
@@ -307,8 +308,8 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner1 = Owner.reconstruct(id1, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
-        val owner2 = Owner.reconstruct(id2, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner1 = Owner.reconstruct(id1, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
+        val owner2 = Owner.reconstruct(id2, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertNotEquals(owner1.hashCode(), owner2.hashCode())
     }
@@ -318,8 +319,8 @@ class OwnerTest {
         val businessNumber = BusinessNumber.of("123456789")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
-        val owner1 = Owner.create(businessNumber, ownerPhoneNumber)
-        val owner2 = Owner.create(businessNumber, ownerPhoneNumber)
+        val owner1 = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
+        val owner2 = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertNotEquals(owner1.id, owner2.id)
         assertNotEquals(owner1, owner2)
@@ -331,7 +332,7 @@ class OwnerTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val fixedClock = Clock.fixed(Instant.EPOCH, ZoneId.of("UTC"))
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber, fixedClock)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), fixedClock)
 
         assertEquals(Instant.EPOCH, owner.createdAt)
         assertEquals(Instant.EPOCH, owner.updatedAt)
@@ -344,7 +345,7 @@ class OwnerTest {
         val futureInstant = Instant.parse("2099-12-31T23:59:59Z")
         val fixedClock = Clock.fixed(futureInstant, ZoneId.of("UTC"))
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber, fixedClock)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), fixedClock)
 
         assertEquals(futureInstant, owner.createdAt)
         assertEquals(futureInstant, owner.updatedAt)
@@ -358,7 +359,7 @@ class OwnerTest {
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -366,8 +367,8 @@ class OwnerTest {
     @Test
     fun `should create multiple owners with different values`() {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
-        val owner1 = Owner.create(BusinessNumber.of("123456789"), ownerPhoneNumber)
-        val owner2 = Owner.create(BusinessNumber.of("987654321"), ownerPhoneNumber)
+        val owner1 = Owner.create(BusinessNumber.of("123456789"), ownerPhoneNumber, OwnerNickname.of("test"))
+        val owner2 = Owner.create(BusinessNumber.of("987654321"), ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertNotEquals(owner1.id, owner2.id)
         assertNotEquals(owner1.businessNumber, owner2.businessNumber)
@@ -381,7 +382,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(id, owner.id)
         assertEquals(id.hashCode(), owner.id.hashCode())
@@ -395,7 +396,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -408,7 +409,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(businessNumber, owner.businessNumber)
     }
@@ -416,9 +417,9 @@ class OwnerTest {
     @Test
     fun `should create Owner with different business number formats`() {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
-        val owner1 = Owner.create(BusinessNumber.of("123456789"), ownerPhoneNumber)
-        val owner2 = Owner.create(BusinessNumber.of("ABCDEFGHI"), ownerPhoneNumber)
-        val owner3 = Owner.create(BusinessNumber.of("abc123xyz"), ownerPhoneNumber)
+        val owner1 = Owner.create(BusinessNumber.of("123456789"), ownerPhoneNumber, OwnerNickname.of("test"))
+        val owner2 = Owner.create(BusinessNumber.of("ABCDEFGHI"), ownerPhoneNumber, OwnerNickname.of("test"))
+        val owner3 = Owner.create(BusinessNumber.of("abc123xyz"), ownerPhoneNumber, OwnerNickname.of("test"))
 
         assertNotEquals(owner1.businessNumber, owner2.businessNumber)
         assertNotEquals(owner2.businessNumber, owner3.businessNumber)
@@ -432,7 +433,7 @@ class OwnerTest {
         val fixedInstant = Instant.parse("2025-01-01T00:00:00Z")
         val fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"))
 
-        val owner = Owner.create(businessNumber, ownerPhoneNumber, fixedClock)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), fixedClock)
 
         assertNotNull(owner.id)
         assertNotNull(owner.id.value)
@@ -450,7 +451,7 @@ class OwnerTest {
         val createdAt = Instant.parse("2024-06-15T10:30:45.123456789Z")
         val updatedAt = Instant.parse("2024-06-15T10:30:45.987654321Z")
 
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         assertEquals(id, owner.id)
         assertEquals(id.value, owner.id.value)

@@ -30,10 +30,10 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
     @Test
     fun `409 duplicate phone number`() {
         val first = OwnerSignUpRequest(
-            businessNumber = "111111111", phoneNumber = "010-1234-5678"
+            businessNumber = "111111111", phoneNumber = "010-1234-5678", nickname = "first"
         )
         val second = OwnerSignUpRequest(
-            businessNumber = "222222222", phoneNumber = "010-1234-5678"
+            businessNumber = "222222222", phoneNumber = "010-1234-5678", nickname = "second"
         )
 
         val r1 = rest.exchange(
@@ -57,7 +57,7 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
     @Test
     fun `422 when phone number format is invalid`() {
         val body = OwnerSignUpRequest(
-            businessNumber = "123456789", phoneNumber = "invalid-phone"
+            businessNumber = "123456789", phoneNumber = "invalid-phone", nickname = "test"
         )
         val response = rest.exchange(
             url("/api/owners/sign-up"),

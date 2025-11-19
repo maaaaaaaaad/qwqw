@@ -31,7 +31,8 @@ class OwnerSignUpSuccessE2ETest {
     fun `success signup for owner`() {
         val body = OwnerSignUpRequest(
             businessNumber = "123456789",
-            phoneNumber = "010-1234-5678"
+            phoneNumber = "010-1234-5678",
+            nickname = "shop"
         )
 
         val response = rest.exchange(
@@ -46,6 +47,7 @@ class OwnerSignUpSuccessE2ETest {
         assertThat(json["id"]).isNotNull()
         assertThat(json["businessNumber"]).isEqualTo("123456789")
         assertThat(json["phoneNumber"]).isEqualTo("010-1234-5678")
+        assertThat(json["nickname"]).isEqualTo("shop")
         assertThat(json.keys).containsAll(listOf("createdAt", "updatedAt"))
     }
 }

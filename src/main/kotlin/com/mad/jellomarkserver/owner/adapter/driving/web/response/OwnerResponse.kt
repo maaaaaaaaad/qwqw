@@ -8,6 +8,7 @@ data class OwnerResponse(
     val id: UUID,
     val businessNumber: String,
     val phoneNumber: String,
+    val nickname: String,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
@@ -17,6 +18,7 @@ data class OwnerResponse(
                 id = owner.id.value,
                 businessNumber = owner.businessNumber.value,
                 phoneNumber = owner.ownerPhoneNumber.value,
+                nickname = owner.ownerNickname.value,
                 createdAt = owner.createdAt,
                 updatedAt = owner.updatedAt
             )

@@ -9,6 +9,7 @@ import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNu
 import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -47,12 +48,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -76,12 +78,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -102,12 +105,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-0000-0000")
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -128,12 +132,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -154,12 +159,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1111-1111")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -180,12 +186,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("02-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -206,12 +213,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("031-123-4567")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -232,12 +240,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-4444-4444")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-06-01T12:30:45Z")
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -258,12 +267,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-5555-5555")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
-        val originalOwner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val originalOwner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -272,6 +282,7 @@ class OwnerPersistenceAdapterTest {
             OwnerId.from(entity.id),
             BusinessNumber.of(entity.businessNumber),
             OwnerPhoneNumber.of(entity.phoneNumber),
+            OwnerNickname.of("test"),
             entity.createdAt,
             entity.updatedAt
         )
@@ -295,6 +306,7 @@ class OwnerPersistenceAdapterTest {
             OwnerId.from(UUID.randomUUID()),
             BusinessNumber.of("111111111"),
             OwnerPhoneNumber.of("010-1111-1111"),
+            OwnerNickname.of("test"),
             Instant.parse("2025-01-01T00:00:00Z"),
             Instant.parse("2025-01-01T00:00:00Z")
         )
@@ -303,6 +315,7 @@ class OwnerPersistenceAdapterTest {
             OwnerId.from(UUID.randomUUID()),
             BusinessNumber.of("222222222"),
             OwnerPhoneNumber.of("010-2222-2222"),
+            OwnerNickname.of("test"),
             Instant.parse("2025-02-01T00:00:00Z"),
             Instant.parse("2025-02-01T00:00:00Z")
         )
@@ -311,6 +324,7 @@ class OwnerPersistenceAdapterTest {
             id = owner1.id.value,
             businessNumber = owner1.businessNumber.value,
             phoneNumber = owner1.ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = owner1.createdAt,
             updatedAt = owner1.updatedAt
         )
@@ -319,6 +333,7 @@ class OwnerPersistenceAdapterTest {
             id = owner2.id.value,
             businessNumber = owner2.businessNumber.value,
             phoneNumber = owner2.ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = owner2.createdAt,
             updatedAt = owner2.updatedAt
         )
@@ -345,12 +360,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("011-123-4567")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -371,12 +387,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-7777-7777")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -397,12 +414,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-8888-8888")
         val createdAt = Instant.parse("2025-01-01T12:34:56.123456789Z")
         val updatedAt = Instant.parse("2025-01-01T12:34:56.987654321Z")
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -423,12 +441,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -449,12 +468,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -475,12 +495,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -506,12 +527,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -537,12 +559,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1111-2222")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -566,12 +589,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("02-4444-5555")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -595,12 +619,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -624,12 +649,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("031-123-4567")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -653,12 +679,13 @@ class OwnerPersistenceAdapterTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9999-9999")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, createdAt, updatedAt)
+        val owner = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
 
         val entity = OwnerJpaEntity(
             id = id.value,
             businessNumber = businessNumber.value,
             phoneNumber = ownerPhoneNumber.value,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )

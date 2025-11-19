@@ -22,6 +22,7 @@ class OwnerSignUpController(
         val command = SignUpOwnerCommand(
             businessNumber = request.businessNumber,
             phoneNumber = request.phoneNumber,
+            nickname = request.nickname,
         )
         val owner = signUpOwnerUseCase.signUp(command)
         return OwnerResponse.from(owner)

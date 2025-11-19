@@ -40,6 +40,12 @@ class OwnerRestExceptionHandler {
         return problemDetail
     }
 
+    @ExceptionHandler(DuplicateOwnerNicknameException::class)
+    fun handleDuplicateNickname(ex: DuplicateOwnerNicknameException): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+        return problemDetail
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleGeneric(ex: Exception): ResponseEntity<ErrorResponse> {
         val body = ErrorResponse(

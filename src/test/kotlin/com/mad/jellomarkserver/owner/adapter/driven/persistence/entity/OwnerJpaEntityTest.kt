@@ -19,6 +19,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -42,6 +43,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -66,6 +68,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -89,6 +92,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -112,6 +116,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -135,6 +140,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -158,6 +164,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -181,6 +188,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -198,6 +206,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -214,6 +223,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -231,6 +241,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = createdAt
         )
@@ -248,6 +259,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -264,6 +276,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -286,6 +299,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -303,6 +317,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "111111111",
             phoneNumber = "010-1111-1111",
+            nickname = "test",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -310,6 +325,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "222222222",
             phoneNumber = "010-2222-2222",
+            nickname = "test",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -326,6 +342,7 @@ class OwnerJpaEntityTest {
             id = UUID.randomUUID(),
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
+            nickname = "test",
             createdAt = Instant.parse("2024-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2024-01-01T00:00:00Z")
         )
@@ -361,6 +378,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -384,6 +402,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -408,6 +427,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -432,6 +452,7 @@ class OwnerJpaEntityTest {
             id = id,
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
+            nickname = "test",
             createdAt = createdAt,
             updatedAt = updatedAt
         )

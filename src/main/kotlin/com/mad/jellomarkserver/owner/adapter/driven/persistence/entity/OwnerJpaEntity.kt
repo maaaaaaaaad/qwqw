@@ -13,6 +13,7 @@ import java.util.UUID
     name = "owners", uniqueConstraints = [
         UniqueConstraint(name = "uk_owners_business_number", columnNames = ["business_number"]),
         UniqueConstraint(name = "uk_owners_phone_number", columnNames = ["phone_number"]),
+        UniqueConstraint(name = "uk_owners_nickname", columnNames = ["nickname"]),
     ]
 )
 class OwnerJpaEntity(
@@ -25,6 +26,9 @@ class OwnerJpaEntity(
 
     @Column(name = "phone_number", nullable = false, length = 13)
     var phoneNumber: String,
+
+    @Column(name = "nickname", nullable = false, length = 100)
+    var nickname: String,
 
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant,
