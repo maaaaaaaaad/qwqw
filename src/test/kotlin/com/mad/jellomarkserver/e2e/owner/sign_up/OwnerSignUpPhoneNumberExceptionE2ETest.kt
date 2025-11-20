@@ -69,4 +69,22 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
         val err = requireNotNull(response.body)
         assertThat(err["title"]).isEqualTo("Unprocessable Entity")
     }
+
+    @Test
+    fun `422 when phone number is null`() {
+        val body = OwnerSignUpRequest(
+            businessNumber = "123456789",
+            phoneNumber = "",
+            nickname = "test"
+        )
+        val response = rest.exchange(
+            url("/api/owners/sign-up"),
+            HttpMethod.POST,
+            HttpEntity(body, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {})
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        val err = requireNotNull(response.body)
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
+    }
 }
