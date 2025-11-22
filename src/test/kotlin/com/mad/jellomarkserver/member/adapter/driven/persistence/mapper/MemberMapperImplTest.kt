@@ -3,14 +3,14 @@ package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
-import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.Member
+import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertFailsWith
 
 class MemberMapperImplTest {
@@ -169,6 +169,111 @@ class MemberMapperImplTest {
         )
 
         assertFailsWith<InvalidMemberEmailException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberEmailException when email is too short`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "testuser",
+            email = "a@a.c",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberEmailException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberEmailException when email has no TLD`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "testuser",
+            email = "user@example",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberEmailException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberEmailException when email is missing @ symbol`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "testuser",
+            email = "userexample.com",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberEmailException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberEmailException when email is missing domain`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "testuser",
+            email = "user@",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberEmailException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberNicknameException when nickname is too short`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "a",
+            email = "test@example.com",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberNicknameException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberNicknameException when nickname is too long`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "abcdefghi",
+            email = "test@example.com",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberNicknameException> {
+            memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidMemberNicknameException when nickname contains only whitespace`() {
+        val entity = MemberJpaEntity(
+            id = UUID.randomUUID(),
+            nickname = "   ",
+            email = "test@example.com",
+            createdAt = Instant.EPOCH,
+            updatedAt = Instant.EPOCH
+        )
+
+        assertFailsWith<InvalidMemberNicknameException> {
             memberMapper.toDomain(entity)
         }
     }
