@@ -3,7 +3,7 @@ package com.mad.jellomarkserver.owner.adapter.driven.persistence.entity
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 class OwnerJpaEntityTest {
 
@@ -461,6 +461,257 @@ class OwnerJpaEntityTest {
         assertEquals(businessNumber, entity.businessNumber)
         assertEquals(phoneNumber, entity.phoneNumber)
         assertEquals(12, entity.phoneNumber.length)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with minimum length nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "ab"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with maximum length nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "a".repeat(100)
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with special characters in nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "user_123-test.name"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with Korean characters in nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "한글닉네임"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with numeric nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "12345678"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with mixed case nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "TestUser123"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with uppercase nickname`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "123456789"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "TESTUSER"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should update nickname field`() {
+        val entity = OwnerJpaEntity(
+            id = UUID.randomUUID(),
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "oldnickname",
+            createdAt = Instant.now(),
+            updatedAt = Instant.now()
+        )
+
+        val newNickname = "newnickname"
+        entity.nickname = newNickname
+
+        assertEquals(newNickname, entity.nickname)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with maximum length businessNumber`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "a".repeat(50)
+        val phoneNumber = "010-1234-5678"
+        val nickname = "test"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
+        assertEquals(createdAt, entity.createdAt)
+        assertEquals(updatedAt, entity.updatedAt)
+    }
+
+    @Test
+    fun `should create OwnerJpaEntity with alphanumeric businessNumber`() {
+        val id = UUID.randomUUID()
+        val businessNumber = "ABC123XYZ"
+        val phoneNumber = "010-1234-5678"
+        val nickname = "test"
+        val createdAt = Instant.now()
+        val updatedAt = Instant.now()
+
+        val entity = OwnerJpaEntity(
+            id = id,
+            businessNumber = businessNumber,
+            phoneNumber = phoneNumber,
+            nickname = nickname,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+
+        assertEquals(id, entity.id)
+        assertEquals(businessNumber, entity.businessNumber)
+        assertEquals(phoneNumber, entity.phoneNumber)
+        assertEquals(nickname, entity.nickname)
         assertEquals(createdAt, entity.createdAt)
         assertEquals(updatedAt, entity.updatedAt)
     }
