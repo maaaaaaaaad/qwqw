@@ -62,4 +62,26 @@ class MemberRestExceptionHandlerTest {
         assertEquals("INTERNAL_SERVER_ERROR", result.body?.code)
         assertEquals("Unexpected server error", result.body?.message)
     }
+
+    @Test
+    fun `should handle RuntimeException with generic handler`() {
+        val exception = RuntimeException("Some runtime error")
+
+        val result = handler.handleGeneric(exception)
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.statusCode)
+        assertEquals("INTERNAL_SERVER_ERROR", result.body?.code)
+        assertEquals("Unexpected server error", result.body?.message)
+    }
+
+    @Test
+    fun `should handle NullPointerException with generic handler`() {
+        val exception = NullPointerException("Null pointer")
+
+        val result = handler.handleGeneric(exception)
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.statusCode)
+        assertEquals("INTERNAL_SERVER_ERROR", result.body?.code)
+        assertEquals("Unexpected server error", result.body?.message)
+    }
 }
