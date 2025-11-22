@@ -1,9 +1,6 @@
 package com.mad.jellomarkserver.owner.core.application
 
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerBusinessNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
-import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.*
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
@@ -400,6 +397,407 @@ class SignUpOwnerUseCaseImplTest {
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
             assertEquals("011-123-4567", owner.ownerPhoneNumber.value)
+            owner
+        }
+
+        val result = useCase.signUp(command)
+        assertNotNull(result)
+    }
+
+    @Test
+    fun `should throw InvalidOwnerNicknameException when nickname is blank`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "   "
+        )
+
+        assertFailsWith<InvalidOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidOwnerNicknameException when nickname is empty`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = ""
+        )
+
+        assertFailsWith<InvalidOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidOwnerNicknameException when nickname is too short`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "a"
+        )
+
+        assertFailsWith<InvalidOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidOwnerNicknameException when nickname is too long`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "verylongnickname"
+        )
+
+        assertFailsWith<InvalidOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidOwnerNicknameException when nickname contains whitespace`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "test user"
+        )
+
+        assertFailsWith<InvalidOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should sign up owner successfully with minimum length nickname`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "ab"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("ab")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result)
+        assertEquals("ab", result.ownerNickname.value)
+    }
+
+    @Test
+    fun `should sign up owner successfully with maximum length nickname`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "12345678"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("12345678")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result)
+        assertEquals("12345678", result.ownerNickname.value)
+    }
+
+    @Test
+    fun `should sign up owner successfully with special characters in nickname`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "user_123"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("user_123")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result)
+        assertEquals("user_123", result.ownerNickname.value)
+    }
+
+    @Test
+    fun `should sign up owner successfully with numeric nickname`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "12345678"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("12345678")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result)
+        assertEquals("12345678", result.ownerNickname.value)
+    }
+
+    @Test
+    fun `should sign up owner with hyphenated nickname`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "user-123"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("user-123")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result)
+        assertEquals("user-123", result.ownerNickname.value)
+    }
+
+    @Test
+    fun `should trim whitespace from nickname before validation`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "  testuser  "
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("testuser")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result)
+        assertEquals("testuser", result.ownerNickname.value)
+    }
+
+    @Test
+    fun `should throw DuplicateOwnerNicknameException when nickname already exists`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "dupname"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("dupname")
+                )
+            )
+        ).thenThrow(DuplicateOwnerNicknameException("dupname"))
+
+        val exception = assertFailsWith<DuplicateOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+
+        assertEquals("Nickname already in use: dupname", exception.message)
+    }
+
+    @Test
+    fun `should throw DuplicateOwnerNicknameException with correct nickname value`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "admin123"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("admin123")
+                )
+            )
+        ).thenThrow(DuplicateOwnerNicknameException("admin123"))
+
+        val exception = assertFailsWith<DuplicateOwnerNicknameException> {
+            useCase.signUp(command)
+        }
+
+        assertEquals("Nickname already in use: admin123", exception.message)
+    }
+
+    @Test
+    fun `should create owner with non-null id`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "testuser"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("testuser")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result.id)
+        assertNotNull(result.id.value)
+    }
+
+    @Test
+    fun `should create owner with non-null timestamps`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "testuser"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("testuser")
+                )
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as Owner
+        }
+
+        val result = useCase.signUp(command)
+
+        assertNotNull(result.createdAt)
+        assertNotNull(result.updatedAt)
+    }
+
+    @Test
+    fun `should throw InvalidBusinessNumberException when business number contains only whitespace characters`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = " \t\n ",
+            phoneNumber = "010-1234-5678",
+            nickname = "test"
+        )
+
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should throw InvalidPhoneNumberException when phone number has invalid separators`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010.1234.5678",
+            nickname = "test"
+        )
+
+        assertFailsWith<InvalidOwnerPhoneNumberException> {
+            useCase.signUp(command)
+        }
+    }
+
+    @Test
+    fun `should accept business number with minimum length`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "test"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("test")
+                )
+            )
+        ).thenAnswer { invocation ->
+            val owner = invocation.arguments[0] as Owner
+            assertEquals("123456789", owner.businessNumber.value)
+            owner
+        }
+
+        val result = useCase.signUp(command)
+        assertNotNull(result)
+    }
+
+    @Test
+    fun `should accept phone number with different valid formats`() {
+        val command = SignUpOwnerCommand(
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
+            nickname = "test"
+        )
+
+        `when`(
+            ownerPort.save(
+                org.mockito.ArgumentMatchers.any() ?: Owner.create(
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
+                    OwnerNickname.of("test")
+                )
+            )
+        ).thenAnswer { invocation ->
+            val owner = invocation.arguments[0] as Owner
+            assertEquals("010-1234-5678", owner.ownerPhoneNumber.value)
             owner
         }
 
