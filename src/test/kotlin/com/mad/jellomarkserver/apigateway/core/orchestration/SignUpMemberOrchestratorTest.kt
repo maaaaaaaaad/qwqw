@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.apigateway.core.orchestration
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
+import com.mad.jellomarkserver.apigateway.port.driving.SignUpMemberOrchestrator
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
