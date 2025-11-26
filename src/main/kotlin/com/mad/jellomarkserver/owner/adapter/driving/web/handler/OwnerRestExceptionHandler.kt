@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.owner.adapter.driving.web.handler
 
-import com.mad.jellomarkserver.member.adapter.driving.web.response.ErrorResponse
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ErrorResponse
 import com.mad.jellomarkserver.owner.core.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
