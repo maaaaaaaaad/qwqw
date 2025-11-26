@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.e2e.member.sign_up
 
-import com.mad.jellomarkserver.member.adapter.driving.web.request.MemberSignUpRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,11 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.core.ParameterizedTypeReference
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
+import org.springframework.http.*
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase
@@ -33,18 +29,18 @@ class SignUpEmailExceptionE2ETest {
 
     @Test
     fun `409 email`() {
-        val first = MemberSignUpRequest(
+        val first = SignUpMemberRequest(
             nickname = "first",
             email = "dup@example.com",
         )
-        val second = MemberSignUpRequest(
+        val second = SignUpMemberRequest(
             nickname = "second",
             email = "dup@example.com",
         )
 
         val r1 =
             rest.exchange(
-                url("/api/members/sign-up"),
+                url("/api/sign-up/member"),
                 HttpMethod.POST,
                 HttpEntity(first, headers),
                 object : ParameterizedTypeReference<Map<String, Any?>>() {})
@@ -52,7 +48,7 @@ class SignUpEmailExceptionE2ETest {
 
         val r2 =
             rest.exchange(
-                url("/api/members/sign-up"),
+                url("/api/sign-up/member"),
                 HttpMethod.POST,
                 HttpEntity(second, headers),
                 object : ParameterizedTypeReference<Map<String, Any?>>() {})
@@ -64,12 +60,12 @@ class SignUpEmailExceptionE2ETest {
 
     @Test
     fun `422 when email format is invalid`() {
-        val body = MemberSignUpRequest(
+        val body = SignUpMemberRequest(
             nickname = "user1",
             email = "not-an-email",
         )
         val response = rest.exchange(
-            url("/api/members/sign-up"),
+            url("/api/sign-up/member"),
             HttpMethod.POST,
             HttpEntity(body, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {}
@@ -82,12 +78,12 @@ class SignUpEmailExceptionE2ETest {
 
     @Test
     fun `422 when email is null`() {
-        val body = MemberSignUpRequest(
+        val body = SignUpMemberRequest(
             nickname = "user2",
             email = ""
         )
         val response = rest.exchange(
-            url("/api/members/sign-up"),
+            url("/api/sign-up/member"),
             HttpMethod.POST,
             HttpEntity(body, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {}
