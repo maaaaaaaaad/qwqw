@@ -26,6 +26,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.mindrot:jbcrypt:0.4")
 
     developmentOnly("com.h2database:h2")
     testRuntimeOnly("com.h2database:h2")
