@@ -32,6 +32,7 @@ class SignUpSuccessE2ETest {
         val body = SignUpMemberRequest(
             nickname = "maduser",
             email = "mad@example.com",
+            password = "Password123!",
         )
 
         val response = rest.exchange(
