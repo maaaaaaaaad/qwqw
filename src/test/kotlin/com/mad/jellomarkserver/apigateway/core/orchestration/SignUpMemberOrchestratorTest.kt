@@ -2,6 +2,12 @@ package com.mad.jellomarkserver.apigateway.core.orchestration
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
 import com.mad.jellomarkserver.apigateway.port.driving.SignUpMemberOrchestrator
+import com.mad.jellomarkserver.auth.core.domain.model.Auth
+import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
+import com.mad.jellomarkserver.auth.core.domain.model.RawPassword
+import com.mad.jellomarkserver.auth.core.domain.model.UserType
+import com.mad.jellomarkserver.auth.port.driving.SignUpAuthCommand
+import com.mad.jellomarkserver.auth.port.driving.SignUpAuthUseCase
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
@@ -30,20 +36,24 @@ class SignUpMemberOrchestratorTest {
     @Mock
     private lateinit var signUpMemberUseCase: SignUpMemberUseCase
 
+    @Mock
+    private lateinit var signUpAuthUseCase: SignUpAuthUseCase
+
     private lateinit var orchestrator: SignUpMemberOrchestrator
 
     private val fixedClock = Clock.fixed(Instant.parse("2025-01-01T00:00:00Z"), ZoneId.of("UTC"))
 
     @BeforeEach
     fun setup() {
-        orchestrator = SignUpMemberOrchestratorImpl(signUpMemberUseCase)
+        orchestrator = SignUpMemberOrchestratorImpl(signUpMemberUseCase, signUpAuthUseCase)
     }
 
     @Test
     fun `should orchestrate member sign up successfully`() {
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         val member = Member.create(
@@ -52,11 +62,24 @@ class SignUpMemberOrchestratorTest {
             clock = fixedClock
         )
 
+        val auth = Auth.create(
+            email = AuthEmail.of("test@example.com"),
+            rawPassword = RawPassword.of("Password123!"),
+            userType = UserType.MEMBER,
+            clock = fixedClock
+        )
+
         `when`(
             signUpMemberUseCase.signUp(
                 ArgumentMatchers.any() ?: SignUpMemberCommand("testuser", "test@example.com")
             )
         ).thenReturn(member)
+
+        `when`(
+            signUpAuthUseCase.signUp(
+                ArgumentMatchers.any() ?: SignUpAuthCommand("test@example.com", "Password123!", "MEMBER")
+            )
+        ).thenReturn(auth)
 
         val response = orchestrator.signUp(request)
 
@@ -72,7 +95,8 @@ class SignUpMemberOrchestratorTest {
     fun `should throw InvalidMemberEmailException when email is invalid`() {
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "invalid-email"
+            email = "invalid-email",
+            password = "Password123!",
         )
 
         `when`(
@@ -91,7 +115,8 @@ class SignUpMemberOrchestratorTest {
     fun `should throw DuplicateMemberEmailException when email is duplicate`() {
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "duplicate@example.com"
+            email = "duplicate@example.com",
+            password = "Password123!",
         )
 
         `when`(
@@ -110,7 +135,8 @@ class SignUpMemberOrchestratorTest {
     fun `should throw InvalidMemberNicknameException when nickname is invalid`() {
         val request = SignUpMemberRequest(
             nickname = "a",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         `when`(
@@ -129,7 +155,8 @@ class SignUpMemberOrchestratorTest {
     fun `should throw DuplicateMemberNicknameException when nickname is duplicate`() {
         val request = SignUpMemberRequest(
             nickname = "duplicated",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         `when`(
