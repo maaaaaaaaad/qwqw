@@ -34,7 +34,8 @@ class SignUpControllerTest {
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         val result = controller.signUpMember(request)
@@ -54,7 +55,8 @@ class SignUpControllerTest {
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "invalid-email"
+            email = "invalid-email",
+            password = "Password123!",
         )
 
         assertFailsWith<InvalidMemberEmailException> {
@@ -71,7 +73,8 @@ class SignUpControllerTest {
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "duplicate@example.com"
+            email = "duplicate@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<DuplicateMemberEmailException> {
@@ -88,7 +91,8 @@ class SignUpControllerTest {
 
         val request = SignUpMemberRequest(
             nickname = "a",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<InvalidMemberNicknameException> {
@@ -105,7 +109,8 @@ class SignUpControllerTest {
 
         val request = SignUpMemberRequest(
             nickname = "duplicated",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<DuplicateMemberNicknameException> {
@@ -122,7 +127,8 @@ class SignUpControllerTest {
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
-            email = "test@example.com"
+            email = "test@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<RuntimeException> {
