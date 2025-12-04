@@ -32,10 +32,12 @@ class SignUpEmailExceptionE2ETest {
         val first = SignUpMemberRequest(
             nickname = "first",
             email = "dup@example.com",
+            password = "Password123!",
         )
         val second = SignUpMemberRequest(
             nickname = "second",
             email = "dup@example.com",
+            password = "password456!",
         )
 
         val r1 =
@@ -63,6 +65,7 @@ class SignUpEmailExceptionE2ETest {
         val body = SignUpMemberRequest(
             nickname = "user1",
             email = "not-an-email",
+            password = "Password123!",
         )
         val response = rest.exchange(
             url("/api/sign-up/member"),
@@ -80,7 +83,8 @@ class SignUpEmailExceptionE2ETest {
     fun `422 when email is null`() {
         val body = SignUpMemberRequest(
             nickname = "user2",
-            email = ""
+            email = "",
+            password = "Password123!",
         )
         val response = rest.exchange(
             url("/api/sign-up/member"),
