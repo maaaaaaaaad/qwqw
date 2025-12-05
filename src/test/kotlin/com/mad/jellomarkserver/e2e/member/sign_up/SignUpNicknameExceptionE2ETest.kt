@@ -35,7 +35,7 @@ class SignUpNicknameExceptionE2ETest {
         val second = SignUpMemberRequest(
             nickname = "mad",
             email = "email2@example.com",
-            password = "password456!",
+            password = "Password456!",
         )
 
         val r1 =
