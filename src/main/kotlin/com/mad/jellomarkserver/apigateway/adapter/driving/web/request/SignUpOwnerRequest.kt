@@ -4,4 +4,6 @@ data class SignUpOwnerRequest(
     val businessNumber: String,
     val phoneNumber: String,
     val nickname: String,
+    val email: String,
+    val password: String,
 )
