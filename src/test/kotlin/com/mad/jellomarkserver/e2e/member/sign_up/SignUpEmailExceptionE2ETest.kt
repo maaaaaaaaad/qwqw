@@ -15,7 +15,13 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = ["classpath:sql/truncate-members.sql"], executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(
+    scripts = [
+        "classpath:sql/truncate-members.sql",
+        "classpath:sql/truncate-auths.sql"
+    ],
+    executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
+)
 class SignUpEmailExceptionE2ETest {
 
     @LocalServerPort
