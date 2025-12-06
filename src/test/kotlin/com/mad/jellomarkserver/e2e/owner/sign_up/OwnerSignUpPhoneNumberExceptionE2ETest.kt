@@ -15,7 +15,13 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = ["classpath:sql/truncate-owners.sql"], executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(
+    scripts = [
+        "classpath:sql/truncate-owners.sql",
+        "classpath:sql/truncate-auths.sql"
+    ],
+    executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
+)
 class OwnerSignUpPhoneNumberExceptionE2ETest {
 
     @LocalServerPort
@@ -30,10 +36,12 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
     @Test
     fun `409 duplicate phone number`() {
         val first = OwnerSignUpRequest(
-            businessNumber = "111111111", phoneNumber = "010-1234-5678", nickname = "first"
+            businessNumber = "111111111", phoneNumber = "010-1234-5678", nickname = "first",
+            email = "first@example.com", password = "Password123!",
         )
         val second = OwnerSignUpRequest(
-            businessNumber = "222222222", phoneNumber = "010-1234-5678", nickname = "second"
+            businessNumber = "222222222", phoneNumber = "010-1234-5678", nickname = "second",
+            email = "second@example.com", password = "Password456!",
         )
 
         val r1 = rest.exchange(
@@ -57,7 +65,8 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
     @Test
     fun `422 when phone number format is invalid`() {
         val body = OwnerSignUpRequest(
-            businessNumber = "123456789", phoneNumber = "invalid-phone", nickname = "test"
+            businessNumber = "123456789", phoneNumber = "invalid-phone", nickname = "test",
+            email = "test@example.com", password = "Password123!",
         )
         val response = rest.exchange(
             url("/api/owners/sign-up"),
@@ -75,7 +84,9 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
         val body = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "",
-            nickname = "test"
+            nickname = "test",
+            email = "test@example.com",
+            password = "Password123!",
         )
         val response = rest.exchange(
             url("/api/owners/sign-up"),
