@@ -14,7 +14,13 @@ import org.springframework.test.context.jdbc.Sql
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = ["classpath:sql/truncate-members.sql"], executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(
+    scripts = [
+        "classpath:sql/truncate-members.sql",
+        "classpath:sql/truncate-auths.sql"
+    ],
+    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 class SignUpNicknameExceptionE2ETest {
     @LocalServerPort
     private var port: Int = 0
