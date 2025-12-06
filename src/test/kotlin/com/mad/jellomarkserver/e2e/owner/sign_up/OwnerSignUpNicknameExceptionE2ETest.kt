@@ -15,7 +15,13 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = ["classpath:sql/truncate-owners.sql"], executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(
+    scripts = [
+        "classpath:sql/truncate-owners.sql",
+        "classpath:sql/truncate-auths.sql"
+    ],
+    executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
+)
 class OwnerSignUpNicknameExceptionE2ETest {
 
     @LocalServerPort
@@ -32,12 +38,16 @@ class OwnerSignUpNicknameExceptionE2ETest {
         val first = OwnerSignUpRequest(
             businessNumber = "111111111",
             phoneNumber = "010-1111-1111",
-            nickname = "myshop"
+            nickname = "myshop",
+            email = "first@example.com",
+            password = "Password123!",
         )
         val second = OwnerSignUpRequest(
             businessNumber = "222222222",
             phoneNumber = "010-2222-2222",
-            nickname = "myshop"
+            nickname = "myshop",
+            email = "second@example.com",
+            password = "Password456!",
         )
 
         val r1 = rest.exchange(
@@ -65,7 +75,9 @@ class OwnerSignUpNicknameExceptionE2ETest {
         val body = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = ""
+            nickname = "",
+            email = "test@example.com",
+            password = "Password123!",
         )
         val response = rest.exchange(
             url("/api/owners/sign-up"),
@@ -84,7 +96,9 @@ class OwnerSignUpNicknameExceptionE2ETest {
         val body = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = "toolongname"
+            nickname = "toolongname",
+            email = "test@example.com",
+            password = "Password123!",
         )
         val response = rest.exchange(
             url("/api/owners/sign-up"),
