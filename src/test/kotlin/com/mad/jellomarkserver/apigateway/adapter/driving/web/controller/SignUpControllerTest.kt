@@ -3,6 +3,7 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.SignUpResponse
 import com.mad.jellomarkserver.apigateway.port.driving.SignUpMemberOrchestrator
+import com.mad.jellomarkserver.apigateway.port.driving.SignUpOwnerOrchestrator
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
@@ -15,6 +16,8 @@ import java.util.*
 import kotlin.test.assertFailsWith
 
 class SignUpControllerTest {
+
+    private val dummyOwnerOrchestrator = SignUpOwnerOrchestrator { throw NotImplementedError() }
 
     @Test
     fun `should sign up member successfully and return 201 CREATED`() {
@@ -30,7 +33,7 @@ class SignUpControllerTest {
         )
 
         val orchestrator = SignUpMemberOrchestrator { response }
-        val controller = SignUpController(orchestrator)
+        val controller = SignUpController(orchestrator, dummyOwnerOrchestrator)
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
@@ -51,7 +54,7 @@ class SignUpControllerTest {
         val orchestrator = SignUpMemberOrchestrator {
             throw InvalidMemberEmailException("invalid-email")
         }
-        val controller = SignUpController(orchestrator)
+        val controller = SignUpController(orchestrator, dummyOwnerOrchestrator)
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
@@ -69,7 +72,7 @@ class SignUpControllerTest {
         val orchestrator = SignUpMemberOrchestrator {
             throw DuplicateMemberEmailException("duplicate@example.com")
         }
-        val controller = SignUpController(orchestrator)
+        val controller = SignUpController(orchestrator, dummyOwnerOrchestrator)
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
@@ -87,7 +90,7 @@ class SignUpControllerTest {
         val orchestrator = SignUpMemberOrchestrator {
             throw InvalidMemberNicknameException("a")
         }
-        val controller = SignUpController(orchestrator)
+        val controller = SignUpController(orchestrator, dummyOwnerOrchestrator)
 
         val request = SignUpMemberRequest(
             nickname = "a",
@@ -105,7 +108,7 @@ class SignUpControllerTest {
         val orchestrator = SignUpMemberOrchestrator {
             throw DuplicateMemberNicknameException("duplicated")
         }
-        val controller = SignUpController(orchestrator)
+        val controller = SignUpController(orchestrator, dummyOwnerOrchestrator)
 
         val request = SignUpMemberRequest(
             nickname = "duplicated",
@@ -123,7 +126,7 @@ class SignUpControllerTest {
         val orchestrator = SignUpMemberOrchestrator {
             throw RuntimeException("Unexpected error")
         }
-        val controller = SignUpController(orchestrator)
+        val controller = SignUpController(orchestrator, dummyOwnerOrchestrator)
 
         val request = SignUpMemberRequest(
             nickname = "testuser",
