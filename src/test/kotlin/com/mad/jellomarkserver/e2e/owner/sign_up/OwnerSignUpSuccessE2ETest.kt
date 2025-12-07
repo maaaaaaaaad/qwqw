@@ -15,7 +15,13 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = ["classpath:sql/truncate-owners.sql"], executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(
+    scripts = [
+        "classpath:sql/truncate-owners.sql",
+        "classpath:sql/truncate-auths.sql"
+    ],
+    executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
+)
 class OwnerSignUpSuccessE2ETest {
 
     @LocalServerPort
@@ -32,7 +38,9 @@ class OwnerSignUpSuccessE2ETest {
         val body = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         val response = rest.exchange(
