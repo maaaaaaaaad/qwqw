@@ -5,11 +5,7 @@ import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerBusines
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
 import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
-import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
-import com.mad.jellomarkserver.owner.core.domain.model.Owner
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
+import com.mad.jellomarkserver.owner.core.domain.model.*
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerUseCase
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -38,7 +34,9 @@ class OwnerSignUpControllerTest {
         val request = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         val response = controller.signUp(request)
@@ -58,7 +56,9 @@ class OwnerSignUpControllerTest {
         val request = OwnerSignUpRequest(
             businessNumber = "12345678",
             phoneNumber = "010-1234-5678",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<InvalidOwnerBusinessNumberException> {
@@ -74,7 +74,9 @@ class OwnerSignUpControllerTest {
         val request = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "invalid-phone",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<InvalidOwnerPhoneNumberException> {
@@ -90,7 +92,9 @@ class OwnerSignUpControllerTest {
         val request = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<DuplicateOwnerBusinessNumberException> {
@@ -106,7 +110,9 @@ class OwnerSignUpControllerTest {
         val request = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<DuplicateOwnerPhoneNumberException> {
@@ -122,7 +128,9 @@ class OwnerSignUpControllerTest {
         val request = OwnerSignUpRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
-            nickname = "shop"
+            nickname = "shop",
+            email = "owner@example.com",
+            password = "Password123!",
         )
 
         assertFailsWith<RuntimeException> {
