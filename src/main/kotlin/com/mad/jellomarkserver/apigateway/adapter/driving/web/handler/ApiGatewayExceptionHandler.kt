@@ -9,6 +9,7 @@ import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmail
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.owner.core.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
@@ -55,6 +56,36 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(InvalidMemberNicknameException::class)
     fun handleInvalidMemberNickname(ex: InvalidMemberNicknameException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(DuplicateOwnerNicknameException::class)
+    fun handleDuplicateOwnerNickname(ex: DuplicateOwnerNicknameException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(InvalidOwnerNicknameException::class)
+    fun handleInvalidOwnerNickname(ex: InvalidOwnerNicknameException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(DuplicateOwnerBusinessNumberException::class)
+    fun handleDuplicateOwnerBusinessNumber(ex: DuplicateOwnerBusinessNumberException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(InvalidOwnerBusinessNumberException::class)
+    fun handleInvalidOwnerBusinessNumber(ex: InvalidOwnerBusinessNumberException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(DuplicateOwnerPhoneNumberException::class)
+    fun handleDuplicateOwnerPhoneNumber(ex: DuplicateOwnerPhoneNumberException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(InvalidOwnerPhoneNumberException::class)
+    fun handleInvalidOwnerPhoneNumber(ex: InvalidOwnerPhoneNumberException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
