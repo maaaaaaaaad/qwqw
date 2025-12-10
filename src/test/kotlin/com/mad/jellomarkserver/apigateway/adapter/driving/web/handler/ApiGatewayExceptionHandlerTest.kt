@@ -1,5 +1,9 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.handler
 
+import com.mad.jellomarkserver.auth.core.domain.exception.AuthenticationFailedException
+import com.mad.jellomarkserver.auth.core.domain.exception.DuplicateAuthEmailException
+import com.mad.jellomarkserver.auth.core.domain.exception.InvalidAuthEmailException
+import com.mad.jellomarkserver.auth.core.domain.exception.InvalidRawPasswordException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
@@ -61,5 +65,45 @@ class ApiGatewayExceptionHandlerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.statusCode)
         assertEquals("INTERNAL_SERVER_ERROR", result.body?.code)
         assertEquals("Unexpected server error", result.body?.message)
+    }
+
+    @Test
+    fun `should handle AuthenticationFailedException with UNAUTHORIZED status`() {
+        val exception = AuthenticationFailedException("test@example.com")
+
+        val result = handler.handleAuthenticationFailed(exception)
+
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), result.status)
+        assertEquals("Authentication failed for email test@example.com", result.detail)
+    }
+
+    @Test
+    fun `should handle DuplicateAuthEmailException with CONFLICT status`() {
+        val exception = DuplicateAuthEmailException("auth@example.com")
+
+        val result = handler.handleDuplicateAuthEmail(exception)
+
+        assertEquals(HttpStatus.CONFLICT.value(), result.status)
+        assertEquals("Email already in use: auth@example.com", result.detail)
+    }
+
+    @Test
+    fun `should handle InvalidAuthEmailException with UNPROCESSABLE_ENTITY status`() {
+        val exception = InvalidAuthEmailException("invalid-auth-email")
+
+        val result = handler.handleInvalidAuthEmail(exception)
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
+        assertEquals("Invalid email invalid-auth-email", result.detail)
+    }
+
+    @Test
+    fun `should handle InvalidRawPasswordException with UNPROCESSABLE_ENTITY status`() {
+        val exception = InvalidRawPasswordException("Password too short")
+
+        val result = handler.handleInvalidPassword(exception)
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
+        assertEquals("Password too short", result.detail)
     }
 }
