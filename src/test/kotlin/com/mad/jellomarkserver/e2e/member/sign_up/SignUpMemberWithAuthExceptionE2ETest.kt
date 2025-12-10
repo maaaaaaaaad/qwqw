@@ -130,4 +130,54 @@ class SignUpMemberWithAuthExceptionE2ETest {
         assertThat(authsAfterSecond).hasSize(1)
         assertThat(authsAfterSecond[0].email).isEqualTo("email1@example.com")
     }
+
+    @Test
+    fun `should return 422 UNPROCESSABLE_ENTITY when password is invalid and not create Member or Auth`() {
+        val request = SignUpMemberRequest(
+            nickname = "testuser",
+            email = "test@example.com",
+            password = "invalid",
+        )
+
+        val response = rest.exchange(
+            url("/api/sign-up/member"),
+            HttpMethod.POST,
+            HttpEntity(request, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        val err = requireNotNull(response.body)
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
+
+        val members = memberJpaRepository.findAll()
+        val auths = authJpaRepository.findAll()
+        assertThat(members).isEmpty()
+        assertThat(auths).isEmpty()
+    }
+
+    @Test
+    fun `should return 422 UNPROCESSABLE_ENTITY when email is invalid and not create Member or Auth`() {
+        val request = SignUpMemberRequest(
+            nickname = "testuser",
+            email = "invalid-email",
+            password = "Password123!",
+        )
+
+        val response = rest.exchange(
+            url("/api/sign-up/member"),
+            HttpMethod.POST,
+            HttpEntity(request, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        val err = requireNotNull(response.body)
+        assertThat(err["title"]).isEqualTo("Unprocessable Entity")
+
+        val members = memberJpaRepository.findAll()
+        val auths = authJpaRepository.findAll()
+        assertThat(members).isEmpty()
+        assertThat(auths).isEmpty()
+    }
 }
