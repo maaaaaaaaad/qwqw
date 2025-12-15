@@ -2,10 +2,9 @@ package com.mad.jellomarkserver.apigateway.core.orchestration
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
 import com.mad.jellomarkserver.apigateway.port.driving.SignUpMemberOrchestrator
-import com.mad.jellomarkserver.auth.core.domain.model.Auth
-import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
-import com.mad.jellomarkserver.auth.core.domain.model.RawPassword
-import com.mad.jellomarkserver.auth.core.domain.model.UserType
+import com.mad.jellomarkserver.auth.core.domain.model.*
+import com.mad.jellomarkserver.auth.port.driving.IssueTokenCommand
+import com.mad.jellomarkserver.auth.port.driving.IssueTokenUseCase
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthCommand
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthUseCase
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
@@ -39,13 +38,16 @@ class SignUpMemberOrchestratorTest {
     @Mock
     private lateinit var signUpAuthUseCase: SignUpAuthUseCase
 
+    @Mock
+    private lateinit var issueTokenUseCase: IssueTokenUseCase
+
     private lateinit var orchestrator: SignUpMemberOrchestrator
 
     private val fixedClock = Clock.fixed(Instant.parse("2025-01-01T00:00:00Z"), ZoneId.of("UTC"))
 
     @BeforeEach
     fun setup() {
-        orchestrator = SignUpMemberOrchestratorImpl(signUpMemberUseCase, signUpAuthUseCase)
+        orchestrator = SignUpMemberOrchestratorImpl(signUpMemberUseCase, signUpAuthUseCase, issueTokenUseCase)
     }
 
     @Test
@@ -80,6 +82,9 @@ class SignUpMemberOrchestratorTest {
                 ArgumentMatchers.any() ?: SignUpAuthCommand("test@example.com", "Password123!", "MEMBER")
             )
         ).thenReturn(auth)
+
+        `when`(issueTokenUseCase.execute(ArgumentMatchers.any() ?: IssueTokenCommand("", "")))
+            .thenReturn(TokenPair("accessToken", "refreshToken"))
 
         val response = orchestrator.signUp(request)
 
