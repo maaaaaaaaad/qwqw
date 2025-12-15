@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.e2e.auth.authenticate
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
 import com.mad.jellomarkserver.auth.adapter.driven.persistence.repository.AuthJpaRepository
+import com.mad.jellomarkserver.auth.adapter.driven.persistence.repository.RefreshTokenJpaRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +20,8 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 @Sql(
     scripts = [
         "classpath:sql/truncate-members.sql",
-        "classpath:sql/truncate-auths.sql"
+        "classpath:sql/truncate-auths.sql",
+        "classpath:sql/truncate-refresh-tokens.sql"
     ],
     executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
 )
@@ -33,6 +35,9 @@ class AuthenticateE2ETest {
 
     @Autowired
     lateinit var authJpaRepository: AuthJpaRepository
+
+    @Autowired
+    lateinit var refreshTokenJpaRepository: RefreshTokenJpaRepository
 
     private fun url(path: String) = "http://localhost:$port$path"
 
@@ -70,6 +75,12 @@ class AuthenticateE2ETest {
         assertThat(json["authenticated"]).isEqualTo(true)
         assertThat(json["email"]).isEqualTo("test@example.com")
         assertThat(json["userType"]).isEqualTo("MEMBER")
+        assertThat(json["accessToken"]).isNotNull()
+        assertThat(json["refreshToken"]).isNotNull()
+
+        val savedRefreshToken = refreshTokenJpaRepository.findByEmail("test@example.com")
+        assertThat(savedRefreshToken).isNotNull()
+        assertThat(savedRefreshToken?.token).isEqualTo(json["refreshToken"])
     }
 
     @Test
