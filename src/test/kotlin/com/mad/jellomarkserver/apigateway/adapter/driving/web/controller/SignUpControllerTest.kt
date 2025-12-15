@@ -29,7 +29,9 @@ class SignUpControllerTest {
             businessNumber = null,
             phoneNumber = null,
             createdAt = Instant.now(),
-            updatedAt = Instant.now()
+            updatedAt = Instant.now(),
+            accessToken = "accessToken",
+            refreshToken = "refreshToken"
         )
 
         val orchestrator = SignUpMemberOrchestrator { response }
