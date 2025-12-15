@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.e2e.owner.sign_up
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpOwnerRequest
 import com.mad.jellomarkserver.auth.adapter.driven.persistence.repository.AuthJpaRepository
+import com.mad.jellomarkserver.auth.adapter.driven.persistence.repository.RefreshTokenJpaRepository
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.repository.OwnerJpaRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -21,7 +22,8 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 @Sql(
     scripts = [
         "classpath:sql/truncate-owners.sql",
-        "classpath:sql/truncate-auths.sql"
+        "classpath:sql/truncate-auths.sql",
+        "classpath:sql/truncate-refresh-tokens.sql"
     ],
     executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
 )
@@ -38,6 +40,9 @@ class SignUpOwnerWithAuthE2ETest {
 
     @Autowired
     lateinit var authJpaRepository: AuthJpaRepository
+
+    @Autowired
+    lateinit var refreshTokenJpaRepository: RefreshTokenJpaRepository
 
     private fun url(path: String) = "http://localhost:$port$path"
 
@@ -66,6 +71,8 @@ class SignUpOwnerWithAuthE2ETest {
         assertThat(json["businessNumber"]).isEqualTo("123456789")
         assertThat(json["phoneNumber"]).isEqualTo("010-1234-5678")
         assertThat(json["nickname"]).isEqualTo("testshop")
+        assertThat(json["accessToken"]).isNotNull()
+        assertThat(json["refreshToken"]).isNotNull()
 
         val owners = ownerJpaRepository.findAll()
         assertThat(owners).hasSize(1)
@@ -82,6 +89,12 @@ class SignUpOwnerWithAuthE2ETest {
 
         assertThat(authEntity.hashedPassword).isNotEqualTo("Password123!")
         assertThat(BCrypt.checkpw("Password123!", authEntity.hashedPassword)).isTrue()
+
+        val refreshTokens = refreshTokenJpaRepository.findAll()
+        assertThat(refreshTokens).hasSize(1)
+        val refreshTokenEntity = refreshTokens[0]
+        assertThat(refreshTokenEntity.email).isEqualTo("owner@example.com")
+        assertThat(refreshTokenEntity.token).isEqualTo(json["refreshToken"])
     }
 
     @Test
