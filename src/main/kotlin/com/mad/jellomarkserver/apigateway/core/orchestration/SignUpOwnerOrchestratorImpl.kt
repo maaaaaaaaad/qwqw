@@ -3,6 +3,8 @@ package com.mad.jellomarkserver.apigateway.core.orchestration
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpOwnerRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.SignUpResponse
 import com.mad.jellomarkserver.apigateway.port.driving.SignUpOwnerOrchestrator
+import com.mad.jellomarkserver.auth.port.driving.IssueTokenCommand
+import com.mad.jellomarkserver.auth.port.driving.IssueTokenUseCase
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthCommand
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthUseCase
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerCommand
@@ -13,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SignUpOwnerOrchestratorImpl(
     private val signUpOwnerUseCase: SignUpOwnerUseCase,
-    private val signUpAuthUseCase: SignUpAuthUseCase
+    private val signUpAuthUseCase: SignUpAuthUseCase,
+    private val issueTokenUseCase: IssueTokenUseCase
 ) : SignUpOwnerOrchestrator {
 
     @Transactional
@@ -34,6 +37,13 @@ class SignUpOwnerOrchestratorImpl(
 
         signUpAuthUseCase.signUp(authCommand)
 
-        return SignUpResponse.fromOwner(owner)
+        val tokenPair = issueTokenUseCase.execute(
+            IssueTokenCommand(
+                email = request.email,
+                userType = "OWNER"
+            )
+        )
+
+        return SignUpResponse.fromOwner(owner, tokenPair.accessToken, tokenPair.refreshToken)
     }
 }
