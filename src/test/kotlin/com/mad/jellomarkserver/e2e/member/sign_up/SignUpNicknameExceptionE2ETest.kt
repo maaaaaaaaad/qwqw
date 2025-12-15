@@ -17,7 +17,8 @@ import org.springframework.test.context.jdbc.Sql
 @Sql(
     scripts = [
         "classpath:sql/truncate-members.sql",
-        "classpath:sql/truncate-auths.sql"
+        "classpath:sql/truncate-auths.sql",
+        "classpath:sql/truncate-refresh-tokens.sql"
     ],
     executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
 )
