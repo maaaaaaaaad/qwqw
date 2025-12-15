@@ -26,7 +26,7 @@ class SignUpResponseTest {
             clock = fixedClock
         )
 
-        val response = SignUpResponse.fromMember(member)
+        val response = SignUpResponse.fromMember(member, "accessToken", "refreshToken")
 
         assertThat(response.id).isEqualTo(member.id.value)
         assertThat(response.userType).isEqualTo("MEMBER")
@@ -36,6 +36,8 @@ class SignUpResponseTest {
         assertThat(response.phoneNumber).isNull()
         assertThat(response.createdAt).isEqualTo(member.createdAt)
         assertThat(response.updatedAt).isEqualTo(member.updatedAt)
+        assertThat(response.accessToken).isEqualTo("accessToken")
+        assertThat(response.refreshToken).isEqualTo("refreshToken")
     }
 
     @Test
@@ -47,7 +49,7 @@ class SignUpResponseTest {
             clock = fixedClock
         )
 
-        val response = SignUpResponse.fromOwner(owner)
+        val response = SignUpResponse.fromOwner(owner, "accessToken", "refreshToken")
 
         assertThat(response.id).isEqualTo(owner.id.value)
         assertThat(response.userType).isEqualTo("OWNER")
@@ -57,6 +59,8 @@ class SignUpResponseTest {
         assertThat(response.email).isNull()
         assertThat(response.createdAt).isEqualTo(owner.createdAt)
         assertThat(response.updatedAt).isEqualTo(owner.updatedAt)
+        assertThat(response.accessToken).isEqualTo("accessToken")
+        assertThat(response.refreshToken).isEqualTo("refreshToken")
     }
 
     @Test
@@ -72,7 +76,9 @@ class SignUpResponseTest {
             businessNumber = null,
             phoneNumber = null,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
+            accessToken = "accessToken",
+            refreshToken = "refreshToken"
         )
 
         val response2 = SignUpResponse(
@@ -83,7 +89,9 @@ class SignUpResponseTest {
             businessNumber = null,
             phoneNumber = null,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
+            accessToken = "accessToken",
+            refreshToken = "refreshToken"
         )
 
         assertThat(response1).isEqualTo(response2)
@@ -103,7 +111,9 @@ class SignUpResponseTest {
             businessNumber = null,
             phoneNumber = null,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
+            accessToken = "accessToken",
+            refreshToken = "refreshToken"
         )
 
         val copied = original.copy(nickname = "newuser")
