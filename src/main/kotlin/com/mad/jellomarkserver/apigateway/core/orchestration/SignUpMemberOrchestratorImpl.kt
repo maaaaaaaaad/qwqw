@@ -3,6 +3,8 @@ package com.mad.jellomarkserver.apigateway.core.orchestration
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpMemberRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.SignUpResponse
 import com.mad.jellomarkserver.apigateway.port.driving.SignUpMemberOrchestrator
+import com.mad.jellomarkserver.auth.port.driving.IssueTokenCommand
+import com.mad.jellomarkserver.auth.port.driving.IssueTokenUseCase
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthCommand
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthUseCase
 import com.mad.jellomarkserver.member.port.driving.SignUpMemberCommand
@@ -13,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SignUpMemberOrchestratorImpl(
     private val signUpMemberUseCase: SignUpMemberUseCase,
-    private val signUpAuthUseCase: SignUpAuthUseCase
+    private val signUpAuthUseCase: SignUpAuthUseCase,
+    private val issueTokenUseCase: IssueTokenUseCase
 ) : SignUpMemberOrchestrator {
 
     @Transactional
@@ -33,6 +36,13 @@ class SignUpMemberOrchestratorImpl(
 
         signUpAuthUseCase.signUp(authCommand)
 
-        return SignUpResponse.fromMember(member)
+        val tokenPair = issueTokenUseCase.execute(
+            IssueTokenCommand(
+                email = request.email,
+                userType = "MEMBER"
+            )
+        )
+
+        return SignUpResponse.fromMember(member, tokenPair.accessToken, tokenPair.refreshToken)
     }
 }
