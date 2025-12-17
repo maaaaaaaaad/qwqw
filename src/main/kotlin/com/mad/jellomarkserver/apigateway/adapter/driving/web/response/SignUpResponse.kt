@@ -13,10 +13,12 @@ data class SignUpResponse(
     val businessNumber: String?,
     val phoneNumber: String?,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
+    val accessToken: String?,
+    val refreshToken: String?
 ) {
     companion object {
-        fun fromMember(member: Member): SignUpResponse {
+        fun fromMember(member: Member, accessToken: String, refreshToken: String): SignUpResponse {
             return SignUpResponse(
                 id = member.id.value,
                 userType = "MEMBER",
@@ -25,11 +27,13 @@ data class SignUpResponse(
                 businessNumber = null,
                 phoneNumber = null,
                 createdAt = member.createdAt,
-                updatedAt = member.updatedAt
+                updatedAt = member.updatedAt,
+                accessToken = accessToken,
+                refreshToken = refreshToken
             )
         }
 
-        fun fromOwner(owner: Owner): SignUpResponse {
+        fun fromOwner(owner: Owner, accessToken: String, refreshToken: String): SignUpResponse {
             return SignUpResponse(
                 id = owner.id.value,
                 userType = "OWNER",
@@ -38,7 +42,9 @@ data class SignUpResponse(
                 businessNumber = owner.businessNumber.value,
                 phoneNumber = owner.ownerPhoneNumber.value,
                 createdAt = owner.createdAt,
-                updatedAt = owner.updatedAt
+                updatedAt = owner.updatedAt,
+                accessToken = accessToken,
+                refreshToken = refreshToken
             )
         }
     }
