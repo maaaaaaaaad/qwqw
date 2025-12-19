@@ -1,10 +1,7 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.handler
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ErrorResponse
-import com.mad.jellomarkserver.auth.core.domain.exception.AuthenticationFailedException
-import com.mad.jellomarkserver.auth.core.domain.exception.DuplicateAuthEmailException
-import com.mad.jellomarkserver.auth.core.domain.exception.InvalidAuthEmailException
-import com.mad.jellomarkserver.auth.core.domain.exception.InvalidRawPasswordException
+import com.mad.jellomarkserver.auth.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
@@ -21,6 +18,11 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(AuthenticationFailedException::class)
     fun handleAuthenticationFailed(ex: AuthenticationFailedException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.message)
+    }
+
+    @ExceptionHandler(InvalidTokenException::class)
+    fun handleInvalidToken(ex: InvalidTokenException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.message)
     }
 
