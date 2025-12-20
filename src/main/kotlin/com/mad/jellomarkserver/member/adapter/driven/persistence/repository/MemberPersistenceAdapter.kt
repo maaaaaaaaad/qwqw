@@ -5,6 +5,7 @@ import com.mad.jellomarkserver.member.adapter.driven.persistence.mapper.MemberMa
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.model.Member
+import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
@@ -28,5 +29,9 @@ class MemberPersistenceAdapter(
                 )
             )
         }
+    }
+
+    override fun findByEmail(email: MemberEmail): Member? {
+        return jpaRepository.findByEmail(email.value)?.let { mapper.toDomain(it) }
     }
 }
