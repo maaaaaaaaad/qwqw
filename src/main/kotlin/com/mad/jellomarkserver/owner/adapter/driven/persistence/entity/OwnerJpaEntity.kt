@@ -1,12 +1,8 @@
 package com.mad.jellomarkserver.owner.adapter.driven.persistence.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
+import jakarta.persistence.*
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(
@@ -14,6 +10,7 @@ import java.util.UUID
         UniqueConstraint(name = "uk_owners_business_number", columnNames = ["business_number"]),
         UniqueConstraint(name = "uk_owners_phone_number", columnNames = ["phone_number"]),
         UniqueConstraint(name = "uk_owners_nickname", columnNames = ["nickname"]),
+        UniqueConstraint(name = "uk_owners_email", columnNames = ["email"]),
     ]
 )
 class OwnerJpaEntity(
@@ -29,6 +26,9 @@ class OwnerJpaEntity(
 
     @Column(name = "nickname", nullable = false, length = 100)
     var nickname: String,
+
+    @Column(name = "email", nullable = false, length = 255)
+    var email: String,
 
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant,
