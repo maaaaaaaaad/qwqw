@@ -4,4 +4,5 @@ data class SignUpOwnerCommand(
     val businessNumber: String,
     val phoneNumber: String,
     val nickname: String,
+    val email: String,
 )
