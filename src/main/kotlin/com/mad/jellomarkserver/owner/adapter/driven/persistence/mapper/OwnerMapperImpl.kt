@@ -1,11 +1,7 @@
 package com.mad.jellomarkserver.owner.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.entity.OwnerJpaEntity
-import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
-import com.mad.jellomarkserver.owner.core.domain.model.Owner
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
+import com.mad.jellomarkserver.owner.core.domain.model.*
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,6 +12,7 @@ class OwnerMapperImpl : OwnerMapper {
             businessNumber = domain.businessNumber.value,
             phoneNumber = domain.ownerPhoneNumber.value,
             nickname = domain.ownerNickname.value,
+            email = domain.ownerEmail.value,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt
         )
@@ -26,11 +23,13 @@ class OwnerMapperImpl : OwnerMapper {
         val businessNumber = BusinessNumber.of(entity.businessNumber)
         val ownerPhoneNumber = OwnerPhoneNumber.of(entity.phoneNumber)
         val ownerNickname = OwnerNickname.of(entity.nickname)
+        val ownerEmail = OwnerEmail.of(entity.email)
         return Owner.reconstruct(
             id = id,
             businessNumber = businessNumber,
             ownerPhoneNumber = ownerPhoneNumber,
             ownerNickname = ownerNickname,
+            ownerEmail = ownerEmail,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt
         )
