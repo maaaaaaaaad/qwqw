@@ -5,11 +5,7 @@ import com.mad.jellomarkserver.owner.adapter.driving.web.response.OwnerResponse
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerCommand
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerUseCase
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/owners")
@@ -23,6 +19,7 @@ class OwnerSignUpController(
             businessNumber = request.businessNumber,
             phoneNumber = request.phoneNumber,
             nickname = request.nickname,
+            email = request.email,
         )
         val owner = signUpOwnerUseCase.signUp(command)
         return OwnerResponse.from(owner)
