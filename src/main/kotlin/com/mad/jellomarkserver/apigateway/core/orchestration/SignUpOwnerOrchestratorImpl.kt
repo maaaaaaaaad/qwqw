@@ -24,7 +24,8 @@ class SignUpOwnerOrchestratorImpl(
         val ownerCommand = SignUpOwnerCommand(
             businessNumber = request.businessNumber,
             phoneNumber = request.phoneNumber,
-            nickname = request.nickname
+            nickname = request.nickname,
+            email = request.email
         )
 
         val owner = signUpOwnerUseCase.signUp(ownerCommand)
