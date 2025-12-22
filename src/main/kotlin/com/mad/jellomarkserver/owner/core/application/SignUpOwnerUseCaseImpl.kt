@@ -1,9 +1,6 @@
 package com.mad.jellomarkserver.owner.core.application
 
-import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
-import com.mad.jellomarkserver.owner.core.domain.model.Owner
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
+import com.mad.jellomarkserver.owner.core.domain.model.*
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerCommand
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerUseCase
@@ -21,7 +18,8 @@ class SignUpOwnerUseCaseImpl(
         val businessNumber = BusinessNumber.of(command.businessNumber)
         val ownerPhoneNumber = OwnerPhoneNumber.of(command.phoneNumber)
         val ownerNickname = OwnerNickname.of(command.nickname)
-        val owner = Owner.create(businessNumber, ownerPhoneNumber, ownerNickname)
+        val ownerEmail = OwnerEmail.of(command.email)
+        val owner = Owner.create(businessNumber, ownerPhoneNumber, ownerNickname, ownerEmail)
         return ownerPort.save(owner)
     }
 }
