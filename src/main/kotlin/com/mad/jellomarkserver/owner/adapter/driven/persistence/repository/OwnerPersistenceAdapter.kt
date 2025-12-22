@@ -3,9 +3,11 @@ package com.mad.jellomarkserver.owner.adapter.driven.persistence.repository
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.mapper.OwnerMapper
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerBusinessNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerEmailException
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerNicknameException
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
@@ -27,8 +29,13 @@ class OwnerPersistenceAdapter(
                     "uk_owners_business_number" to { DuplicateOwnerBusinessNumberException(owner.businessNumber.value) },
                     "uk_owners_phone_number" to { DuplicateOwnerPhoneNumberException(owner.ownerPhoneNumber.value) },
                     "uk_owners_nickname" to { DuplicateOwnerNicknameException(owner.ownerNickname.value) },
+                    "uk_owners_email" to { DuplicateOwnerEmailException(owner.ownerEmail.value) },
                 )
             )
         }
+    }
+
+    override fun findByEmail(email: OwnerEmail): Owner? {
+        return jpaRepository.findByEmail(email.value)?.let { mapper.toDomain(it) }
     }
 }
