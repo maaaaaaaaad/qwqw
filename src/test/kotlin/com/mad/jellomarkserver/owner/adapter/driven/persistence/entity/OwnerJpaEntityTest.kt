@@ -20,6 +20,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -44,6 +45,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -69,6 +71,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -93,6 +96,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -117,6 +121,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -141,6 +146,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -165,6 +171,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -189,6 +196,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -207,6 +215,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -224,6 +233,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -242,6 +252,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = createdAt
         )
@@ -260,6 +271,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -277,6 +289,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -300,6 +313,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -318,6 +332,7 @@ class OwnerJpaEntityTest {
             businessNumber = "111111111",
             phoneNumber = "010-1111-1111",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -326,6 +341,7 @@ class OwnerJpaEntityTest {
             businessNumber = "222222222",
             phoneNumber = "010-2222-2222",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -343,6 +359,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.parse("2024-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2024-01-01T00:00:00Z")
         )
@@ -379,6 +396,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -403,6 +421,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -428,6 +447,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -453,6 +473,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -479,6 +500,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -505,6 +527,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -531,6 +554,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -557,6 +581,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -583,6 +608,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -609,6 +635,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -635,6 +662,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -654,6 +682,7 @@ class OwnerJpaEntityTest {
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "oldnickname",
+            email = "test@example.com",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -678,6 +707,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -704,6 +734,7 @@ class OwnerJpaEntityTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = nickname,
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
