@@ -91,6 +91,16 @@ class ApiGatewayExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
+    @ExceptionHandler(DuplicateOwnerEmailException::class)
+    fun handleDuplicateOwnerEmail(ex: DuplicateOwnerEmailException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(InvalidOwnerEmailException::class)
+    fun handleInvalidOwnerEmail(ex: InvalidOwnerEmailException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleGeneric(ex: Exception): ResponseEntity<ErrorResponse> {
         val body = ErrorResponse(
