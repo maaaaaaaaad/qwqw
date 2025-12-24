@@ -46,6 +46,7 @@ class SignUpResponseTest {
             businessNumber = BusinessNumber.of("123456789"),
             ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678"),
             ownerNickname = OwnerNickname.of("owner"),
+            ownerEmail = com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail.of("owner@example.com"),
             clock = fixedClock
         )
 
