@@ -3,11 +3,7 @@ package com.mad.jellomarkserver.owner.adapter.driven.persistence.mapper
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.entity.OwnerJpaEntity
 import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
 import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerPhoneNumberException
-import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
-import com.mad.jellomarkserver.owner.core.domain.model.Owner
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
+import com.mad.jellomarkserver.owner.core.domain.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -30,6 +26,7 @@ class OwnerMapperImplTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -55,6 +52,7 @@ class OwnerMapperImplTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -80,6 +78,7 @@ class OwnerMapperImplTest {
             businessNumber = businessNumber,
             phoneNumber = phoneNumber,
             nickname = "test",
+            email = "test@example.com",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -101,7 +100,15 @@ class OwnerMapperImplTest {
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
 
-        val domain = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
+        val domain = Owner.reconstruct(
+            id,
+            businessNumber,
+            ownerPhoneNumber,
+            OwnerNickname.of("test"),
+            OwnerEmail.of("test@example.com"),
+            createdAt,
+            updatedAt
+        )
 
         val entity = ownerMapper.toEntity(domain)
 
@@ -119,7 +126,15 @@ class OwnerMapperImplTest {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.parse("2020-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
-        val original = Owner.reconstruct(id, businessNumber, ownerPhoneNumber, OwnerNickname.of("test"), createdAt, updatedAt)
+        val original = Owner.reconstruct(
+            id,
+            businessNumber,
+            ownerPhoneNumber,
+            OwnerNickname.of("test"),
+            OwnerEmail.of("test@example.com"),
+            createdAt,
+            updatedAt
+        )
 
         val entity = ownerMapper.toEntity(original)
         val roundTripped = ownerMapper.toDomain(entity)
@@ -138,6 +153,7 @@ class OwnerMapperImplTest {
             businessNumber = "  123456789  ",
             phoneNumber = "  010-1234-5678  ",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.parse("2020-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2020-01-02T00:00:00Z")
         )
@@ -155,6 +171,7 @@ class OwnerMapperImplTest {
             businessNumber = "12345678",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -171,6 +188,7 @@ class OwnerMapperImplTest {
             businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -187,6 +205,7 @@ class OwnerMapperImplTest {
             businessNumber = "123456789",
             phoneNumber = "invalid-phone",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -203,6 +222,7 @@ class OwnerMapperImplTest {
             businessNumber = "123456789",
             phoneNumber = "01012345678",
             nickname = "test",
+            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
