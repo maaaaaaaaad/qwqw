@@ -25,6 +25,7 @@ class OwnerSignUpControllerTest {
             ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678"),
             ownerNickname = OwnerNickname.of("shop"),
             createdAt = createdAt,
+            ownerEmail = com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail.of("owner@example.com"),
             updatedAt = createdAt
         )
 
