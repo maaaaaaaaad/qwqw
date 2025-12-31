@@ -1,0 +1,14 @@
+package com.mad.jellomarkserver.beautishop.port.driven
+
+import com.mad.jellomarkserver.beautishop.core.domain.model.Beautishop
+import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
+import com.mad.jellomarkserver.beautishop.core.domain.model.ShopRegNum
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
+
+interface BeautishopPort {
+    fun save(beautishop: Beautishop, ownerId: OwnerId): Beautishop
+    fun findById(id: ShopId): Beautishop?
+    fun findByOwnerId(ownerId: OwnerId): List<Beautishop>
+    fun findByShopRegNum(shopRegNum: ShopRegNum): Beautishop?
+    fun delete(id: ShopId)
+}
