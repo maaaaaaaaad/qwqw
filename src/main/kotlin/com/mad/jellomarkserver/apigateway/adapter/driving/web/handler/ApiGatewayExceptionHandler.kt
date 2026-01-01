@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.handler
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ErrorResponse
 import com.mad.jellomarkserver.auth.core.domain.exception.*
+import com.mad.jellomarkserver.beautishop.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
@@ -99,6 +100,56 @@ class ApiGatewayExceptionHandler {
     @ExceptionHandler(InvalidOwnerEmailException::class)
     fun handleInvalidOwnerEmail(ex: InvalidOwnerEmailException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopNameException::class)
+    fun handleInvalidShopName(ex: InvalidShopNameException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopRegNumException::class)
+    fun handleInvalidShopRegNum(ex: InvalidShopRegNumException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(DuplicateShopRegNumException::class)
+    fun handleDuplicateShopRegNum(ex: DuplicateShopRegNumException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopPhoneNumberException::class)
+    fun handleInvalidShopPhoneNumber(ex: InvalidShopPhoneNumberException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopAddressException::class)
+    fun handleInvalidShopAddress(ex: InvalidShopAddressException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopGPSException::class)
+    fun handleInvalidShopGPS(ex: InvalidShopGPSException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidOperatingTimeException::class)
+    fun handleInvalidOperatingTime(ex: InvalidOperatingTimeException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopDescriptionException::class)
+    fun handleInvalidShopDescription(ex: InvalidShopDescriptionException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidShopImageException::class)
+    fun handleInvalidShopImage(ex: InvalidShopImageException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(BeautishopNotFoundException::class)
+    fun handleBeautishopNotFound(ex: BeautishopNotFoundException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
     }
 
     @ExceptionHandler(Exception::class)
