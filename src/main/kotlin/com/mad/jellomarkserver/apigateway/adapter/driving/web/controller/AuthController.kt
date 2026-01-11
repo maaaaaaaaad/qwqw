@@ -1,10 +1,14 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.AuthenticateRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.LoginWithKakaoRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.RefreshTokenRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.AuthenticateResponse
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.LoginWithKakaoResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.RefreshTokenResponse
 import com.mad.jellomarkserver.auth.port.driving.*
+import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoCommand
+import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authenticateUseCase: AuthenticateUseCase,
     private val issueTokenUseCase: IssueTokenUseCase,
-    private val refreshTokenUseCase: RefreshTokenUseCase
+    private val refreshTokenUseCase: RefreshTokenUseCase,
+    private val loginWithKakaoUseCase: LoginWithKakaoUseCase
 ) {
 
     @PostMapping("/api/auth/authenticate")
@@ -52,6 +57,20 @@ class AuthController(
         val tokenPair = refreshTokenUseCase.execute(command)
 
         return RefreshTokenResponse(
+            accessToken = tokenPair.accessToken,
+            refreshToken = tokenPair.refreshToken
+        )
+    }
+
+    @PostMapping("/api/auth/kakao")
+    @ResponseStatus(HttpStatus.OK)
+    fun loginWithKakao(@RequestBody request: LoginWithKakaoRequest): LoginWithKakaoResponse {
+        val command = LoginWithKakaoCommand(
+            kakaoAccessToken = request.kakaoAccessToken
+        )
+        val tokenPair = loginWithKakaoUseCase.execute(command)
+
+        return LoginWithKakaoResponse(
             accessToken = tokenPair.accessToken,
             refreshToken = tokenPair.refreshToken
         )
