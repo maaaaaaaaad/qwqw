@@ -29,7 +29,7 @@ class AuthController(
 
         val tokenPair = issueTokenUseCase.execute(
             IssueTokenCommand(
-                email = auth.email.value,
+                identifier = auth.email.value,
                 userType = auth.userType.name
             )
         )

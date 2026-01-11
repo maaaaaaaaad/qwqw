@@ -40,7 +40,7 @@ class SignUpOwnerOrchestratorImpl(
 
         val tokenPair = issueTokenUseCase.execute(
             IssueTokenCommand(
-                email = request.email,
+                identifier = request.email,
                 userType = "OWNER"
             )
         )

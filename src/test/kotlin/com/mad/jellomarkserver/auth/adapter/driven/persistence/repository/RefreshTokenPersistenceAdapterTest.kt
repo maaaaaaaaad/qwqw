@@ -2,7 +2,6 @@ package com.mad.jellomarkserver.auth.adapter.driven.persistence.repository
 
 import com.mad.jellomarkserver.auth.adapter.driven.persistence.entity.RefreshTokenJpaEntity
 import com.mad.jellomarkserver.auth.adapter.driven.persistence.mapper.RefreshTokenMapper
-import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
 import com.mad.jellomarkserver.auth.core.domain.model.RefreshToken
 import com.mad.jellomarkserver.auth.core.domain.model.RefreshTokenId
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -36,15 +35,17 @@ class RefreshTokenPersistenceAdapterTest {
     @Test
     fun `should save refresh token successfully`() {
         val id = RefreshTokenId.from(UUID.randomUUID())
-        val email = AuthEmail.of("test@example.com")
+        val identifier = "test@example.com"
+        val userType = "OWNER"
         val token = "valid.jwt.refresh.token"
         val expiresAt = Instant.parse("2025-12-20T00:00:00Z")
         val createdAt = Instant.parse("2025-12-13T00:00:00Z")
-        val refreshToken = RefreshToken.reconstruct(id, email, token, expiresAt, createdAt)
+        val refreshToken = RefreshToken.reconstruct(id, identifier, userType, token, expiresAt, createdAt)
 
         val entity = RefreshTokenJpaEntity(
             id = id.value,
-            email = email.value,
+            identifier = identifier,
+            userType = userType,
             token = token,
             expiresAt = expiresAt,
             createdAt = createdAt
@@ -63,56 +64,60 @@ class RefreshTokenPersistenceAdapterTest {
     }
 
     @Test
-    fun `should find refresh token by email`() {
-        val email = AuthEmail.of("test@example.com")
+    fun `should find refresh token by identifier`() {
+        val identifier = "test@example.com"
         val id = RefreshTokenId.from(UUID.randomUUID())
+        val userType = "OWNER"
         val token = "valid.jwt.refresh.token"
         val expiresAt = Instant.parse("2025-12-20T00:00:00Z")
         val createdAt = Instant.parse("2025-12-13T00:00:00Z")
-        val refreshToken = RefreshToken.reconstruct(id, email, token, expiresAt, createdAt)
+        val refreshToken = RefreshToken.reconstruct(id, identifier, userType, token, expiresAt, createdAt)
 
         val entity = RefreshTokenJpaEntity(
             id = id.value,
-            email = email.value,
+            identifier = identifier,
+            userType = userType,
             token = token,
             expiresAt = expiresAt,
             createdAt = createdAt
         )
 
-        `when`(jpaRepository.findByEmail(email.value)).thenReturn(entity)
+        `when`(jpaRepository.findByIdentifier(identifier)).thenReturn(entity)
         `when`(mapper.toDomain(entity)).thenReturn(refreshToken)
 
-        val result = adapter.findByEmail(email)
+        val result = adapter.findByIdentifier(identifier)
 
         assertEquals(refreshToken, result)
-        verify(jpaRepository).findByEmail(email.value)
+        verify(jpaRepository).findByIdentifier(identifier)
         verify(mapper).toDomain(entity)
     }
 
     @Test
-    fun `should return null when refresh token not found by email`() {
-        val email = AuthEmail.of("notfound@example.com")
+    fun `should return null when refresh token not found by identifier`() {
+        val identifier = "notfound@example.com"
 
-        `when`(jpaRepository.findByEmail(email.value)).thenReturn(null)
+        `when`(jpaRepository.findByIdentifier(identifier)).thenReturn(null)
 
-        val result = adapter.findByEmail(email)
+        val result = adapter.findByIdentifier(identifier)
 
         assertNull(result)
-        verify(jpaRepository).findByEmail(email.value)
+        verify(jpaRepository).findByIdentifier(identifier)
     }
 
     @Test
     fun `should find refresh token by token`() {
         val token = "valid.jwt.refresh.token"
         val id = RefreshTokenId.from(UUID.randomUUID())
-        val email = AuthEmail.of("test@example.com")
+        val identifier = "test@example.com"
+        val userType = "OWNER"
         val expiresAt = Instant.parse("2025-12-20T00:00:00Z")
         val createdAt = Instant.parse("2025-12-13T00:00:00Z")
-        val refreshToken = RefreshToken.reconstruct(id, email, token, expiresAt, createdAt)
+        val refreshToken = RefreshToken.reconstruct(id, identifier, userType, token, expiresAt, createdAt)
 
         val entity = RefreshTokenJpaEntity(
             id = id.value,
-            email = email.value,
+            identifier = identifier,
+            userType = userType,
             token = token,
             expiresAt = expiresAt,
             createdAt = createdAt
@@ -141,11 +146,41 @@ class RefreshTokenPersistenceAdapterTest {
     }
 
     @Test
-    fun `should delete refresh token by email`() {
-        val email = AuthEmail.of("test@example.com")
+    fun `should delete refresh token by identifier`() {
+        val identifier = "test@example.com"
 
-        adapter.deleteByEmail(email)
+        adapter.deleteByIdentifier(identifier)
 
-        verify(jpaRepository).deleteByEmail(email.value)
+        verify(jpaRepository).deleteByIdentifier(identifier)
+    }
+
+    @Test
+    fun `should save refresh token with socialId identifier`() {
+        val id = RefreshTokenId.from(UUID.randomUUID())
+        val identifier = "3456789012345"
+        val userType = "MEMBER"
+        val token = "valid.jwt.refresh.token"
+        val expiresAt = Instant.parse("2025-12-20T00:00:00Z")
+        val createdAt = Instant.parse("2025-12-13T00:00:00Z")
+        val refreshToken = RefreshToken.reconstruct(id, identifier, userType, token, expiresAt, createdAt)
+
+        val entity = RefreshTokenJpaEntity(
+            id = id.value,
+            identifier = identifier,
+            userType = userType,
+            token = token,
+            expiresAt = expiresAt,
+            createdAt = createdAt
+        )
+
+        `when`(mapper.toEntity(refreshToken)).thenReturn(entity)
+        `when`(jpaRepository.saveAndFlush(entity)).thenReturn(entity)
+        `when`(mapper.toDomain(entity)).thenReturn(refreshToken)
+
+        val result = adapter.save(refreshToken)
+
+        assertEquals(refreshToken, result)
+        assertEquals("3456789012345", result.identifier)
+        assertEquals("MEMBER", result.userType)
     }
 }

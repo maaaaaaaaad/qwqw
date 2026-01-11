@@ -5,31 +5,34 @@ import java.time.Instant
 
 class RefreshToken private constructor(
     val id: RefreshTokenId,
-    val email: AuthEmail,
+    val identifier: String,
+    val userType: String,
     val token: String,
     val expiresAt: Instant,
     val createdAt: Instant
 ) {
     companion object {
         fun create(
-            email: AuthEmail,
+            identifier: String,
+            userType: String,
             token: String,
             expirationMillis: Long,
             clock: Clock = Clock.systemUTC()
         ): RefreshToken {
             val now = Instant.now(clock)
             val expiresAt = now.plusMillis(expirationMillis)
-            return RefreshToken(RefreshTokenId.new(), email, token, expiresAt, now)
+            return RefreshToken(RefreshTokenId.new(), identifier, userType, token, expiresAt, now)
         }
 
         fun reconstruct(
             id: RefreshTokenId,
-            email: AuthEmail,
+            identifier: String,
+            userType: String,
             token: String,
             expiresAt: Instant,
             createdAt: Instant
         ): RefreshToken {
-            return RefreshToken(id, email, token, expiresAt, createdAt)
+            return RefreshToken(id, identifier, userType, token, expiresAt, createdAt)
         }
     }
 

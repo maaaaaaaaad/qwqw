@@ -93,7 +93,7 @@ class SignUpOwnerWithAuthE2ETest {
         val refreshTokens = refreshTokenJpaRepository.findAll()
         assertThat(refreshTokens).hasSize(1)
         val refreshTokenEntity = refreshTokens[0]
-        assertThat(refreshTokenEntity.email).isEqualTo("owner@example.com")
+        assertThat(refreshTokenEntity.identifier).isEqualTo("owner@example.com")
         assertThat(refreshTokenEntity.token).isEqualTo(json["refreshToken"])
     }
 

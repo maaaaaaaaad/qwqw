@@ -2,7 +2,6 @@ package com.mad.jellomarkserver.auth.core.application
 
 import com.mad.jellomarkserver.auth.adapter.driven.jwt.JwtProperties
 import com.mad.jellomarkserver.auth.adapter.driven.jwt.JwtTokenProvider
-import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
 import com.mad.jellomarkserver.auth.core.domain.model.RefreshToken
 import com.mad.jellomarkserver.auth.core.domain.model.TokenPair
 import com.mad.jellomarkserver.auth.port.driven.RefreshTokenPort
@@ -17,14 +16,14 @@ class IssueTokenUseCaseImpl(
     private val refreshTokenPort: RefreshTokenPort
 ) : IssueTokenUseCase {
     override fun execute(command: IssueTokenCommand): TokenPair {
-        val accessToken = jwtTokenProvider.generateAccessToken(command.email, command.userType)
-        val refreshTokenString = jwtTokenProvider.generateRefreshToken(command.email)
+        val accessToken = jwtTokenProvider.generateAccessToken(command.identifier, command.userType)
+        val refreshTokenString = jwtTokenProvider.generateRefreshToken(command.identifier)
 
-        val email = AuthEmail.of(command.email)
-        refreshTokenPort.deleteByEmail(email)
+        refreshTokenPort.deleteByIdentifier(command.identifier)
 
         val refreshToken = RefreshToken.create(
-            email = email,
+            identifier = command.identifier,
+            userType = command.userType,
             token = refreshTokenString,
             expirationMillis = jwtProperties.refreshTokenExpiration
         )

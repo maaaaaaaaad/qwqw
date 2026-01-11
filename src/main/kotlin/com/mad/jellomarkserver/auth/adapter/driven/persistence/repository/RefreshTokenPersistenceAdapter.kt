@@ -1,7 +1,6 @@
 package com.mad.jellomarkserver.auth.adapter.driven.persistence.repository
 
 import com.mad.jellomarkserver.auth.adapter.driven.persistence.mapper.RefreshTokenMapper
-import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
 import com.mad.jellomarkserver.auth.core.domain.model.RefreshToken
 import com.mad.jellomarkserver.auth.port.driven.RefreshTokenPort
 import org.springframework.stereotype.Component
@@ -18,8 +17,8 @@ class RefreshTokenPersistenceAdapter(
         return mapper.toDomain(saved)
     }
 
-    override fun findByEmail(email: AuthEmail): RefreshToken? {
-        val entity = jpaRepository.findByEmail(email.value)
+    override fun findByIdentifier(identifier: String): RefreshToken? {
+        val entity = jpaRepository.findByIdentifier(identifier)
         return entity?.let { mapper.toDomain(it) }
     }
 
@@ -29,7 +28,7 @@ class RefreshTokenPersistenceAdapter(
     }
 
     @Transactional
-    override fun deleteByEmail(email: AuthEmail) {
-        jpaRepository.deleteByEmail(email.value)
+    override fun deleteByIdentifier(identifier: String) {
+        jpaRepository.deleteByIdentifier(identifier)
     }
 }
