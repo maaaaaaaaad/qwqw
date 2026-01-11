@@ -1,12 +1,13 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidSocialIdException
 import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
+import com.mad.jellomarkserver.member.core.domain.model.SocialId
+import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -20,14 +21,16 @@ class MemberMapperImplTest {
     @Test
     fun `should correctly map MemberJpaEntity to Member`() {
         val id = UUID.randomUUID()
+        val socialProvider = "KAKAO"
+        val socialId = "123456789"
         val nickname = "Nick123"
-        val email = "test@example.com"
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
         val memberJpaEntity = MemberJpaEntity(
             id = id,
+            socialProvider = socialProvider,
+            socialId = socialId,
             nickname = nickname,
-            email = email,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -35,8 +38,9 @@ class MemberMapperImplTest {
         val result = memberMapper.toDomain(memberJpaEntity)
 
         assertEquals(MemberId.from(id), result.id)
+        assertEquals(SocialProvider.KAKAO, result.socialProvider)
+        assertEquals(SocialId(socialId), result.socialId)
         assertEquals(MemberNickname.of(nickname), result.memberNickname)
-        assertEquals(MemberEmail.of(email), result.memberEmail)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -44,14 +48,16 @@ class MemberMapperImplTest {
     @Test
     fun `should correctly map MemberJpaEntity with edge case values`() {
         val id = UUID.randomUUID()
+        val socialProvider = "NAVER"
+        val socialId = "a".repeat(255)
         val nickname = "N".repeat(8)
-        val email = "e".repeat(243) + "@e.com"
         val createdAt = Instant.parse("2000-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
         val memberJpaEntity = MemberJpaEntity(
             id = id,
+            socialProvider = socialProvider,
+            socialId = socialId,
             nickname = nickname,
-            email = email,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -59,8 +65,9 @@ class MemberMapperImplTest {
         val result = memberMapper.toDomain(memberJpaEntity)
 
         assertEquals(MemberId.from(id), result.id)
+        assertEquals(SocialProvider.NAVER, result.socialProvider)
+        assertEquals(SocialId(socialId), result.socialId)
         assertEquals(MemberNickname.of(nickname), result.memberNickname)
-        assertEquals(MemberEmail.of(email), result.memberEmail)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -68,14 +75,16 @@ class MemberMapperImplTest {
     @Test
     fun `should correctly map MemberJpaEntity with minimum valid values`() {
         val id = UUID.randomUUID()
+        val socialProvider = "GOOGLE"
+        val socialId = "1"
         val nickname = "Aa"
-        val email = "a@a.com"
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
         val memberJpaEntity = MemberJpaEntity(
             id = id,
+            socialProvider = socialProvider,
+            socialId = socialId,
             nickname = nickname,
-            email = email,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -83,8 +92,9 @@ class MemberMapperImplTest {
         val result = memberMapper.toDomain(memberJpaEntity)
 
         assertEquals(MemberId.from(id), result.id)
+        assertEquals(SocialProvider.GOOGLE, result.socialProvider)
+        assertEquals(SocialId(socialId), result.socialId)
         assertEquals(MemberNickname.of(nickname), result.memberNickname)
-        assertEquals(MemberEmail.of(email), result.memberEmail)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -92,18 +102,20 @@ class MemberMapperImplTest {
     @Test
     fun `should correctly map Member to MemberJpaEntity`() {
         val id = MemberId.from(UUID.randomUUID())
+        val socialProvider = SocialProvider.KAKAO
+        val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("Nick123")
-        val memberEmail = MemberEmail.of("test@example.com")
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
 
-        val domain = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
+        val domain = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
 
         val entity = memberMapper.toEntity(domain)
 
         assertEquals(id.value, entity.id)
+        assertEquals(socialProvider.name, entity.socialProvider)
+        assertEquals(socialId.value, entity.socialId)
         assertEquals(memberNickname.value, entity.nickname)
-        assertEquals(memberEmail.value, entity.email)
         assertEquals(createdAt, entity.createdAt)
         assertEquals(updatedAt, entity.updatedAt)
     }
@@ -111,28 +123,31 @@ class MemberMapperImplTest {
     @Test
     fun `domain - entity - domain round-trip should keep values`() {
         val id = MemberId.from(UUID.randomUUID())
+        val socialProvider = SocialProvider.KAKAO
+        val socialId = SocialId("kakao-user-123")
         val memberNickname = MemberNickname.of("Aa")
-        val memberEmail = MemberEmail.of("a@a.com")
         val createdAt = Instant.parse("2020-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
-        val original = Member.reconstruct(id, memberNickname, memberEmail, createdAt, updatedAt)
+        val original = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
 
         val entity = memberMapper.toEntity(original)
         val roundTripped = memberMapper.toDomain(entity)
 
         assertEquals(original.id, roundTripped.id)
+        assertEquals(original.socialProvider, roundTripped.socialProvider)
+        assertEquals(original.socialId, roundTripped.socialId)
         assertEquals(original.memberNickname, roundTripped.memberNickname)
-        assertEquals(original.memberEmail, roundTripped.memberEmail)
         assertEquals(original.createdAt, roundTripped.createdAt)
         assertEquals(original.updatedAt, roundTripped.updatedAt)
     }
 
     @Test
-    fun `should trim nickname and email when mapping`() {
+    fun `should trim nickname when mapping`() {
         val entity = MemberJpaEntity(
             id = UUID.randomUUID(),
+            socialProvider = "KAKAO",
+            socialId = "123456789",
             nickname = "  Nick12  ",
-            email = "  test@example.com  ",
             createdAt = Instant.parse("2020-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2020-01-02T00:00:00Z")
         )
@@ -140,15 +155,15 @@ class MemberMapperImplTest {
         val domain = memberMapper.toDomain(entity)
 
         assertEquals("Nick12", domain.memberNickname.value)
-        assertEquals("test@example.com", domain.memberEmail.value)
     }
 
     @Test
     fun `should throw when nickname is invalid`() {
         val entity = MemberJpaEntity(
             id = UUID.randomUUID(),
+            socialProvider = "KAKAO",
+            socialId = "123456789",
             nickname = "a",
-            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -159,76 +174,17 @@ class MemberMapperImplTest {
     }
 
     @Test
-    fun `should throw when email is invalid`() {
+    fun `should throw when socialId is blank`() {
         val entity = MemberJpaEntity(
             id = UUID.randomUUID(),
-            nickname = "Aa",
-            email = "invalid@@example..com",
-            createdAt = Instant.EPOCH,
-            updatedAt = Instant.EPOCH
-        )
-
-        assertFailsWith<InvalidMemberEmailException> {
-            memberMapper.toDomain(entity)
-        }
-    }
-
-    @Test
-    fun `should throw InvalidMemberEmailException when email is too short`() {
-        val entity = MemberJpaEntity(
-            id = UUID.randomUUID(),
+            socialProvider = "KAKAO",
+            socialId = "   ",
             nickname = "testuser",
-            email = "a@a.c",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
 
-        assertFailsWith<InvalidMemberEmailException> {
-            memberMapper.toDomain(entity)
-        }
-    }
-
-    @Test
-    fun `should throw InvalidMemberEmailException when email has no TLD`() {
-        val entity = MemberJpaEntity(
-            id = UUID.randomUUID(),
-            nickname = "testuser",
-            email = "user@example",
-            createdAt = Instant.EPOCH,
-            updatedAt = Instant.EPOCH
-        )
-
-        assertFailsWith<InvalidMemberEmailException> {
-            memberMapper.toDomain(entity)
-        }
-    }
-
-    @Test
-    fun `should throw InvalidMemberEmailException when email is missing @ symbol`() {
-        val entity = MemberJpaEntity(
-            id = UUID.randomUUID(),
-            nickname = "testuser",
-            email = "userexample.com",
-            createdAt = Instant.EPOCH,
-            updatedAt = Instant.EPOCH
-        )
-
-        assertFailsWith<InvalidMemberEmailException> {
-            memberMapper.toDomain(entity)
-        }
-    }
-
-    @Test
-    fun `should throw InvalidMemberEmailException when email is missing domain`() {
-        val entity = MemberJpaEntity(
-            id = UUID.randomUUID(),
-            nickname = "testuser",
-            email = "user@",
-            createdAt = Instant.EPOCH,
-            updatedAt = Instant.EPOCH
-        )
-
-        assertFailsWith<InvalidMemberEmailException> {
+        assertFailsWith<InvalidSocialIdException> {
             memberMapper.toDomain(entity)
         }
     }
@@ -237,8 +193,9 @@ class MemberMapperImplTest {
     fun `should throw InvalidMemberNicknameException when nickname is too short`() {
         val entity = MemberJpaEntity(
             id = UUID.randomUUID(),
+            socialProvider = "KAKAO",
+            socialId = "123456789",
             nickname = "a",
-            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -252,8 +209,9 @@ class MemberMapperImplTest {
     fun `should throw InvalidMemberNicknameException when nickname is too long`() {
         val entity = MemberJpaEntity(
             id = UUID.randomUUID(),
+            socialProvider = "KAKAO",
+            socialId = "123456789",
             nickname = "abcdefghi",
-            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -267,14 +225,36 @@ class MemberMapperImplTest {
     fun `should throw InvalidMemberNicknameException when nickname contains only whitespace`() {
         val entity = MemberJpaEntity(
             id = UUID.randomUUID(),
+            socialProvider = "KAKAO",
+            socialId = "123456789",
             nickname = "   ",
-            email = "test@example.com",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
 
         assertFailsWith<InvalidMemberNicknameException> {
             memberMapper.toDomain(entity)
+        }
+    }
+
+    @Test
+    fun `should map all social providers correctly`() {
+        val providers = listOf("KAKAO", "NAVER", "GOOGLE")
+        val expectedProviders = listOf(SocialProvider.KAKAO, SocialProvider.NAVER, SocialProvider.GOOGLE)
+
+        for ((index, providerName) in providers.withIndex()) {
+            val entity = MemberJpaEntity(
+                id = UUID.randomUUID(),
+                socialProvider = providerName,
+                socialId = "user-$index",
+                nickname = "testuser",
+                createdAt = Instant.EPOCH,
+                updatedAt = Instant.EPOCH
+            )
+
+            val domain = memberMapper.toDomain(entity)
+
+            assertEquals(expectedProviders[index], domain.socialProvider)
         }
     }
 }

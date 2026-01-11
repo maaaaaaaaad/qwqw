@@ -4,10 +4,10 @@ import com.mad.jellomarkserver.auth.core.domain.exception.AuthenticationFailedEx
 import com.mad.jellomarkserver.auth.core.domain.exception.DuplicateAuthEmailException
 import com.mad.jellomarkserver.auth.core.domain.exception.InvalidAuthEmailException
 import com.mad.jellomarkserver.auth.core.domain.exception.InvalidRawPasswordException
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -17,23 +17,13 @@ class ApiGatewayExceptionHandlerTest {
     private val handler = ApiGatewayExceptionHandler()
 
     @Test
-    fun `should handle DuplicateMemberEmailException with CONFLICT status`() {
-        val exception = DuplicateMemberEmailException("test@example.com")
+    fun `should handle DuplicateSocialAccountException with CONFLICT status`() {
+        val exception = DuplicateSocialAccountException("KAKAO", "123456789")
 
-        val result = handler.handleDuplicateMemberEmail(exception)
+        val result = handler.handleDuplicateSocialAccount(exception)
 
         assertEquals(HttpStatus.CONFLICT.value(), result.status)
-        assertEquals("Email already in use: test@example.com", result.detail)
-    }
-
-    @Test
-    fun `should handle InvalidMemberEmailException with UNPROCESSABLE_ENTITY status`() {
-        val exception = InvalidMemberEmailException("invalid-email")
-
-        val result = handler.handleInvalidMemberEmail(exception)
-
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
-        assertEquals("Invalid email invalid-email", result.detail)
+        assertEquals("Social account already exists: KAKAO:123456789", result.detail)
     }
 
     @Test
@@ -54,6 +44,16 @@ class ApiGatewayExceptionHandlerTest {
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
         assertEquals("Invalid nickname: a", result.detail)
+    }
+
+    @Test
+    fun `should handle MemberNotFoundException with NOT_FOUND status`() {
+        val exception = MemberNotFoundException("KAKAO:123456789")
+
+        val result = handler.handleMemberNotFound(exception)
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.status)
+        assertEquals("Member not found: KAKAO:123456789", result.detail)
     }
 
     @Test

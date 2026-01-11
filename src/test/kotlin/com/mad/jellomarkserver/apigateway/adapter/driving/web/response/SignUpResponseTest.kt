@@ -1,8 +1,5 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.response
 
-import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberEmail
-import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
 import com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerNickname
@@ -17,28 +14,6 @@ import java.util.*
 class SignUpResponseTest {
 
     private val fixedClock = Clock.fixed(Instant.parse("2025-01-01T00:00:00Z"), ZoneId.of("UTC"))
-
-    @Test
-    fun `should create SignUpResponse from Member`() {
-        val member = Member.create(
-            memberNickname = MemberNickname.of("testuser"),
-            memberEmail = MemberEmail.of("test@example.com"),
-            clock = fixedClock
-        )
-
-        val response = SignUpResponse.fromMember(member, "accessToken", "refreshToken")
-
-        assertThat(response.id).isEqualTo(member.id.value)
-        assertThat(response.userType).isEqualTo("MEMBER")
-        assertThat(response.nickname).isEqualTo("testuser")
-        assertThat(response.email).isEqualTo("test@example.com")
-        assertThat(response.businessNumber).isNull()
-        assertThat(response.phoneNumber).isNull()
-        assertThat(response.createdAt).isEqualTo(member.createdAt)
-        assertThat(response.updatedAt).isEqualTo(member.updatedAt)
-        assertThat(response.accessToken).isEqualTo("accessToken")
-        assertThat(response.refreshToken).isEqualTo("refreshToken")
-    }
 
     @Test
     fun `should create SignUpResponse from Owner`() {
@@ -57,7 +32,7 @@ class SignUpResponseTest {
         assertThat(response.businessNumber).isEqualTo("123456789")
         assertThat(response.phoneNumber).isEqualTo("010-1234-5678")
         assertThat(response.nickname).isEqualTo("owner")
-        assertThat(response.email).isNull()
+        assertThat(response.email).isEqualTo("owner@example.com")
         assertThat(response.createdAt).isEqualTo(owner.createdAt)
         assertThat(response.updatedAt).isEqualTo(owner.updatedAt)
         assertThat(response.accessToken).isEqualTo("accessToken")
@@ -71,11 +46,11 @@ class SignUpResponseTest {
 
         val response1 = SignUpResponse(
             id = id,
-            userType = "MEMBER",
-            nickname = "testuser",
-            email = "test@example.com",
-            businessNumber = null,
-            phoneNumber = null,
+            userType = "OWNER",
+            nickname = "testowner",
+            email = null,
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
             createdAt = now,
             updatedAt = now,
             accessToken = "accessToken",
@@ -84,11 +59,11 @@ class SignUpResponseTest {
 
         val response2 = SignUpResponse(
             id = id,
-            userType = "MEMBER",
-            nickname = "testuser",
-            email = "test@example.com",
-            businessNumber = null,
-            phoneNumber = null,
+            userType = "OWNER",
+            nickname = "testowner",
+            email = null,
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
             createdAt = now,
             updatedAt = now,
             accessToken = "accessToken",
@@ -106,21 +81,21 @@ class SignUpResponseTest {
 
         val original = SignUpResponse(
             id = id,
-            userType = "MEMBER",
-            nickname = "testuser",
-            email = "test@example.com",
-            businessNumber = null,
-            phoneNumber = null,
+            userType = "OWNER",
+            nickname = "testowner",
+            email = null,
+            businessNumber = "123456789",
+            phoneNumber = "010-1234-5678",
             createdAt = now,
             updatedAt = now,
             accessToken = "accessToken",
             refreshToken = "refreshToken"
         )
 
-        val copied = original.copy(nickname = "newuser")
+        val copied = original.copy(nickname = "newowner")
 
         assertThat(copied.id).isEqualTo(original.id)
-        assertThat(copied.nickname).isEqualTo("newuser")
-        assertThat(copied.email).isEqualTo(original.email)
+        assertThat(copied.nickname).isEqualTo("newowner")
+        assertThat(copied.businessNumber).isEqualTo(original.businessNumber)
     }
 }

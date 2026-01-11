@@ -3,10 +3,10 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.handler
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ErrorResponse
 import com.mad.jellomarkserver.auth.core.domain.exception.*
 import com.mad.jellomarkserver.beautishop.core.domain.exception.*
-import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberEmailException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
-import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberEmailException
+import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.owner.core.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
@@ -42,14 +42,9 @@ class ApiGatewayExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
-    @ExceptionHandler(DuplicateMemberEmailException::class)
-    fun handleDuplicateMemberEmail(ex: DuplicateMemberEmailException): ProblemDetail {
+    @ExceptionHandler(DuplicateSocialAccountException::class)
+    fun handleDuplicateSocialAccount(ex: DuplicateSocialAccountException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
-    }
-
-    @ExceptionHandler(InvalidMemberEmailException::class)
-    fun handleInvalidMemberEmail(ex: InvalidMemberEmailException): ProblemDetail {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
     @ExceptionHandler(DuplicateMemberNicknameException::class)
@@ -60,6 +55,11 @@ class ApiGatewayExceptionHandler {
     @ExceptionHandler(InvalidMemberNicknameException::class)
     fun handleInvalidMemberNickname(ex: InvalidMemberNicknameException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(MemberNotFoundException::class)
+    fun handleMemberNotFound(ex: MemberNotFoundException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
     }
 
     @ExceptionHandler(DuplicateOwnerNicknameException::class)

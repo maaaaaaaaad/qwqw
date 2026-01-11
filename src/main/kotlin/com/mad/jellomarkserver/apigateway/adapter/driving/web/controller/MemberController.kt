@@ -16,8 +16,9 @@ class MemberController(
     @GetMapping("/api/members/me")
     @ResponseStatus(HttpStatus.OK)
     fun getCurrentMember(request: HttpServletRequest): MemberResponse {
-        val email = request.getAttribute("email") as String
-        val command = GetCurrentMemberCommand(email = email)
+        val socialProvider = request.getAttribute("socialProvider") as String
+        val socialId = request.getAttribute("socialId") as String
+        val command = GetCurrentMemberCommand(socialProvider = socialProvider, socialId = socialId)
         val member = getCurrentMemberUseCase.execute(command)
         return MemberResponse.from(member)
     }

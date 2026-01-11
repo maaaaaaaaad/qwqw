@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface MemberJpaRepository : JpaRepository<MemberJpaEntity, UUID> {
-    fun findByEmail(email: String): MemberJpaEntity?
+    fun findBySocialProviderAndSocialId(socialProvider: String, socialId: String): MemberJpaEntity?
 }

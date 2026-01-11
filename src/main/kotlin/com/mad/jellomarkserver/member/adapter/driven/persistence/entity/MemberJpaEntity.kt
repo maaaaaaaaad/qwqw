@@ -12,7 +12,7 @@ import java.util.UUID
 @Table(
     name = "members", uniqueConstraints = [
         UniqueConstraint(name = "uk_members_nickname", columnNames = ["nickname"]),
-        UniqueConstraint(name = "uk_members_email", columnNames = ["email"]),
+        UniqueConstraint(name = "uk_members_social", columnNames = ["social_provider", "social_id"]),
     ]
 )
 class MemberJpaEntity(
@@ -20,11 +20,14 @@ class MemberJpaEntity(
     @Column(name = "id", nullable = false)
     var id: UUID,
 
+    @Column(name = "social_provider", nullable = false, length = 20)
+    var socialProvider: String,
+
+    @Column(name = "social_id", nullable = false, length = 255)
+    var socialId: String,
+
     @Column(name = "nickname", nullable = false, length = 100)
     var nickname: String,
-
-    @Column(name = "email", nullable = false, length = 255)
-    var email: String,
 
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant,
