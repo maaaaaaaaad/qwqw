@@ -27,6 +27,16 @@ class ApiGatewayExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.message)
     }
 
+    @ExceptionHandler(InvalidKakaoTokenException::class)
+    fun handleInvalidKakaoToken(ex: InvalidKakaoTokenException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.message)
+    }
+
+    @ExceptionHandler(KakaoApiException::class)
+    fun handleKakaoApiException(ex: KakaoApiException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, ex.message)
+    }
+
     @ExceptionHandler(InvalidAuthEmailException::class)
     fun handleInvalidAuthEmail(ex: InvalidAuthEmailException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
