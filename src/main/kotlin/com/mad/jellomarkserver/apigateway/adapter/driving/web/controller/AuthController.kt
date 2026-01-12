@@ -9,7 +9,9 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.RefreshTo
 import com.mad.jellomarkserver.auth.port.driving.*
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoCommand
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoUseCase
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -20,7 +22,8 @@ class AuthController(
     private val authenticateUseCase: AuthenticateUseCase,
     private val issueTokenUseCase: IssueTokenUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
-    private val loginWithKakaoUseCase: LoginWithKakaoUseCase
+    private val loginWithKakaoUseCase: LoginWithKakaoUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) {
 
     @PostMapping("/api/auth/authenticate")
@@ -74,5 +77,15 @@ class AuthController(
             accessToken = tokenPair.accessToken,
             refreshToken = tokenPair.refreshToken
         )
+    }
+
+    @PostMapping("/api/auth/logout")
+    fun logout(request: HttpServletRequest): ResponseEntity<Unit> {
+        val socialId = request.getAttribute("socialId") as? String
+            ?: request.getAttribute("email") as String
+
+        logoutUseCase.execute(LogoutCommand(identifier = socialId))
+
+        return ResponseEntity.ok().build()
     }
 }

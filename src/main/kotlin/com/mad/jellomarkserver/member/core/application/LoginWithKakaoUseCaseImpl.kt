@@ -23,23 +23,21 @@ class LoginWithKakaoUseCaseImpl(
 ) : LoginWithKakaoUseCase {
 
     override fun execute(command: LoginWithKakaoCommand): TokenPair {
-        // 1. Verify Kakao access token
         kakaoApiClient.verifyAccessToken(command.kakaoAccessToken)
 
-        // 2. Get Kakao user info
         val userInfo = kakaoApiClient.getUserInfo(command.kakaoAccessToken)
 
         val socialId = SocialId.fromKakaoId(userInfo.id)
 
-        // 3. Find existing member or create new one
         val member = memberPort.findBySocial(SocialProvider.KAKAO, socialId)
             ?: createNewMember(socialId, userInfo.nickname)
 
-        // 4. Issue JWT tokens using socialId as identifier
         return issueTokenUseCase.execute(
             IssueTokenCommand(
-                identifier = userInfo.id.toString(),
-                userType = "MEMBER"
+                identifier = socialId.value,
+                userType = "MEMBER",
+                socialProvider = "KAKAO",
+                socialId = socialId.value
             )
         )
     }

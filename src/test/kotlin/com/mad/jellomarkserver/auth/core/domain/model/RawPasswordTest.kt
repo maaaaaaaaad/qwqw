@@ -7,7 +7,6 @@ import kotlin.test.assertFailsWith
 
 class RawPasswordTest {
 
-    // Valid password tests
     @Test
     fun `should create RawPassword with minimum valid password`() {
         val password = RawPassword.of("Abcd123!")
@@ -98,7 +97,6 @@ class RawPasswordTest {
         assertEquals("Passw0rd*", password.value)
     }
 
-    // Invalid - Length tests
     @Test
     fun `should throw when password is empty`() {
         assertFailsWith<InvalidRawPasswordException> {
@@ -143,7 +141,6 @@ class RawPasswordTest {
         }
     }
 
-    // Invalid - Missing character type tests
     @Test
     fun `should throw when password has no uppercase letter`() {
         assertFailsWith<InvalidRawPasswordException> {

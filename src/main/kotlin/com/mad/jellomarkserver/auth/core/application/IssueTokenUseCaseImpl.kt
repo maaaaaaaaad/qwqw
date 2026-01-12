@@ -16,7 +16,15 @@ class IssueTokenUseCaseImpl(
     private val refreshTokenPort: RefreshTokenPort
 ) : IssueTokenUseCase {
     override fun execute(command: IssueTokenCommand): TokenPair {
-        val accessToken = jwtTokenProvider.generateAccessToken(command.identifier, command.userType)
+        val accessToken = if (command.socialProvider != null && command.socialId != null) {
+            jwtTokenProvider.generateAccessTokenForSocial(
+                socialProvider = command.socialProvider,
+                socialId = command.socialId,
+                userType = command.userType
+            )
+        } else {
+            jwtTokenProvider.generateAccessToken(command.identifier, command.userType)
+        }
         val refreshTokenString = jwtTokenProvider.generateRefreshToken(command.identifier)
 
         refreshTokenPort.deleteByIdentifier(command.identifier)

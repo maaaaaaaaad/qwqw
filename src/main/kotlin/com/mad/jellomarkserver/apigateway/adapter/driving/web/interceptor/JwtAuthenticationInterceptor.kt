@@ -28,9 +28,16 @@ class JwtAuthenticationInterceptor(
         try {
             val email = jwtTokenProvider.getEmailFromToken(token)
             val userType = jwtTokenProvider.getUserTypeFromToken(token)
+            val socialProvider = jwtTokenProvider.getSocialProviderFromToken(token)
+            val socialId = jwtTokenProvider.getSocialIdFromToken(token)
 
             request.setAttribute("email", email)
             request.setAttribute("userType", userType)
+
+            if (socialProvider != null) {
+                request.setAttribute("socialProvider", socialProvider)
+                request.setAttribute("socialId", socialId)
+            }
 
             return true
         } catch (e: Exception) {

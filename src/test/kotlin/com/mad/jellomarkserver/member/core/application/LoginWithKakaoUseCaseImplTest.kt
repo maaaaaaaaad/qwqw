@@ -57,11 +57,16 @@ class LoginWithKakaoUseCaseImplTest {
 
         val expectedTokenPair = TokenPair(accessToken = "access_token", refreshToken = "refresh_token")
 
+        val socialIdValue = SocialId.fromKakaoId(kakaoId).value
         whenever(kakaoApiClient.verifyAccessToken(kakaoAccessToken)).thenReturn(tokenInfo)
         whenever(kakaoApiClient.getUserInfo(kakaoAccessToken)).thenReturn(userInfo)
         whenever(memberPort.findBySocial(SocialProvider.KAKAO, SocialId.fromKakaoId(kakaoId))).thenReturn(existingMember)
-        whenever(issueTokenUseCase.execute(IssueTokenCommand(identifier = kakaoId.toString(), userType = "MEMBER")))
-            .thenReturn(expectedTokenPair)
+        whenever(issueTokenUseCase.execute(IssueTokenCommand(
+            identifier = socialIdValue,
+            userType = "MEMBER",
+            socialProvider = "KAKAO",
+            socialId = socialIdValue
+        ))).thenReturn(expectedTokenPair)
 
         val result = useCase.execute(command)
 
@@ -81,12 +86,17 @@ class LoginWithKakaoUseCaseImplTest {
 
         val expectedTokenPair = TokenPair(accessToken = "new_access_token", refreshToken = "new_refresh_token")
 
+        val socialIdValue = SocialId.fromKakaoId(kakaoId).value
         whenever(kakaoApiClient.verifyAccessToken(kakaoAccessToken)).thenReturn(tokenInfo)
         whenever(kakaoApiClient.getUserInfo(kakaoAccessToken)).thenReturn(userInfo)
         whenever(memberPort.findBySocial(SocialProvider.KAKAO, SocialId.fromKakaoId(kakaoId))).thenReturn(null)
         whenever(memberPort.save(any())).thenAnswer { invocation -> invocation.arguments[0] as Member }
-        whenever(issueTokenUseCase.execute(IssueTokenCommand(identifier = kakaoId.toString(), userType = "MEMBER")))
-            .thenReturn(expectedTokenPair)
+        whenever(issueTokenUseCase.execute(IssueTokenCommand(
+            identifier = socialIdValue,
+            userType = "MEMBER",
+            socialProvider = "KAKAO",
+            socialId = socialIdValue
+        ))).thenReturn(expectedTokenPair)
 
         val result = useCase.execute(command)
 
@@ -135,17 +145,27 @@ class LoginWithKakaoUseCaseImplTest {
         val tokenInfo = KakaoTokenInfo(id = kakaoId, expiresIn = 3600, appId = 123456)
         val userInfo = KakaoUserInfo(id = kakaoId, nickname = "테스트유저")
         val expectedTokenPair = TokenPair(accessToken = "access", refreshToken = "refresh")
+        val socialIdValue = SocialId.fromKakaoId(kakaoId).value
 
         whenever(kakaoApiClient.verifyAccessToken(kakaoAccessToken)).thenReturn(tokenInfo)
         whenever(kakaoApiClient.getUserInfo(kakaoAccessToken)).thenReturn(userInfo)
         whenever(memberPort.findBySocial(SocialProvider.KAKAO, SocialId.fromKakaoId(kakaoId))).thenReturn(null)
         whenever(memberPort.save(any())).thenAnswer { invocation -> invocation.arguments[0] as Member }
-        whenever(issueTokenUseCase.execute(IssueTokenCommand(identifier = "1234567890123", userType = "MEMBER")))
-            .thenReturn(expectedTokenPair)
+        whenever(issueTokenUseCase.execute(IssueTokenCommand(
+            identifier = socialIdValue,
+            userType = "MEMBER",
+            socialProvider = "KAKAO",
+            socialId = socialIdValue
+        ))).thenReturn(expectedTokenPair)
 
         val result = useCase.execute(command)
 
         assertThat(result).isEqualTo(expectedTokenPair)
-        verify(issueTokenUseCase).execute(IssueTokenCommand(identifier = "1234567890123", userType = "MEMBER"))
+        verify(issueTokenUseCase).execute(IssueTokenCommand(
+            identifier = socialIdValue,
+            userType = "MEMBER",
+            socialProvider = "KAKAO",
+            socialId = socialIdValue
+        ))
     }
 }

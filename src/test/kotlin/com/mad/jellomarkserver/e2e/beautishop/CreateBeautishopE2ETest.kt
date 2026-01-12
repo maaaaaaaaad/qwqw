@@ -107,7 +107,6 @@ class CreateBeautishopE2ETest {
         assertThat(json["createdAt"]).isNotNull()
         assertThat(json["updatedAt"]).isNotNull()
 
-        // Verify in database
         val saved = beautishopJpaRepository.findAll()
         assertThat(saved).hasSize(1)
         assertThat(saved[0].name).isEqualTo("Beauty Salon")

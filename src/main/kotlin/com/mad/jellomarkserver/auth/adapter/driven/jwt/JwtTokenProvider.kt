@@ -26,6 +26,21 @@ class JwtTokenProvider(
             .compact()
     }
 
+    fun generateAccessTokenForSocial(socialProvider: String, socialId: String, userType: String): String {
+        val now = Date()
+        val expiryDate = Date(now.time + jwtProperties.accessTokenExpiration)
+
+        return Jwts.builder()
+            .subject(socialId)
+            .claim("userType", userType)
+            .claim("socialProvider", socialProvider)
+            .claim("socialId", socialId)
+            .issuedAt(now)
+            .expiration(expiryDate)
+            .signWith(secretKey)
+            .compact()
+    }
+
     fun generateRefreshToken(email: String): String {
         val now = Date()
         val expiryDate = Date(now.time + jwtProperties.refreshTokenExpiration)
@@ -58,6 +73,16 @@ class JwtTokenProvider(
     fun getUserTypeFromToken(token: String): String {
         val claims = getClaims(token)
         return claims.get("userType", String::class.java)
+    }
+
+    fun getSocialProviderFromToken(token: String): String? {
+        val claims = getClaims(token)
+        return claims.get("socialProvider", String::class.java)
+    }
+
+    fun getSocialIdFromToken(token: String): String? {
+        val claims = getClaims(token)
+        return claims.get("socialId", String::class.java)
     }
 
     private fun getClaims(token: String): Claims {

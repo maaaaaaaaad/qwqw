@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: jello-mark-server
+  profiles:
+    active: dev
 
 jwt:
   secret-key: jello-mark-secret-key-for-development-only-do-not-use-in-production-minimum-256-bits-required

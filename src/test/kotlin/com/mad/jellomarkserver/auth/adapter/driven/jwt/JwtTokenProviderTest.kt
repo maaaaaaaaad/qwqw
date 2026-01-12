@@ -96,4 +96,62 @@ class JwtTokenProviderTest {
 
         assertThat(extractedUserType).isEqualTo(userType)
     }
+
+    @Test
+    fun `should generate access token with social info`() {
+        val socialProvider = "KAKAO"
+        val socialId = "1234567890"
+        val userType = "MEMBER"
+
+        val token = jwtTokenProvider.generateAccessTokenForSocial(socialProvider, socialId, userType)
+
+        assertThat(token).isNotBlank()
+        assertThat(token.split(".").size).isEqualTo(3)
+    }
+
+    @Test
+    fun `should extract socialProvider from token`() {
+        val socialProvider = "KAKAO"
+        val socialId = "1234567890"
+        val userType = "MEMBER"
+        val token = jwtTokenProvider.generateAccessTokenForSocial(socialProvider, socialId, userType)
+
+        val extractedSocialProvider = jwtTokenProvider.getSocialProviderFromToken(token)
+
+        assertThat(extractedSocialProvider).isEqualTo(socialProvider)
+    }
+
+    @Test
+    fun `should extract socialId from token`() {
+        val socialProvider = "KAKAO"
+        val socialId = "1234567890"
+        val userType = "MEMBER"
+        val token = jwtTokenProvider.generateAccessTokenForSocial(socialProvider, socialId, userType)
+
+        val extractedSocialId = jwtTokenProvider.getSocialIdFromToken(token)
+
+        assertThat(extractedSocialId).isEqualTo(socialId)
+    }
+
+    @Test
+    fun `should return null socialProvider for non-social token`() {
+        val email = "test@example.com"
+        val userType = "MEMBER"
+        val token = jwtTokenProvider.generateAccessToken(email, userType)
+
+        val socialProvider = jwtTokenProvider.getSocialProviderFromToken(token)
+
+        assertThat(socialProvider).isNull()
+    }
+
+    @Test
+    fun `should return null socialId for non-social token`() {
+        val email = "test@example.com"
+        val userType = "MEMBER"
+        val token = jwtTokenProvider.generateAccessToken(email, userType)
+
+        val socialId = jwtTokenProvider.getSocialIdFromToken(token)
+
+        assertThat(socialId).isNull()
+    }
 }

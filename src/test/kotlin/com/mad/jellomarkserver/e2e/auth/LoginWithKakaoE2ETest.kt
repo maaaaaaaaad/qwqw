@@ -106,7 +106,6 @@ class LoginWithKakaoE2ETest {
 
         val request = LoginWithKakaoRequest(kakaoAccessToken = kakaoAccessToken)
 
-        // First login - creates new member
         val firstResponse = rest.exchange(
             url("/api/auth/kakao"),
             HttpMethod.POST,
@@ -117,7 +116,6 @@ class LoginWithKakaoE2ETest {
         assertThat(firstResponse.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(memberJpaRepository.findAll()).hasSize(1)
 
-        // Second login - same member, no new creation
         val secondResponse = rest.exchange(
             url("/api/auth/kakao"),
             HttpMethod.POST,
@@ -130,10 +128,8 @@ class LoginWithKakaoE2ETest {
         assertThat(json["accessToken"]).isNotNull()
         assertThat(json["refreshToken"]).isNotNull()
 
-        // Still only one member
         assertThat(memberJpaRepository.findAll()).hasSize(1)
 
-        // RefreshToken should be updated (old one deleted, new one created)
         val refreshTokens = refreshTokenJpaRepository.findAll()
         assertThat(refreshTokens).hasSize(1)
         assertThat(refreshTokens[0].token).isEqualTo(json["refreshToken"])
@@ -157,7 +153,6 @@ class LoginWithKakaoE2ETest {
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
 
-        // No member should be created
         assertThat(memberJpaRepository.findAll()).isEmpty()
         assertThat(refreshTokenJpaRepository.findAll()).isEmpty()
     }
