@@ -49,6 +49,12 @@ class BeautishopJpaEntity(
     @Column(name = "image", nullable = true, length = 2048)
     var image: String?,
 
+    @Column(name = "average_rating", nullable = false)
+    var averageRating: Double = 0.0,
+
+    @Column(name = "review_count", nullable = false)
+    var reviewCount: Int = 0,
+
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant,
 

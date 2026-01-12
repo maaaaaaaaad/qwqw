@@ -52,4 +52,8 @@ class BeautishopPersistenceAdapter(
     override fun delete(id: ShopId) {
         jpaRepository.deleteById(id.value)
     }
+
+    override fun updateStats(id: ShopId, averageRating: Double, reviewCount: Int) {
+        jpaRepository.updateStats(id.value, averageRating, reviewCount)
+    }
 }

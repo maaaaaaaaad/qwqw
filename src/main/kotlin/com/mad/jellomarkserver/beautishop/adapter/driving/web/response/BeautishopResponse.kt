@@ -15,6 +15,8 @@ data class BeautishopResponse(
     val operatingTime: Map<String, String>,
     val description: String?,
     val image: String?,
+    val averageRating: Double,
+    val reviewCount: Int,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
@@ -31,6 +33,8 @@ data class BeautishopResponse(
                 operatingTime = beautishop.operatingTime.schedule,
                 description = beautishop.description?.value,
                 image = beautishop.image?.value,
+                averageRating = beautishop.averageRating,
+                reviewCount = beautishop.reviewCount,
                 createdAt = beautishop.createdAt,
                 updatedAt = beautishop.updatedAt
             )

@@ -93,6 +93,8 @@ class BeautishopTest {
             operatingTime = operatingTime,
             description = null,
             image = null,
+            averageRating = 0.0,
+            reviewCount = 0,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -149,30 +151,34 @@ class BeautishopTest {
         val updatedAt = Instant.now()
 
         val beautishop1 = Beautishop.reconstruct(
-            id,
-            name,
-            regNum,
-            phoneNumber,
-            address,
-            gps,
-            operatingTime,
-            null,
-            null,
-            createdAt,
-            updatedAt
+            id = id,
+            name = name,
+            regNum = regNum,
+            phoneNumber = phoneNumber,
+            address = address,
+            gps = gps,
+            operatingTime = operatingTime,
+            description = null,
+            image = null,
+            averageRating = 0.0,
+            reviewCount = 0,
+            createdAt = createdAt,
+            updatedAt = updatedAt
         )
         val beautishop2 = Beautishop.reconstruct(
-            id,
-            name,
-            regNum,
-            phoneNumber,
-            address,
-            gps,
-            operatingTime,
-            null,
-            null,
-            createdAt,
-            updatedAt
+            id = id,
+            name = name,
+            regNum = regNum,
+            phoneNumber = phoneNumber,
+            address = address,
+            gps = gps,
+            operatingTime = operatingTime,
+            description = null,
+            image = null,
+            averageRating = 0.0,
+            reviewCount = 0,
+            createdAt = createdAt,
+            updatedAt = updatedAt
         )
 
         assertEquals(beautishop1, beautishop2)

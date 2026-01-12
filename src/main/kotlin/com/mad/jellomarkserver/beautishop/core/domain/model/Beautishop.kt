@@ -13,6 +13,8 @@ class Beautishop private constructor(
     val operatingTime: OperatingTime,
     val description: ShopDescription?,
     val image: ShopImage?,
+    val averageRating: Double,
+    val reviewCount: Int,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
@@ -39,6 +41,8 @@ class Beautishop private constructor(
                 operatingTime = operatingTime,
                 description = description,
                 image = image,
+                averageRating = 0.0,
+                reviewCount = 0,
                 createdAt = now,
                 updatedAt = now
             )
@@ -54,6 +58,8 @@ class Beautishop private constructor(
             operatingTime: OperatingTime,
             description: ShopDescription?,
             image: ShopImage?,
+            averageRating: Double,
+            reviewCount: Int,
             createdAt: Instant,
             updatedAt: Instant
         ): Beautishop {
@@ -67,6 +73,8 @@ class Beautishop private constructor(
                 operatingTime = operatingTime,
                 description = description,
                 image = image,
+                averageRating = averageRating,
+                reviewCount = reviewCount,
                 createdAt = createdAt,
                 updatedAt = updatedAt
             )
@@ -89,8 +97,31 @@ class Beautishop private constructor(
             operatingTime = operatingTime,
             description = description,
             image = image,
+            averageRating = this.averageRating,
+            reviewCount = this.reviewCount,
             createdAt = this.createdAt,
             updatedAt = Instant.now(clock)
+        )
+    }
+
+    fun updateStats(
+        averageRating: Double,
+        reviewCount: Int
+    ): Beautishop {
+        return Beautishop(
+            id = this.id,
+            name = this.name,
+            regNum = this.regNum,
+            phoneNumber = this.phoneNumber,
+            address = this.address,
+            gps = this.gps,
+            operatingTime = this.operatingTime,
+            description = this.description,
+            image = this.image,
+            averageRating = averageRating,
+            reviewCount = reviewCount,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt
         )
     }
 

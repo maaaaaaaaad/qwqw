@@ -104,6 +104,8 @@ class BeautishopMapperImplTest {
             operatingTime = operatingTime,
             description = description,
             image = image,
+            averageRating = 4.5,
+            reviewCount = 10,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -147,6 +149,8 @@ class BeautishopMapperImplTest {
             operatingTime = operatingTime,
             description = null,
             image = null,
+            averageRating = 0.0,
+            reviewCount = 0,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -179,7 +183,19 @@ class BeautishopMapperImplTest {
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
         val original = Beautishop.reconstruct(
-            id, name, regNum, phoneNumber, address, gps, operatingTime, description, image, createdAt, updatedAt
+            id = id,
+            name = name,
+            regNum = regNum,
+            phoneNumber = phoneNumber,
+            address = address,
+            gps = gps,
+            operatingTime = operatingTime,
+            description = description,
+            image = image,
+            averageRating = 4.2,
+            reviewCount = 5,
+            createdAt = createdAt,
+            updatedAt = updatedAt
         )
 
         val entity = mapper.toEntity(original, ownerId)

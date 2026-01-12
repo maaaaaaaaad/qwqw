@@ -20,6 +20,8 @@ class BeautishopMapperImpl : BeautishopMapper {
             operatingTime = serializeOperatingTime(domain.operatingTime),
             description = domain.description?.value,
             image = domain.image?.value,
+            averageRating = domain.averageRating,
+            reviewCount = domain.reviewCount,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt
         )
@@ -46,6 +48,8 @@ class BeautishopMapperImpl : BeautishopMapper {
             operatingTime = operatingTime,
             description = description,
             image = image,
+            averageRating = entity.averageRating,
+            reviewCount = entity.reviewCount,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt
         )
