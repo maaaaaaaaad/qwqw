@@ -44,3 +44,9 @@ src/main/resources/application-dev.yml
 *.md
 .claude
 *.json
+
+### Docker ###
+.env.docker
+docker-compose.override.yml
+src/main/resources/application-docker.yml
+src/main/resources/application-prod.yml

@@ -10,7 +10,17 @@ import org.springframework.web.servlet.HandlerInterceptor
 class JwtAuthenticationInterceptor(
     private val jwtTokenProvider: JwtTokenProvider
 ) : HandlerInterceptor {
+
+    private val publicGetPatterns = listOf(
+        "/api/beautishops",
+        "/api/beautishops/[^/]+"
+    )
+
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
+        if (isPublicGetEndpoint(request)) {
+            return true
+        }
+
         val authHeader = request.getHeader("Authorization")
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -44,5 +54,13 @@ class JwtAuthenticationInterceptor(
             response.status = HttpServletResponse.SC_UNAUTHORIZED
             return false
         }
+    }
+
+    private fun isPublicGetEndpoint(request: HttpServletRequest): Boolean {
+        if (request.method != "GET") {
+            return false
+        }
+        val path = request.requestURI
+        return publicGetPatterns.any { pattern -> path.matches(Regex(pattern)) }
     }
 }

@@ -4,11 +4,14 @@ import com.mad.jellomarkserver.beautishop.core.domain.model.Beautishop
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopRegNum
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface BeautishopPort {
     fun save(beautishop: Beautishop, ownerId: OwnerId): Beautishop
     fun findById(id: ShopId): Beautishop?
     fun findByOwnerId(ownerId: OwnerId): List<Beautishop>
     fun findByShopRegNum(shopRegNum: ShopRegNum): Beautishop?
+    fun findAllPaged(pageable: Pageable): Page<Beautishop>
     fun delete(id: ShopId)
 }

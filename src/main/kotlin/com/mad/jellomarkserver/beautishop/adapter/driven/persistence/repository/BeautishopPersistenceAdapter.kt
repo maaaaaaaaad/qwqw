@@ -9,6 +9,8 @@ import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
@@ -41,6 +43,10 @@ class BeautishopPersistenceAdapter(
 
     override fun findByShopRegNum(shopRegNum: ShopRegNum): Beautishop? {
         return jpaRepository.findByShopRegNum(shopRegNum.value)?.let { mapper.toDomain(it) }
+    }
+
+    override fun findAllPaged(pageable: Pageable): Page<Beautishop> {
+        return jpaRepository.findAll(pageable).map { mapper.toDomain(it) }
     }
 
     override fun delete(id: ShopId) {
