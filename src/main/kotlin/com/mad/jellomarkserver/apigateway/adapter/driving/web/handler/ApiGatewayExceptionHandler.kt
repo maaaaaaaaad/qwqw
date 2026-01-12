@@ -3,6 +3,8 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.handler
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ErrorResponse
 import com.mad.jellomarkserver.auth.core.domain.exception.*
 import com.mad.jellomarkserver.beautishop.core.domain.exception.*
+import com.mad.jellomarkserver.category.core.domain.exception.CategoryNotFoundException
+import com.mad.jellomarkserver.category.core.domain.exception.UnauthorizedShopAccessException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
@@ -191,6 +193,16 @@ class ApiGatewayExceptionHandler {
     @ExceptionHandler(DuplicateReviewException::class)
     fun handleDuplicateReview(ex: DuplicateReviewException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(CategoryNotFoundException::class)
+    fun handleCategoryNotFound(ex: CategoryNotFoundException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
+    }
+
+    @ExceptionHandler(UnauthorizedShopAccessException::class)
+    fun handleUnauthorizedShopAccess(ex: UnauthorizedShopAccessException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
     }
 
     @ExceptionHandler(Exception::class)

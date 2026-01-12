@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.beautishop.adapter.driving.web.response
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.Beautishop
+import com.mad.jellomarkserver.category.core.domain.model.Category
 import java.time.Instant
 import java.util.*
 
@@ -17,11 +18,26 @@ data class BeautishopResponse(
     val image: String?,
     val averageRating: Double,
     val reviewCount: Int,
+    val categories: List<CategorySummary>,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
+    data class CategorySummary(
+        val id: String,
+        val name: String
+    ) {
+        companion object {
+            fun from(category: Category): CategorySummary {
+                return CategorySummary(
+                    id = category.id.value.toString(),
+                    name = category.name.value
+                )
+            }
+        }
+    }
+
     companion object {
-        fun from(beautishop: Beautishop): BeautishopResponse {
+        fun from(beautishop: Beautishop, categories: List<Category> = emptyList()): BeautishopResponse {
             return BeautishopResponse(
                 id = beautishop.id.value,
                 name = beautishop.name.value,
@@ -35,6 +51,7 @@ data class BeautishopResponse(
                 image = beautishop.image?.value,
                 averageRating = beautishop.averageRating,
                 reviewCount = beautishop.reviewCount,
+                categories = categories.map { CategorySummary.from(it) },
                 createdAt = beautishop.createdAt,
                 updatedAt = beautishop.updatedAt
             )

@@ -17,7 +17,8 @@ class WebConfig(
                 "/api/owners/sign-up",
                 "/api/auth/authenticate",
                 "/api/auth/refresh",
-                "/api/auth/kakao"
+                "/api/auth/kakao",
+                "/api/categories"
             )
     }
 }
