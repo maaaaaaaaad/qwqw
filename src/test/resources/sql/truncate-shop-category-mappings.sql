@@ -1,0 +1,1 @@
+TRUNCATE TABLE shop_category_mappings;
