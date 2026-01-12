@@ -7,4 +7,5 @@ import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
 interface MemberPort {
     fun save(member: Member): Member
     fun findBySocial(provider: SocialProvider, socialId: SocialId): Member?
+    fun findBySocialId(socialId: SocialId): Member?
 }

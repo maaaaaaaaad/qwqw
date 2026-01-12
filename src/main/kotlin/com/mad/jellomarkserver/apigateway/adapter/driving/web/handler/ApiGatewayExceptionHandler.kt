@@ -4,6 +4,7 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ErrorResp
 import com.mad.jellomarkserver.auth.core.domain.exception.*
 import com.mad.jellomarkserver.beautishop.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
+import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
@@ -160,6 +161,36 @@ class ApiGatewayExceptionHandler {
     @ExceptionHandler(BeautishopNotFoundException::class)
     fun handleBeautishopNotFound(ex: BeautishopNotFoundException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
+    }
+
+    @ExceptionHandler(InvalidReviewRatingException::class)
+    fun handleInvalidReviewRating(ex: InvalidReviewRatingException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidReviewContentException::class)
+    fun handleInvalidReviewContent(ex: InvalidReviewContentException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidReviewImagesException::class)
+    fun handleInvalidReviewImages(ex: InvalidReviewImagesException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(ReviewNotFoundException::class)
+    fun handleReviewNotFound(ex: ReviewNotFoundException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
+    }
+
+    @ExceptionHandler(UnauthorizedReviewAccessException::class)
+    fun handleUnauthorizedReviewAccess(ex: UnauthorizedReviewAccessException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
+    }
+
+    @ExceptionHandler(DuplicateReviewException::class)
+    fun handleDuplicateReview(ex: DuplicateReviewException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
     }
 
     @ExceptionHandler(Exception::class)

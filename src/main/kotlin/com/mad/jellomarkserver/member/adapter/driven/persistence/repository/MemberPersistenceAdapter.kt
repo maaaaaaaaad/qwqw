@@ -41,4 +41,9 @@ class MemberPersistenceAdapter(
         return jpaRepository.findBySocialProviderAndSocialId(provider.name, socialId.value)
             ?.let { mapper.toDomain(it) }
     }
+
+    override fun findBySocialId(socialId: SocialId): Member? {
+        return jpaRepository.findBySocialId(socialId.value)
+            ?.let { mapper.toDomain(it) }
+    }
 }

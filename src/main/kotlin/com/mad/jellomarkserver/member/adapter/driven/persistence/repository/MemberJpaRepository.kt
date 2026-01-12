@@ -6,4 +6,5 @@ import java.util.*
 
 interface MemberJpaRepository : JpaRepository<MemberJpaEntity, UUID> {
     fun findBySocialProviderAndSocialId(socialProvider: String, socialId: String): MemberJpaEntity?
+    fun findBySocialId(socialId: String): MemberJpaEntity?
 }
