@@ -49,8 +49,8 @@ data class BeautishopResponse(
                 operatingTime = beautishop.operatingTime.schedule,
                 description = beautishop.description?.value,
                 image = beautishop.image?.value,
-                averageRating = beautishop.averageRating,
-                reviewCount = beautishop.reviewCount,
+                averageRating = beautishop.averageRating.value,
+                reviewCount = beautishop.reviewCount.value,
                 categories = categories.map { CategorySummary.from(it) },
                 createdAt = beautishop.createdAt,
                 updatedAt = beautishop.updatedAt

@@ -20,8 +20,8 @@ class BeautishopMapperImpl : BeautishopMapper {
             operatingTime = serializeOperatingTime(domain.operatingTime),
             description = domain.description?.value,
             image = domain.image?.value,
-            averageRating = domain.averageRating,
-            reviewCount = domain.reviewCount,
+            averageRating = domain.averageRating.value,
+            reviewCount = domain.reviewCount.value,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt
         )
@@ -37,6 +37,8 @@ class BeautishopMapperImpl : BeautishopMapper {
         val operatingTime = deserializeOperatingTime(entity.operatingTime)
         val description = entity.description?.let { ShopDescription.of(it) }
         val image = entity.image?.let { ShopImage.of(it) }
+        val averageRating = AverageRating.of(entity.averageRating)
+        val reviewCount = ReviewCount.of(entity.reviewCount)
 
         return Beautishop.reconstruct(
             id = id,
@@ -48,8 +50,8 @@ class BeautishopMapperImpl : BeautishopMapper {
             operatingTime = operatingTime,
             description = description,
             image = image,
-            averageRating = entity.averageRating,
-            reviewCount = entity.reviewCount,
+            averageRating = averageRating,
+            reviewCount = reviewCount,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt
         )

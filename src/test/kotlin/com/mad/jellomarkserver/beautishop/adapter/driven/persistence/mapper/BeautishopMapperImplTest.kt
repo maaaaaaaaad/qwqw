@@ -104,8 +104,8 @@ class BeautishopMapperImplTest {
             operatingTime = operatingTime,
             description = description,
             image = image,
-            averageRating = 4.5,
-            reviewCount = 10,
+            averageRating = AverageRating.of(4.5),
+            reviewCount = ReviewCount.of(10),
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -149,8 +149,8 @@ class BeautishopMapperImplTest {
             operatingTime = operatingTime,
             description = null,
             image = null,
-            averageRating = 0.0,
-            reviewCount = 0,
+            averageRating = AverageRating.zero(),
+            reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -192,8 +192,8 @@ class BeautishopMapperImplTest {
             operatingTime = operatingTime,
             description = description,
             image = image,
-            averageRating = 4.2,
-            reviewCount = 5,
+            averageRating = AverageRating.of(4.2),
+            reviewCount = ReviewCount.of(5),
             createdAt = createdAt,
             updatedAt = updatedAt
         )

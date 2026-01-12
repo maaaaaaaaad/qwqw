@@ -93,8 +93,8 @@ class BeautishopTest {
             operatingTime = operatingTime,
             description = null,
             image = null,
-            averageRating = 0.0,
-            reviewCount = 0,
+            averageRating = AverageRating.zero(),
+            reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -160,8 +160,8 @@ class BeautishopTest {
             operatingTime = operatingTime,
             description = null,
             image = null,
-            averageRating = 0.0,
-            reviewCount = 0,
+            averageRating = AverageRating.zero(),
+            reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -175,8 +175,8 @@ class BeautishopTest {
             operatingTime = operatingTime,
             description = null,
             image = null,
-            averageRating = 0.0,
-            reviewCount = 0,
+            averageRating = AverageRating.zero(),
+            reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
             updatedAt = updatedAt
         )

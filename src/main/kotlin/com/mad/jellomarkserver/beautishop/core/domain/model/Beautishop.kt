@@ -13,8 +13,8 @@ class Beautishop private constructor(
     val operatingTime: OperatingTime,
     val description: ShopDescription?,
     val image: ShopImage?,
-    val averageRating: Double,
-    val reviewCount: Int,
+    val averageRating: AverageRating,
+    val reviewCount: ReviewCount,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
@@ -41,8 +41,8 @@ class Beautishop private constructor(
                 operatingTime = operatingTime,
                 description = description,
                 image = image,
-                averageRating = 0.0,
-                reviewCount = 0,
+                averageRating = AverageRating.zero(),
+                reviewCount = ReviewCount.zero(),
                 createdAt = now,
                 updatedAt = now
             )
@@ -58,8 +58,8 @@ class Beautishop private constructor(
             operatingTime: OperatingTime,
             description: ShopDescription?,
             image: ShopImage?,
-            averageRating: Double,
-            reviewCount: Int,
+            averageRating: AverageRating,
+            reviewCount: ReviewCount,
             createdAt: Instant,
             updatedAt: Instant
         ): Beautishop {
@@ -105,8 +105,8 @@ class Beautishop private constructor(
     }
 
     fun updateStats(
-        averageRating: Double,
-        reviewCount: Int
+        averageRating: AverageRating,
+        reviewCount: ReviewCount
     ): Beautishop {
         return Beautishop(
             id = this.id,
