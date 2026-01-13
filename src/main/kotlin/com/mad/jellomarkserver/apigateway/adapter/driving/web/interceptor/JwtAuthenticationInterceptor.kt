@@ -14,7 +14,9 @@ class JwtAuthenticationInterceptor(
     private val publicGetPatterns = listOf(
         "/api/beautishops",
         "/api/beautishops/[^/]+",
-        "/api/beautishops/[^/]+/reviews"
+        "/api/beautishops/[^/]+/reviews",
+        "/api/beautishops/[^/]+/treatments",
+        "/api/treatments/[^/]+"
     )
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {

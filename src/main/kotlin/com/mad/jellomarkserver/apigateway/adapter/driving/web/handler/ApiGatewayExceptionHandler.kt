@@ -6,11 +6,12 @@ import com.mad.jellomarkserver.beautishop.core.domain.exception.*
 import com.mad.jellomarkserver.category.core.domain.exception.CategoryNotFoundException
 import com.mad.jellomarkserver.category.core.domain.exception.UnauthorizedShopAccessException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
-import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.owner.core.domain.exception.*
+import com.mad.jellomarkserver.review.core.domain.exception.*
+import com.mad.jellomarkserver.treatment.core.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
@@ -207,6 +208,36 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(UnauthorizedBeautishopAccessException::class)
     fun handleUnauthorizedBeautishopAccess(ex: UnauthorizedBeautishopAccessException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
+    }
+
+    @ExceptionHandler(InvalidTreatmentNameException::class)
+    fun handleInvalidTreatmentName(ex: InvalidTreatmentNameException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidTreatmentPriceException::class)
+    fun handleInvalidTreatmentPrice(ex: InvalidTreatmentPriceException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidTreatmentDurationException::class)
+    fun handleInvalidTreatmentDuration(ex: InvalidTreatmentDurationException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidTreatmentDescriptionException::class)
+    fun handleInvalidTreatmentDescription(ex: InvalidTreatmentDescriptionException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(TreatmentNotFoundException::class)
+    fun handleTreatmentNotFound(ex: TreatmentNotFoundException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
+    }
+
+    @ExceptionHandler(UnauthorizedTreatmentAccessException::class)
+    fun handleUnauthorizedTreatmentAccess(ex: UnauthorizedTreatmentAccessException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
     }
 

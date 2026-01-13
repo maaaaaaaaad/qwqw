@@ -17,7 +17,8 @@ class HexagonalArchitectureTest {
             .withImportOption(ImportOption.DoNotIncludeTests())
             .importPackages(BASE_PACKAGE)
 
-        private val domainPackages = listOf("auth", "member", "owner", "beautishop", "review", "category")
+        private val domainPackages =
+            listOf("auth", "member", "owner", "beautishop", "review", "category", "treatment")
     }
 
     @Nested
