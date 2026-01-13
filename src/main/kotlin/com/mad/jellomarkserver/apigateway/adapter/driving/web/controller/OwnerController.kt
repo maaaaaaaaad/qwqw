@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
-import com.mad.jellomarkserver.owner.adapter.driving.web.response.OwnerResponse
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.OwnerResponse
 import com.mad.jellomarkserver.owner.port.driving.GetCurrentOwnerCommand
 import com.mad.jellomarkserver.owner.port.driving.GetCurrentOwnerUseCase
 import jakarta.servlet.http.HttpServletRequest

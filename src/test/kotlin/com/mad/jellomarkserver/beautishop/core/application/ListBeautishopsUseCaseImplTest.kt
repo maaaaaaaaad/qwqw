@@ -4,13 +4,17 @@ import com.mad.jellomarkserver.beautishop.core.domain.model.*
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.beautishop.port.driving.ListBeautishopsCommand
 import com.mad.jellomarkserver.beautishop.port.driving.ListBeautishopsUseCase
-import org.junit.jupiter.api.Assertions.*
+import com.mad.jellomarkserver.beautishop.port.driving.SortBy
+import com.mad.jellomarkserver.beautishop.port.driving.SortOrder
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 
@@ -36,7 +40,7 @@ class ListBeautishopsUseCaseImplTest {
         val pageable = PageRequest.of(0, 20)
         val page = PageImpl(beautishops, pageable, 2)
 
-        `when`(beautishopPort.findAllPaged(pageable)).thenReturn(page)
+        whenever(beautishopPort.findAllFiltered(any(), any())).thenReturn(page)
 
         val command = ListBeautishopsCommand(page = 0, size = 20)
         val result = useCase.execute(command)
@@ -57,7 +61,7 @@ class ListBeautishopsUseCaseImplTest {
         val pageable = PageRequest.of(0, 2)
         val page = PageImpl(beautishops, pageable, 5)
 
-        `when`(beautishopPort.findAllPaged(pageable)).thenReturn(page)
+        whenever(beautishopPort.findAllFiltered(any(), any())).thenReturn(page)
 
         val command = ListBeautishopsCommand(page = 0, size = 2)
         val result = useCase.execute(command)
@@ -72,7 +76,7 @@ class ListBeautishopsUseCaseImplTest {
         val pageable = PageRequest.of(0, 20)
         val page = PageImpl<Beautishop>(emptyList(), pageable, 0)
 
-        `when`(beautishopPort.findAllPaged(pageable)).thenReturn(page)
+        whenever(beautishopPort.findAllFiltered(any(), any())).thenReturn(page)
 
         val command = ListBeautishopsCommand(page = 0, size = 20)
         val result = useCase.execute(command)
@@ -82,13 +86,65 @@ class ListBeautishopsUseCaseImplTest {
         assertEquals(0, result.totalElements)
     }
 
+    @Test
+    fun `should calculate distance when latitude and longitude provided`() {
+        val beautishops = listOf(
+            createBeautishopWithGps("Shop A", 37.5665, 126.9780),
+            createBeautishopWithGps("Shop B", 37.4979, 127.0276)
+        )
+        val pageable = PageRequest.of(0, 20)
+        val page = PageImpl(beautishops, pageable, 2)
+
+        whenever(beautishopPort.findAllFiltered(any(), any())).thenReturn(page)
+
+        val command = ListBeautishopsCommand(
+            page = 0,
+            size = 20,
+            latitude = 37.5000,
+            longitude = 127.0000
+        )
+        val result = useCase.execute(command)
+
+        assertEquals(2, result.items.size)
+        assertNotNull(result.distances[0])
+        assertNotNull(result.distances[1])
+    }
+
+    @Test
+    fun `should sort by distance when sortBy is DISTANCE`() {
+        val beautishops = listOf(
+            createBeautishopWithGps("Shop A", 37.5665, 126.9780),
+            createBeautishopWithGps("Shop B", 37.4979, 127.0276)
+        )
+        val pageable = PageRequest.of(0, 20)
+        val page = PageImpl(beautishops, pageable, 2)
+
+        whenever(beautishopPort.findAllFiltered(any(), any())).thenReturn(page)
+
+        val command = ListBeautishopsCommand(
+            page = 0,
+            size = 20,
+            sortBy = SortBy.DISTANCE,
+            sortOrder = SortOrder.ASC,
+            latitude = 37.4979,
+            longitude = 127.0276
+        )
+        val result = useCase.execute(command)
+
+        assertEquals("Shop B", result.items[0].name.value)
+    }
+
     private fun createBeautishop(name: String): Beautishop {
+        return createBeautishopWithGps(name, 37.5665, 126.9780)
+    }
+
+    private fun createBeautishopWithGps(name: String, latitude: Double, longitude: Double): Beautishop {
         return Beautishop.create(
             name = ShopName.of(name),
             regNum = ShopRegNum.of("123-45-67890"),
             phoneNumber = ShopPhoneNumber.of("010-1234-5678"),
             address = ShopAddress.of("서울특별시 강남구 테헤란로 123"),
-            gps = ShopGPS.of(37.5665, 126.9780),
+            gps = ShopGPS.of(latitude, longitude),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = ShopDescription.of("아름다운 네일샵입니다"),
             image = ShopImage.of("https://example.com/image.jpg")

@@ -13,6 +13,7 @@ interface BeautishopPort {
     fun findByOwnerId(ownerId: OwnerId): List<Beautishop>
     fun findByShopRegNum(shopRegNum: ShopRegNum): Beautishop?
     fun findAllPaged(pageable: Pageable): Page<Beautishop>
+    fun findAllFiltered(criteria: BeautishopFilterCriteria, pageable: Pageable): Page<Beautishop>
     fun delete(id: ShopId)
     fun updateStats(id: ShopId, averageRating: Double, reviewCount: Int)
 }

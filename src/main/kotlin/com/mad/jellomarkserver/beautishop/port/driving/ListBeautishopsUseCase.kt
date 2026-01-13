@@ -8,6 +8,7 @@ fun interface ListBeautishopsUseCase {
 
 data class PagedBeautishops(
     val items: List<Beautishop>,
+    val distances: List<Double?>,
     val hasNext: Boolean,
     val totalElements: Long
 )

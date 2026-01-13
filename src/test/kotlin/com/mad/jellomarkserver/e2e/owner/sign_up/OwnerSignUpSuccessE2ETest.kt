@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.e2e.owner.sign_up
 
-import com.mad.jellomarkserver.owner.adapter.driving.web.request.OwnerSignUpRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpOwnerRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,8 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 @Sql(
     scripts = [
         "classpath:sql/truncate-owners.sql",
-        "classpath:sql/truncate-auths.sql"
+        "classpath:sql/truncate-auths.sql",
+        "classpath:sql/truncate-refresh-tokens.sql"
     ],
     executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
 )
@@ -35,7 +36,7 @@ class OwnerSignUpSuccessE2ETest {
 
     @Test
     fun `success signup for owner`() {
-        val body = OwnerSignUpRequest(
+        val body = SignUpOwnerRequest(
             businessNumber = "123456789",
             phoneNumber = "010-1234-5678",
             nickname = "shop",
@@ -44,7 +45,7 @@ class OwnerSignUpSuccessE2ETest {
         )
 
         val response = rest.exchange(
-            url("/api/owners/sign-up"),
+            url("/api/sign-up/owner"),
             HttpMethod.POST,
             HttpEntity(body, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {}

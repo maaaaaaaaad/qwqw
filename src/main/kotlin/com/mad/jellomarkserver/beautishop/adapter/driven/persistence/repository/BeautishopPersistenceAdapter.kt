@@ -1,16 +1,23 @@
 package com.mad.jellomarkserver.beautishop.adapter.driven.persistence.repository
 
 import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.mapper.BeautishopMapper
+import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.specification.BeautishopSpecifications
 import com.mad.jellomarkserver.beautishop.core.domain.exception.DuplicateShopRegNumException
 import com.mad.jellomarkserver.beautishop.core.domain.model.Beautishop
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopRegNum
+import com.mad.jellomarkserver.beautishop.port.driven.BeautishopFilterCriteria
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
+import com.mad.jellomarkserver.beautishop.port.driving.SortBy
+import com.mad.jellomarkserver.beautishop.port.driving.SortOrder
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 
 @Component
@@ -47,6 +54,35 @@ class BeautishopPersistenceAdapter(
 
     override fun findAllPaged(pageable: Pageable): Page<Beautishop> {
         return jpaRepository.findAll(pageable).map { mapper.toDomain(it) }
+    }
+
+    override fun findAllFiltered(criteria: BeautishopFilterCriteria, pageable: Pageable): Page<Beautishop> {
+        val spec = Specification.where(BeautishopSpecifications.hasCategory(criteria.categoryId))
+            .and(BeautishopSpecifications.hasMinRating(criteria.minRating))
+
+        val sortedPageable = createSortedPageable(criteria, pageable)
+
+        return jpaRepository.findAll(spec, sortedPageable).map { mapper.toDomain(it) }
+    }
+
+    private fun createSortedPageable(criteria: BeautishopFilterCriteria, pageable: Pageable): Pageable {
+        if (criteria.sortBy == SortBy.DISTANCE) {
+            return pageable
+        }
+
+        val sortField = when (criteria.sortBy) {
+            SortBy.RATING -> "averageRating"
+            SortBy.REVIEW_COUNT -> "reviewCount"
+            SortBy.CREATED_AT -> "createdAt"
+            SortBy.DISTANCE -> "createdAt"
+        }
+
+        val direction = when (criteria.sortOrder) {
+            SortOrder.ASC -> Sort.Direction.ASC
+            SortOrder.DESC -> Sort.Direction.DESC
+        }
+
+        return PageRequest.of(pageable.pageNumber, pageable.pageSize, Sort.by(direction, sortField))
     }
 
     override fun delete(id: ShopId) {

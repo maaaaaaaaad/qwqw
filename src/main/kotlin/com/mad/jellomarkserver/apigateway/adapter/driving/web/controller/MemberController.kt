@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
-import com.mad.jellomarkserver.member.adapter.driving.web.response.MemberResponse
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.MemberResponse
 import com.mad.jellomarkserver.member.port.driving.GetCurrentMemberCommand
 import com.mad.jellomarkserver.member.port.driving.GetCurrentMemberUseCase
 import jakarta.servlet.http.HttpServletRequest

@@ -1,6 +1,6 @@
 package com.mad.jellomarkserver.e2e.owner.sign_up
 
-import com.mad.jellomarkserver.owner.adapter.driving.web.request.OwnerSignUpRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpOwnerRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,8 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 @Sql(
     scripts = [
         "classpath:sql/truncate-owners.sql",
-        "classpath:sql/truncate-auths.sql"
+        "classpath:sql/truncate-auths.sql",
+        "classpath:sql/truncate-refresh-tokens.sql"
     ],
     executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
 )
@@ -35,24 +36,24 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
 
     @Test
     fun `409 duplicate phone number`() {
-        val first = OwnerSignUpRequest(
+        val first = SignUpOwnerRequest(
             businessNumber = "111111111", phoneNumber = "010-1234-5678", nickname = "first",
             email = "first@example.com", password = "Password123!",
         )
-        val second = OwnerSignUpRequest(
+        val second = SignUpOwnerRequest(
             businessNumber = "222222222", phoneNumber = "010-1234-5678", nickname = "second",
             email = "second@example.com", password = "Password456!",
         )
 
         val r1 = rest.exchange(
-            url("/api/owners/sign-up"),
+            url("/api/sign-up/owner"),
             HttpMethod.POST,
             HttpEntity(first, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {})
         assertThat(r1.statusCode).isEqualTo(HttpStatus.CREATED)
 
         val r2 = rest.exchange(
-            url("/api/owners/sign-up"),
+            url("/api/sign-up/owner"),
             HttpMethod.POST,
             HttpEntity(second, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {})
@@ -64,12 +65,12 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
 
     @Test
     fun `422 when phone number format is invalid`() {
-        val body = OwnerSignUpRequest(
+        val body = SignUpOwnerRequest(
             businessNumber = "123456789", phoneNumber = "invalid-phone", nickname = "test",
             email = "test@example.com", password = "Password123!",
         )
         val response = rest.exchange(
-            url("/api/owners/sign-up"),
+            url("/api/sign-up/owner"),
             HttpMethod.POST,
             HttpEntity(body, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {})
@@ -81,7 +82,7 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
 
     @Test
     fun `422 when phone number is null`() {
-        val body = OwnerSignUpRequest(
+        val body = SignUpOwnerRequest(
             businessNumber = "123456789",
             phoneNumber = "",
             nickname = "test",
@@ -89,7 +90,7 @@ class OwnerSignUpPhoneNumberExceptionE2ETest {
             password = "Password123!",
         )
         val response = rest.exchange(
-            url("/api/owners/sign-up"),
+            url("/api/sign-up/owner"),
             HttpMethod.POST,
             HttpEntity(body, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {})
