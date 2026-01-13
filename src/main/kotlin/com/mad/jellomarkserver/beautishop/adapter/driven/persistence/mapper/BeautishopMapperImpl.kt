@@ -1,5 +1,6 @@
 package com.mad.jellomarkserver.beautishop.adapter.driven.persistence.mapper
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.BeautishopJpaEntity
 import com.mad.jellomarkserver.beautishop.core.domain.model.*
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
@@ -63,10 +64,18 @@ class BeautishopMapperImpl : BeautishopMapper {
         }
     }
 
-    private fun deserializeOperatingTime(json: String): OperatingTime {
-        val schedule = json.split(",").associate { entry ->
-            val (day, time) = entry.split(":", limit = 2)
-            day to time
+    private fun deserializeOperatingTime(data: String): OperatingTime {
+        val schedule = if (data.trim().startsWith("{")) {
+            val objectMapper = ObjectMapper()
+
+            @Suppress("UNCHECKED_CAST")
+            val jsonMap = objectMapper.readValue(data, Map::class.java) as Map<String, String>
+            jsonMap.mapKeys { it.key.lowercase() }
+        } else {
+            data.split(",").associate { entry ->
+                val (day, time) = entry.split(":", limit = 2)
+                day to time
+            }
         }
         return OperatingTime.of(schedule)
     }
