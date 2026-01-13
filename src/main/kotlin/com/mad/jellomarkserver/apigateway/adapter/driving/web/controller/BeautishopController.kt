@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.CreateBeautishopRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SetShopCategoriesRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.UpdateBeautishopRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.BeautishopResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.CategoryResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.PagedBeautishopsResponse
@@ -21,6 +22,8 @@ import java.util.*
 @RestController
 class BeautishopController(
     private val createBeautishopUseCase: CreateBeautishopUseCase,
+    private val updateBeautishopUseCase: UpdateBeautishopUseCase,
+    private val deleteBeautishopUseCase: DeleteBeautishopUseCase,
     private val getBeautishopUseCase: GetBeautishopUseCase,
     private val listBeautishopsUseCase: ListBeautishopsUseCase,
     private val ownerPort: OwnerPort,
@@ -68,6 +71,61 @@ class BeautishopController(
             ShopId.from(UUID.fromString(shopId))
         )
         return BeautishopResponse.from(beautishop, categories)
+    }
+
+    @PutMapping("/api/beautishops/{shopId}")
+    fun updateBeautishop(
+        @PathVariable shopId: String,
+        @RequestBody request: UpdateBeautishopRequest,
+        servletRequest: HttpServletRequest
+    ): BeautishopResponse {
+        val email = servletRequest.getAttribute("email") as String
+        val userType = servletRequest.getAttribute("userType") as String
+
+        if (userType != "OWNER") {
+            throw IllegalStateException("Only owners can update beautishops")
+        }
+
+        val owner = ownerPort.findByEmail(OwnerEmail.of(email))
+            ?: throw OwnerNotFoundException(email)
+
+        val command = UpdateBeautishopCommand(
+            shopId = shopId,
+            ownerId = owner.id.value.toString(),
+            operatingTime = request.operatingTime,
+            shopDescription = request.shopDescription,
+            shopImage = request.shopImage
+        )
+
+        val beautishop = updateBeautishopUseCase.update(command)
+        val categories = shopCategoryPort.findCategoriesByShopId(
+            ShopId.from(UUID.fromString(shopId))
+        )
+        return BeautishopResponse.from(beautishop, categories)
+    }
+
+    @DeleteMapping("/api/beautishops/{shopId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteBeautishop(
+        @PathVariable shopId: String,
+        servletRequest: HttpServletRequest
+    ) {
+        val email = servletRequest.getAttribute("email") as String
+        val userType = servletRequest.getAttribute("userType") as String
+
+        if (userType != "OWNER") {
+            throw IllegalStateException("Only owners can delete beautishops")
+        }
+
+        val owner = ownerPort.findByEmail(OwnerEmail.of(email))
+            ?: throw OwnerNotFoundException(email)
+
+        val command = DeleteBeautishopCommand(
+            shopId = shopId,
+            ownerId = owner.id.value.toString()
+        )
+
+        deleteBeautishopUseCase.delete(command)
     }
 
     @GetMapping("/api/beautishops")

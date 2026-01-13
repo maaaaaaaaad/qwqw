@@ -205,6 +205,11 @@ class ApiGatewayExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
     }
 
+    @ExceptionHandler(UnauthorizedBeautishopAccessException::class)
+    fun handleUnauthorizedBeautishopAccess(ex: UnauthorizedBeautishopAccessException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleGeneric(ex: Exception): ResponseEntity<ErrorResponse> {
         val body = ErrorResponse(
