@@ -61,8 +61,8 @@ class UpdateReviewUseCaseImplTest {
 
         val result = useCase.execute(command)
 
-        assertEquals(4, result.rating.value)
-        assertEquals("수정된 리뷰 내용입니다. 다시 방문해보니 좋았어요.", result.content.value)
+        assertEquals(4, result.rating?.value)
+        assertEquals("수정된 리뷰 내용입니다. 다시 방문해보니 좋았어요.", result.content?.value)
         assertEquals(1, result.images?.urls?.size)
         verify(shopReviewPort).save(any())
     }
@@ -172,7 +172,7 @@ class UpdateReviewUseCaseImplTest {
 
         val result = useCase.execute(command)
 
-        assertEquals(3, result.rating.value)
+        assertEquals(3, result.rating?.value)
         assertNull(result.images)
     }
 

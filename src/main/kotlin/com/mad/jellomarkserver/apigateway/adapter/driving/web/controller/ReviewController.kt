@@ -68,9 +68,10 @@ class ReviewController(
     fun listReviews(
         @PathVariable shopId: String,
         @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int
+        @RequestParam(defaultValue = "20") size: Int,
+        @RequestParam(defaultValue = "createdAt,desc") sort: String
     ): PagedReviewsResponse {
-        val command = ListReviewsCommand(shopId = shopId, page = page, size = size)
+        val command = ListReviewsCommand(shopId = shopId, page = page, size = size, sort = sort)
         val result = listReviewsUseCase.execute(command)
         return PagedReviewsResponse.from(result)
     }

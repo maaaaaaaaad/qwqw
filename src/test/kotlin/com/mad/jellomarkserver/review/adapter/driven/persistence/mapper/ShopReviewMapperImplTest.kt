@@ -3,8 +3,12 @@ package com.mad.jellomarkserver.review.adapter.driven.persistence.mapper
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.review.adapter.driven.persistence.entity.ShopReviewJpaEntity
-import com.mad.jellomarkserver.review.core.domain.model.*
-import org.junit.jupiter.api.Assertions.*
+import com.mad.jellomarkserver.review.core.domain.model.ReviewContent
+import com.mad.jellomarkserver.review.core.domain.model.ReviewImages
+import com.mad.jellomarkserver.review.core.domain.model.ReviewRating
+import com.mad.jellomarkserver.review.core.domain.model.ShopReview
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.Instant
@@ -81,8 +85,8 @@ class ShopReviewMapperImplTest {
         assertEquals(id, domain.id.value)
         assertEquals(shopId, domain.shopId.value)
         assertEquals(memberId, domain.memberId.value)
-        assertEquals(4, domain.rating.value)
-        assertEquals("데이터베이스에서 복원된 리뷰입니다.", domain.content.value)
+        assertEquals(4, domain.rating?.value)
+        assertEquals("데이터베이스에서 복원된 리뷰입니다.", domain.content?.value)
         assertEquals(2, domain.images?.urls?.size)
         assertEquals("https://example.com/img1.jpg", domain.images?.urls?.get(0))
         assertEquals(createdAt, domain.createdAt)

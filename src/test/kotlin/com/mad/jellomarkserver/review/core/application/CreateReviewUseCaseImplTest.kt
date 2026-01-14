@@ -3,10 +3,7 @@ package com.mad.jellomarkserver.review.core.application
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.beautishop.port.driving.UpdateBeautishopStatsUseCase
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.review.core.domain.exception.DuplicateReviewException
-import com.mad.jellomarkserver.review.core.domain.exception.InvalidReviewContentException
-import com.mad.jellomarkserver.review.core.domain.exception.InvalidReviewImagesException
-import com.mad.jellomarkserver.review.core.domain.exception.InvalidReviewRatingException
+import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.review.core.domain.model.ShopReview
 import com.mad.jellomarkserver.review.port.driven.ShopReviewPort
 import com.mad.jellomarkserver.review.port.driving.CreateReviewCommand
@@ -70,8 +67,8 @@ class CreateReviewUseCaseImplTest {
         assertNotNull(result.id)
         assertEquals(shopId.value, result.shopId.value)
         assertEquals(memberId.value, result.memberId.value)
-        assertEquals(5, result.rating.value)
-        assertEquals("정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.", result.content.value)
+        assertEquals(5, result.rating?.value)
+        assertEquals("정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.", result.content?.value)
         assertEquals(2, result.images?.urls?.size)
         assertNotNull(result.createdAt)
         assertNotNull(result.updatedAt)
@@ -250,6 +247,104 @@ class CreateReviewUseCaseImplTest {
 
         assertTrue(exception.message!!.contains(shopId.value.toString()))
         assertTrue(exception.message!!.contains(memberId.value.toString()))
+    }
+
+    @Test
+    fun `should create review with rating only without content`() {
+        val shopId = ShopId.new()
+        val memberId = MemberId.new()
+        val command = CreateReviewCommand(
+            shopId = shopId.value.toString(),
+            memberId = memberId.value.toString(),
+            rating = 5,
+            content = null,
+            images = null
+        )
+
+        `when`(
+            shopReviewPort.existsByShopIdAndMemberId(
+                ArgumentMatchers.any() ?: shopId,
+                ArgumentMatchers.any() ?: memberId
+            )
+        ).thenReturn(false)
+
+        `when`(
+            shopReviewPort.save(
+                ArgumentMatchers.any() ?: createDummyReview()
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as ShopReview
+        }
+
+        val result = useCase.execute(command)
+
+        assertNotNull(result)
+        assertEquals(5, result.rating?.value)
+        assertNull(result.content)
+    }
+
+    @Test
+    fun `should create review with content only without rating`() {
+        val shopId = ShopId.new()
+        val memberId = MemberId.new()
+        val command = CreateReviewCommand(
+            shopId = shopId.value.toString(),
+            memberId = memberId.value.toString(),
+            rating = null,
+            content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
+            images = null
+        )
+
+        `when`(
+            shopReviewPort.existsByShopIdAndMemberId(
+                ArgumentMatchers.any() ?: shopId,
+                ArgumentMatchers.any() ?: memberId
+            )
+        ).thenReturn(false)
+
+        `when`(
+            shopReviewPort.save(
+                ArgumentMatchers.any() ?: createDummyReview()
+            )
+        ).thenAnswer { invocation ->
+            invocation.arguments[0] as ShopReview
+        }
+
+        val result = useCase.execute(command)
+
+        assertNotNull(result)
+        assertNull(result.rating)
+        assertEquals("정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.", result.content?.value)
+    }
+
+    @Test
+    fun `should throw EmptyReviewException when both rating and content are null`() {
+        val command = CreateReviewCommand(
+            shopId = ShopId.new().value.toString(),
+            memberId = MemberId.new().value.toString(),
+            rating = null,
+            content = null,
+            images = null
+        )
+
+        assertFailsWith<EmptyReviewException> {
+            useCase.execute(command)
+        }
+    }
+
+    @Test
+    fun `should throw EmptyReviewException when rating is null and content is blank`() {
+        val command = CreateReviewCommand(
+            shopId = ShopId.new().value.toString(),
+            memberId = MemberId.new().value.toString(),
+            rating = null,
+            content = "   ",
+            images = null
+        )
+
+        assertFailsWith<EmptyReviewException> {
+            useCase.execute(command)
+        }
     }
 
     private fun createDummyReview(): ShopReview {

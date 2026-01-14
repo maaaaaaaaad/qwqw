@@ -14,8 +14,8 @@ class ShopReviewMapperImpl : ShopReviewMapper {
             id = domain.id.value,
             shopId = domain.shopId.value,
             memberId = domain.memberId.value,
-            rating = domain.rating.value,
-            content = domain.content.value,
+            rating = domain.rating?.value,
+            content = domain.content?.value,
             images = serializeImages(domain.images),
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt
@@ -27,8 +27,8 @@ class ShopReviewMapperImpl : ShopReviewMapper {
             id = ReviewId.from(entity.id),
             shopId = ShopId.from(entity.shopId),
             memberId = MemberId.from(entity.memberId),
-            rating = ReviewRating.of(entity.rating),
-            content = ReviewContent.of(entity.content),
+            rating = entity.rating?.let { ReviewRating.of(it) },
+            content = entity.content?.let { ReviewContent.of(it) },
             images = deserializeImages(entity.images),
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt

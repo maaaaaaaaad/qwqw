@@ -196,6 +196,11 @@ class ApiGatewayExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
     }
 
+    @ExceptionHandler(EmptyReviewException::class)
+    fun handleEmptyReview(ex: EmptyReviewException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
     @ExceptionHandler(CategoryNotFoundException::class)
     fun handleCategoryNotFound(ex: CategoryNotFoundException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)

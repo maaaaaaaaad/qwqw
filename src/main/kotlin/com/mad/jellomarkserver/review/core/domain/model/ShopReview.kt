@@ -9,8 +9,8 @@ class ShopReview private constructor(
     val id: ReviewId,
     val shopId: ShopId,
     val memberId: MemberId,
-    val rating: ReviewRating,
-    val content: ReviewContent,
+    val rating: ReviewRating?,
+    val content: ReviewContent?,
     val images: ReviewImages?,
     val createdAt: Instant,
     val updatedAt: Instant
@@ -19,8 +19,8 @@ class ShopReview private constructor(
         fun create(
             shopId: ShopId,
             memberId: MemberId,
-            rating: ReviewRating,
-            content: ReviewContent,
+            rating: ReviewRating?,
+            content: ReviewContent?,
             images: ReviewImages?,
             clock: Clock = Clock.systemUTC()
         ): ShopReview {
@@ -41,8 +41,8 @@ class ShopReview private constructor(
             id: ReviewId,
             shopId: ShopId,
             memberId: MemberId,
-            rating: ReviewRating,
-            content: ReviewContent,
+            rating: ReviewRating?,
+            content: ReviewContent?,
             images: ReviewImages?,
             createdAt: Instant,
             updatedAt: Instant
@@ -61,8 +61,8 @@ class ShopReview private constructor(
     }
 
     fun update(
-        rating: ReviewRating,
-        content: ReviewContent,
+        rating: ReviewRating?,
+        content: ReviewContent?,
         images: ReviewImages?,
         clock: Clock = Clock.systemUTC()
     ): ShopReview {

@@ -6,6 +6,7 @@ import com.mad.jellomarkserver.review.port.driving.ListReviewsCommand
 import com.mad.jellomarkserver.review.port.driving.ListReviewsUseCase
 import com.mad.jellomarkserver.review.port.driving.PagedReviews
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -16,7 +17,8 @@ class ListReviewsUseCaseImpl(
 
     override fun execute(command: ListReviewsCommand): PagedReviews {
         val shopId = ShopId.from(UUID.fromString(command.shopId))
-        val pageable = PageRequest.of(command.page, command.size)
+        val sort = parseSort(command.sort)
+        val pageable = PageRequest.of(command.page, command.size, sort)
         val page = shopReviewPort.findByShopId(shopId, pageable)
 
         return PagedReviews(
@@ -24,5 +26,26 @@ class ListReviewsUseCaseImpl(
             hasNext = page.hasNext(),
             totalElements = page.totalElements
         )
+    }
+
+    private fun parseSort(sortString: String): Sort {
+        val parts = sortString.split(",")
+        if (parts.size != 2) {
+            return Sort.by(Sort.Direction.DESC, "createdAt")
+        }
+
+        val property = parts[0].trim()
+        val direction = when (parts[1].trim().lowercase()) {
+            "asc" -> Sort.Direction.ASC
+            "desc" -> Sort.Direction.DESC
+            else -> Sort.Direction.DESC
+        }
+
+        val allowedProperties = setOf("createdAt", "rating")
+        if (property !in allowedProperties) {
+            return Sort.by(Sort.Direction.DESC, "createdAt")
+        }
+
+        return Sort.by(direction, property)
     }
 }

@@ -12,7 +12,9 @@ import java.util.*
     ],
     indexes = [
         Index(name = "idx_shop_reviews_shop_id", columnList = "shop_id"),
-        Index(name = "idx_shop_reviews_member_id", columnList = "member_id")
+        Index(name = "idx_shop_reviews_member_id", columnList = "member_id"),
+        Index(name = "idx_shop_reviews_created_at", columnList = "created_at"),
+        Index(name = "idx_shop_reviews_rating", columnList = "rating")
     ]
 )
 class ShopReviewJpaEntity(
@@ -26,11 +28,11 @@ class ShopReviewJpaEntity(
     @Column(name = "member_id", nullable = false)
     var memberId: UUID,
 
-    @Column(name = "rating", nullable = false)
-    var rating: Int,
+    @Column(name = "rating", nullable = true)
+    var rating: Int?,
 
-    @Column(name = "content", nullable = false, length = 500)
-    var content: String,
+    @Column(name = "content", nullable = true, length = 500)
+    var content: String?,
 
     @Column(name = "images", nullable = true, columnDefinition = "TEXT")
     var images: String?,

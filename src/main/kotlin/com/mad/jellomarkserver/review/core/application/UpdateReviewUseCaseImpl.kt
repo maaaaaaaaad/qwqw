@@ -32,8 +32,8 @@ class UpdateReviewUseCaseImpl(
         }
 
         val updatedReview = existingReview.update(
-            rating = ReviewRating.of(command.rating),
-            content = ReviewContent.of(command.content),
+            rating = command.rating?.let { ReviewRating.of(it) } as ReviewRating,
+            content = command.content?.takeIf { it.isNotBlank() }?.let { ReviewContent.of(it) } as ReviewContent,
             images = command.images?.takeIf { it.isNotEmpty() }?.let { ReviewImages.of(it) }
         )
 

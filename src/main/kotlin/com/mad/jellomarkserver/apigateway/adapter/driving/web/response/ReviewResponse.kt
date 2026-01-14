@@ -7,8 +7,8 @@ data class ReviewResponse(
     val id: String,
     val shopId: String,
     val memberId: String,
-    val rating: Int,
-    val content: String,
+    val rating: Int?,
+    val content: String?,
     val images: List<String>?,
     val createdAt: Instant,
     val updatedAt: Instant
@@ -19,8 +19,8 @@ data class ReviewResponse(
                 id = review.id.value.toString(),
                 shopId = review.shopId.value.toString(),
                 memberId = review.memberId.value.toString(),
-                rating = review.rating.value,
-                content = review.content.value,
+                rating = review.rating?.value,
+                content = review.content?.value,
                 images = review.images?.urls,
                 createdAt = review.createdAt,
                 updatedAt = review.updatedAt

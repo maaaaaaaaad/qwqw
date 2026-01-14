@@ -13,12 +13,12 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.*
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 
@@ -300,6 +300,103 @@ class CreateReviewE2ETest {
             url("/api/beautishops/$shopId/reviews"),
             HttpMethod.POST,
             HttpEntity(request, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+    }
+
+    @Test
+    fun `should create review with rating only when content is null`() {
+        val ownerAccessToken = signUpOwnerAndGetAccessToken()
+        val shopId = createBeautishop(ownerAccessToken)
+        val memberAccessToken = loginWithKakaoAndGetAccessToken()
+
+        val requestBody = mapOf(
+            "rating" to 5,
+            "content" to null,
+            "images" to null
+        )
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            set("Authorization", "Bearer $memberAccessToken")
+        }
+
+        val response = rest.exchange(
+            url("/api/beautishops/$shopId/reviews"),
+            HttpMethod.POST,
+            HttpEntity(requestBody, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
+        val json = requireNotNull(response.body)
+        assertThat(json["rating"]).isEqualTo(5)
+        assertThat(json["content"]).isNull()
+
+        val saved = shopReviewJpaRepository.findAll()
+        assertThat(saved).hasSize(1)
+        assertThat(saved[0].rating).isEqualTo(5)
+        assertThat(saved[0].content).isNull()
+    }
+
+    @Test
+    fun `should create review with content only when rating is null`() {
+        val ownerAccessToken = signUpOwnerAndGetAccessToken()
+        val shopId = createBeautishop(ownerAccessToken)
+        val memberAccessToken = loginWithKakaoAndGetAccessToken()
+
+        val requestBody = mapOf(
+            "rating" to null,
+            "content" to "리뷰 내용입니다. 서비스가 좋았습니다.",
+            "images" to null
+        )
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            set("Authorization", "Bearer $memberAccessToken")
+        }
+
+        val response = rest.exchange(
+            url("/api/beautishops/$shopId/reviews"),
+            HttpMethod.POST,
+            HttpEntity(requestBody, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
+        val json = requireNotNull(response.body)
+        assertThat(json["rating"]).isNull()
+        assertThat(json["content"]).isEqualTo("리뷰 내용입니다. 서비스가 좋았습니다.")
+
+        val saved = shopReviewJpaRepository.findAll()
+        assertThat(saved).hasSize(1)
+        assertThat(saved[0].rating).isNull()
+        assertThat(saved[0].content).isEqualTo("리뷰 내용입니다. 서비스가 좋았습니다.")
+    }
+
+    @Test
+    fun `should return 422 when both rating and content are null`() {
+        val ownerAccessToken = signUpOwnerAndGetAccessToken()
+        val shopId = createBeautishop(ownerAccessToken)
+        val memberAccessToken = loginWithKakaoAndGetAccessToken()
+
+        val requestBody = mapOf(
+            "rating" to null,
+            "content" to null,
+            "images" to null
+        )
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            set("Authorization", "Bearer $memberAccessToken")
+        }
+
+        val response = rest.exchange(
+            url("/api/beautishops/$shopId/reviews"),
+            HttpMethod.POST,
+            HttpEntity(requestBody, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {}
         )
 
