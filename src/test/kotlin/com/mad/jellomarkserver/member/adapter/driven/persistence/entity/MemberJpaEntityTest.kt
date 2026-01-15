@@ -3,7 +3,7 @@ package com.mad.jellomarkserver.member.adapter.driven.persistence.entity
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 class MemberJpaEntityTest {
 
@@ -21,6 +21,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -47,6 +48,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -73,6 +75,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -95,6 +98,7 @@ class MemberJpaEntityTest {
                 socialProvider = provider,
                 socialId = "123456789",
                 nickname = "testuser",
+                displayName = "테스트유저",
                 createdAt = Instant.now(),
                 updatedAt = Instant.now()
             )
@@ -117,6 +121,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -143,6 +148,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "한글유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -169,6 +175,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -195,6 +202,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -221,6 +229,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -240,6 +249,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "oldnickname",
+            displayName = "테스트유저",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -257,6 +267,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "old-social-id",
             nickname = "testuser",
+            displayName = "테스트유저",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -274,6 +285,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "testuser",
+            displayName = "테스트유저",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -294,6 +306,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "testuser",
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = initialUpdatedAt
         )
@@ -313,6 +326,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "testuser",
+            displayName = "테스트유저",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -331,6 +345,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "testuser",
+            displayName = "테스트유저",
             createdAt = initialCreatedAt,
             updatedAt = Instant.now()
         )
@@ -355,6 +370,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -381,6 +397,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -400,6 +417,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "kakao-user-1",
             nickname = "user1",
+            displayName = "유저1",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -409,6 +427,7 @@ class MemberJpaEntityTest {
             socialProvider = "NAVER",
             socialId = "naver-user-2",
             nickname = "user2",
+            displayName = "유저2",
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
@@ -428,6 +447,7 @@ class MemberJpaEntityTest {
             socialProvider = "KAKAO",
             socialId = "old-social-id",
             nickname = "oldnickname",
+            displayName = "테스트유저",
             createdAt = Instant.parse("2024-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2024-01-01T00:00:00Z")
         )
@@ -468,6 +488,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -494,6 +515,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -520,6 +542,7 @@ class MemberJpaEntityTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )

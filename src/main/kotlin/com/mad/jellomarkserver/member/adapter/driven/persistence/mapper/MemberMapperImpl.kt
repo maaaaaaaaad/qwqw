@@ -1,11 +1,7 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
-import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
-import com.mad.jellomarkserver.member.core.domain.model.SocialId
-import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
+import com.mad.jellomarkserver.member.core.domain.model.*
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,6 +12,7 @@ class MemberMapperImpl : MemberMapper {
             socialProvider = domain.socialProvider.name,
             socialId = domain.socialId.value,
             nickname = domain.memberNickname.value,
+            displayName = domain.displayName.value,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt
         )
@@ -26,11 +23,13 @@ class MemberMapperImpl : MemberMapper {
         val socialProvider = SocialProvider.valueOf(entity.socialProvider)
         val socialId = SocialId(entity.socialId)
         val memberNickname = MemberNickname.of(entity.nickname)
+        val displayName = MemberDisplayName.of(entity.displayName)
         return Member.reconstruct(
             id = id,
             socialProvider = socialProvider,
             socialId = socialId,
             memberNickname = memberNickname,
+            displayName = displayName,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt
         )

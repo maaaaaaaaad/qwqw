@@ -5,6 +5,7 @@ import com.mad.jellomarkserver.beautishop.port.driving.SortOrder
 import java.util.*
 
 data class BeautishopFilterCriteria(
+    val keyword: String? = null,
     val categoryId: UUID? = null,
     val minRating: Double? = null,
     val sortBy: SortBy = SortBy.CREATED_AT,

@@ -8,6 +8,7 @@ class Member private constructor(
     val socialProvider: SocialProvider,
     val socialId: SocialId,
     val memberNickname: MemberNickname,
+    val displayName: MemberDisplayName,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
@@ -16,10 +17,11 @@ class Member private constructor(
             socialProvider: SocialProvider,
             socialId: SocialId,
             memberNickname: MemberNickname,
+            displayName: MemberDisplayName,
             clock: Clock = Clock.systemUTC()
         ): Member {
             val now = Instant.now(clock)
-            return Member(MemberId.new(), socialProvider, socialId, memberNickname, now, now)
+            return Member(MemberId.new(), socialProvider, socialId, memberNickname, displayName, now, now)
         }
 
         fun reconstruct(
@@ -27,10 +29,11 @@ class Member private constructor(
             socialProvider: SocialProvider,
             socialId: SocialId,
             memberNickname: MemberNickname,
+            displayName: MemberDisplayName,
             createdAt: Instant,
             updatedAt: Instant
         ): Member {
-            return Member(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+            return Member(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
         }
     }
 

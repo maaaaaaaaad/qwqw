@@ -7,6 +7,20 @@ import java.util.*
 
 object BeautishopSpecifications {
 
+    fun hasKeywordContaining(keyword: String?): Specification<BeautishopJpaEntity> {
+        return Specification { root, _, cb ->
+            if (keyword.isNullOrBlank()) {
+                null
+            } else {
+                val lowerKeyword = "%${keyword.lowercase()}%"
+                cb.or(
+                    cb.like(cb.lower(root.get("name")), lowerKeyword),
+                    cb.like(cb.lower(root.get("address")), lowerKeyword)
+                )
+            }
+        }
+    }
+
     fun hasCategory(categoryId: UUID?): Specification<BeautishopJpaEntity> {
         return Specification { root, query, cb ->
             if (categoryId == null || query == null) {

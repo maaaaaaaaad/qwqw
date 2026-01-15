@@ -5,27 +5,13 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.UpdateRevi
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.PagedReviewsResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ReviewResponse
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
+import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.SocialId
 import com.mad.jellomarkserver.member.port.driven.MemberPort
-import com.mad.jellomarkserver.review.port.driving.CreateReviewCommand
-import com.mad.jellomarkserver.review.port.driving.CreateReviewUseCase
-import com.mad.jellomarkserver.review.port.driving.DeleteReviewCommand
-import com.mad.jellomarkserver.review.port.driving.DeleteReviewUseCase
-import com.mad.jellomarkserver.review.port.driving.ListReviewsCommand
-import com.mad.jellomarkserver.review.port.driving.ListReviewsUseCase
-import com.mad.jellomarkserver.review.port.driving.UpdateReviewCommand
-import com.mad.jellomarkserver.review.port.driving.UpdateReviewUseCase
+import com.mad.jellomarkserver.review.port.driving.*
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ReviewController(
@@ -61,7 +47,7 @@ class ReviewController(
         )
 
         val review = createReviewUseCase.execute(command)
-        return ReviewResponse.from(review)
+        return ReviewResponse.from(review, member.displayName.value)
     }
 
     @GetMapping("/api/beautishops/{shopId}/reviews")
@@ -73,7 +59,14 @@ class ReviewController(
     ): PagedReviewsResponse {
         val command = ListReviewsCommand(shopId = shopId, page = page, size = size, sort = sort)
         val result = listReviewsUseCase.execute(command)
-        return PagedReviewsResponse.from(result)
+
+        val memberIds = result.items.map { MemberId.from(it.memberId.value) }
+        val members = memberPort.findByIds(memberIds)
+        val memberDisplayNames = members.associate {
+            it.id.value.toString() to it.displayName.value
+        }
+
+        return PagedReviewsResponse.from(result, memberDisplayNames)
     }
 
     @PutMapping("/api/beautishops/{shopId}/reviews/{reviewId}")
@@ -102,7 +95,7 @@ class ReviewController(
         )
 
         val review = updateReviewUseCase.execute(command)
-        return ReviewResponse.from(review)
+        return ReviewResponse.from(review, member.displayName.value)
     }
 
     @DeleteMapping("/api/beautishops/{shopId}/reviews/{reviewId}")

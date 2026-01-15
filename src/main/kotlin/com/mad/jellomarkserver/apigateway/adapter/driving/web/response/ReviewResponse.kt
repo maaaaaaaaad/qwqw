@@ -7,6 +7,7 @@ data class ReviewResponse(
     val id: String,
     val shopId: String,
     val memberId: String,
+    val authorName: String?,
     val rating: Int?,
     val content: String?,
     val images: List<String>?,
@@ -14,11 +15,12 @@ data class ReviewResponse(
     val updatedAt: Instant
 ) {
     companion object {
-        fun from(review: ShopReview): ReviewResponse {
+        fun from(review: ShopReview, authorName: String? = null): ReviewResponse {
             return ReviewResponse(
                 id = review.id.value.toString(),
                 shopId = review.shopId.value.toString(),
                 memberId = review.memberId.value.toString(),
+                authorName = authorName,
                 rating = review.rating?.value,
                 content = review.content?.value,
                 images = review.images?.urls,

@@ -17,6 +17,7 @@ class ListBeautishopsUseCaseImpl(
         val pageable = PageRequest.of(command.page, command.size)
 
         val criteria = BeautishopFilterCriteria(
+            keyword = command.keyword,
             categoryId = command.categoryId,
             minRating = command.minRating,
             sortBy = command.sortBy,

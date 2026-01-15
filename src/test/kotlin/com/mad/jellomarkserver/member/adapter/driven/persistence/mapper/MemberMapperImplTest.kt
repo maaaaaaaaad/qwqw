@@ -3,11 +3,7 @@ package com.mad.jellomarkserver.member.adapter.driven.persistence.mapper
 import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJpaEntity
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidSocialIdException
-import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
-import com.mad.jellomarkserver.member.core.domain.model.SocialId
-import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
+import com.mad.jellomarkserver.member.core.domain.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -31,6 +27,7 @@ class MemberMapperImplTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -58,6 +55,7 @@ class MemberMapperImplTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -85,6 +83,7 @@ class MemberMapperImplTest {
             socialProvider = socialProvider,
             socialId = socialId,
             nickname = nickname,
+            displayName = "테스트유저",
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -105,10 +104,11 @@ class MemberMapperImplTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("Nick123")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
 
-        val domain = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val domain = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = memberMapper.toEntity(domain)
 
@@ -126,9 +126,11 @@ class MemberMapperImplTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("kakao-user-123")
         val memberNickname = MemberNickname.of("Aa")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.parse("2020-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
-        val original = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val original =
+            Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = memberMapper.toEntity(original)
         val roundTripped = memberMapper.toDomain(entity)
@@ -148,6 +150,7 @@ class MemberMapperImplTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "  Nick12  ",
+            displayName = "테스트유저",
             createdAt = Instant.parse("2020-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2020-01-02T00:00:00Z")
         )
@@ -164,6 +167,7 @@ class MemberMapperImplTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "a",
+            displayName = "테스트유저",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -180,6 +184,7 @@ class MemberMapperImplTest {
             socialProvider = "KAKAO",
             socialId = "   ",
             nickname = "testuser",
+            displayName = "테스트유저",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -196,6 +201,7 @@ class MemberMapperImplTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "a",
+            displayName = "테스트유저",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -211,7 +217,8 @@ class MemberMapperImplTest {
             id = UUID.randomUUID(),
             socialProvider = "KAKAO",
             socialId = "123456789",
-            nickname = "abcdefghi",
+            nickname = "123456789012345678901",
+            displayName = "테스트유저",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -228,6 +235,7 @@ class MemberMapperImplTest {
             socialProvider = "KAKAO",
             socialId = "123456789",
             nickname = "   ",
+            displayName = "테스트유저",
             createdAt = Instant.EPOCH,
             updatedAt = Instant.EPOCH
         )
@@ -248,6 +256,7 @@ class MemberMapperImplTest {
                 socialProvider = providerName,
                 socialId = "user-$index",
                 nickname = "testuser",
+                displayName = "테스트유저",
                 createdAt = Instant.EPOCH,
                 updatedAt = Instant.EPOCH
             )

@@ -1,10 +1,7 @@
 package com.mad.jellomarkserver.member.core.application
 
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
-import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
-import com.mad.jellomarkserver.member.core.domain.model.SocialId
-import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
+import com.mad.jellomarkserver.member.core.domain.model.*
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import com.mad.jellomarkserver.member.port.driving.GetCurrentMemberCommand
 import org.junit.jupiter.api.Assertions.*
@@ -34,7 +31,8 @@ class GetCurrentMemberUseCaseImplTest {
         val member = Member.create(
             socialProvider = SocialProvider.KAKAO,
             socialId = SocialId("12345"),
-            memberNickname = MemberNickname.of("testuser")
+            memberNickname = MemberNickname.of("testuser"),
+            displayName = MemberDisplayName.of("테스트유저")
         )
         whenever(memberPort.findBySocial(any(), any())).thenReturn(member)
 

@@ -132,6 +132,7 @@ class BeautishopController(
     fun listBeautishops(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
+        @RequestParam(required = false) keyword: String?,
         @RequestParam(required = false) categoryId: UUID?,
         @RequestParam(required = false) minRating: Double?,
         @RequestParam(defaultValue = "CREATED_AT") sortBy: SortBy,
@@ -142,6 +143,7 @@ class BeautishopController(
         val command = ListBeautishopsCommand(
             page = page,
             size = size,
+            keyword = keyword,
             categoryId = categoryId,
             minRating = minRating,
             sortBy = sortBy,

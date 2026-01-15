@@ -5,6 +5,7 @@ import com.mad.jellomarkserver.member.adapter.driven.persistence.mapper.MemberMa
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.model.Member
+import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.SocialId
 import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
 import com.mad.jellomarkserver.member.port.driven.MemberPort
@@ -45,5 +46,11 @@ class MemberPersistenceAdapter(
     override fun findBySocialId(socialId: SocialId): Member? {
         return jpaRepository.findBySocialId(socialId.value)
             ?.let { mapper.toDomain(it) }
+    }
+
+    override fun findByIds(ids: List<MemberId>): List<Member> {
+        if (ids.isEmpty()) return emptyList()
+        return jpaRepository.findAllById(ids.map { it.value })
+            .map { mapper.toDomain(it) }
     }
 }

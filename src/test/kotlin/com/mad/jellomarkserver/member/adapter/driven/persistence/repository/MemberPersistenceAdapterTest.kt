@@ -6,11 +6,7 @@ import com.mad.jellomarkserver.member.adapter.driven.persistence.entity.MemberJp
 import com.mad.jellomarkserver.member.adapter.driven.persistence.mapper.MemberMapper
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
-import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberId
-import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
-import com.mad.jellomarkserver.member.core.domain.model.SocialId
-import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
+import com.mad.jellomarkserver.member.core.domain.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -21,7 +17,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.dao.DataIntegrityViolationException
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertFailsWith
 
 @ExtendWith(MockitoExtension::class)
@@ -48,15 +44,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -79,15 +77,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("1")
         val memberNickname = MemberNickname.of("ab")
+        val displayName = MemberDisplayName.of("ab")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -107,15 +107,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.NAVER
         val socialId = SocialId("a".repeat(255))
         val memberNickname = MemberNickname.of("12345678")
+        val displayName = MemberDisplayName.of("12345678")
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -137,15 +139,17 @@ class MemberPersistenceAdapterTest {
             val id = MemberId.from(UUID.randomUUID())
             val socialId = SocialId("user-${provider.name}")
             val memberNickname = MemberNickname.of("testuser")
+            val displayName = MemberDisplayName.of("테스트유저")
             val createdAt = Instant.now()
             val updatedAt = Instant.now()
-            val member = Member.reconstruct(id, provider, socialId, memberNickname, createdAt, updatedAt)
+            val member = Member.reconstruct(id, provider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
             val entity = MemberJpaEntity(
                 id = id.value,
                 socialProvider = provider.name,
                 socialId = socialId.value,
                 nickname = memberNickname.value,
+                displayName = displayName.value,
                 createdAt = createdAt,
                 updatedAt = updatedAt
             )
@@ -166,15 +170,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("한글닉네임")
+        val displayName = MemberDisplayName.of("한글닉네임")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -194,15 +200,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-06-01T12:30:45Z")
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -222,15 +230,18 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("rtripmap-123")
         val memberNickname = MemberNickname.of("rtripmap")
+        val displayName = MemberDisplayName.of("rtripmap")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
-        val originalMember = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val originalMember =
+            Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -240,6 +251,7 @@ class MemberPersistenceAdapterTest {
             SocialProvider.valueOf(entity.socialProvider),
             SocialId(entity.socialId),
             MemberNickname.of(entity.nickname),
+            MemberDisplayName.of(entity.nickname),
             entity.createdAt,
             entity.updatedAt
         )
@@ -265,6 +277,7 @@ class MemberPersistenceAdapterTest {
             SocialProvider.KAKAO,
             SocialId("kakao-user-1"),
             MemberNickname.of("user1"),
+            MemberDisplayName.of("유저1"),
             Instant.parse("2025-01-01T00:00:00Z"),
             Instant.parse("2025-01-01T00:00:00Z")
         )
@@ -274,6 +287,7 @@ class MemberPersistenceAdapterTest {
             SocialProvider.NAVER,
             SocialId("naver-user-2"),
             MemberNickname.of("user2"),
+            MemberDisplayName.of("유저2"),
             Instant.parse("2025-02-01T00:00:00Z"),
             Instant.parse("2025-02-01T00:00:00Z")
         )
@@ -283,6 +297,7 @@ class MemberPersistenceAdapterTest {
             socialProvider = member1.socialProvider.name,
             socialId = member1.socialId.value,
             nickname = member1.memberNickname.value,
+            displayName = member1.displayName.value,
             createdAt = member1.createdAt,
             updatedAt = member1.updatedAt
         )
@@ -292,6 +307,7 @@ class MemberPersistenceAdapterTest {
             socialProvider = member2.socialProvider.name,
             socialId = member2.socialId.value,
             nickname = member2.memberNickname.value,
+            displayName = member2.displayName.value,
             createdAt = member2.createdAt,
             updatedAt = member2.updatedAt
         )
@@ -317,15 +333,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -345,15 +363,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.parse("2025-01-01T12:34:56.123456789Z")
         val updatedAt = Instant.parse("2025-01-01T12:34:56.987654321Z")
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -373,15 +393,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("duplicate-social-id")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -406,15 +428,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("dupname")
+        val displayName = MemberDisplayName.of("dupname")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -439,15 +463,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("admin123")
+        val displayName = MemberDisplayName.of("admin123")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -470,15 +496,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.NAVER
         val socialId = SocialId("naver-user-123")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -501,15 +529,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -530,15 +560,17 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("123456789")
         val memberNickname = MemberNickname.of("testuser")
+        val displayName = MemberDisplayName.of("테스트유저")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
-        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, createdAt, updatedAt)
+        val member = Member.reconstruct(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
 
         val entity = MemberJpaEntity(
             id = id.value,
             socialProvider = socialProvider.name,
             socialId = socialId.value,
             nickname = memberNickname.value,
+            displayName = displayName.value,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -564,5 +596,72 @@ class MemberPersistenceAdapterTest {
 
         assertNull(result)
         verify(jpaRepository).findBySocialProviderAndSocialId(socialProvider.name, socialId.value)
+    }
+
+    @Test
+    fun `should find members by ids`() {
+        val id1 = MemberId.from(UUID.randomUUID())
+        val id2 = MemberId.from(UUID.randomUUID())
+        val createdAt = Instant.now()
+
+        val member1 = Member.reconstruct(
+            id1, SocialProvider.KAKAO, SocialId("user1"),
+            MemberNickname.of("닉네임1"), MemberDisplayName.of("닉네임1"), createdAt, createdAt
+        )
+        val member2 = Member.reconstruct(
+            id2, SocialProvider.NAVER, SocialId("user2"),
+            MemberNickname.of("닉네임2"), MemberDisplayName.of("닉네임2"), createdAt, createdAt
+        )
+
+        val entity1 = MemberJpaEntity(
+            id = id1.value, socialProvider = "KAKAO", socialId = "user1",
+            nickname = "닉네임1", displayName = "닉네임1", createdAt = createdAt, updatedAt = createdAt
+        )
+        val entity2 = MemberJpaEntity(
+            id = id2.value, socialProvider = "NAVER", socialId = "user2",
+            nickname = "닉네임2", displayName = "닉네임2", createdAt = createdAt, updatedAt = createdAt
+        )
+
+        `when`(jpaRepository.findAllById(listOf(id1.value, id2.value))).thenReturn(listOf(entity1, entity2))
+        `when`(mapper.toDomain(entity1)).thenReturn(member1)
+        `when`(mapper.toDomain(entity2)).thenReturn(member2)
+
+        val result = adapter.findByIds(listOf(id1, id2))
+
+        assertEquals(2, result.size)
+        assertEquals(member1, result[0])
+        assertEquals(member2, result[1])
+    }
+
+    @Test
+    fun `should return empty list when no ids provided`() {
+        val result = adapter.findByIds(emptyList())
+
+        assertEquals(0, result.size)
+    }
+
+    @Test
+    fun `should return only found members when some ids do not exist`() {
+        val existingId = MemberId.from(UUID.randomUUID())
+        val nonExistingId = MemberId.from(UUID.randomUUID())
+        val createdAt = Instant.now()
+
+        val member = Member.reconstruct(
+            existingId, SocialProvider.KAKAO, SocialId("user1"),
+            MemberNickname.of("닉네임"), MemberDisplayName.of("닉네임"), createdAt, createdAt
+        )
+
+        val entity = MemberJpaEntity(
+            id = existingId.value, socialProvider = "KAKAO", socialId = "user1",
+            nickname = "닉네임", displayName = "닉네임", createdAt = createdAt, updatedAt = createdAt
+        )
+
+        `when`(jpaRepository.findAllById(listOf(existingId.value, nonExistingId.value))).thenReturn(listOf(entity))
+        `when`(mapper.toDomain(entity)).thenReturn(member)
+
+        val result = adapter.findByIds(listOf(existingId, nonExistingId))
+
+        assertEquals(1, result.size)
+        assertEquals(member, result[0])
     }
 }

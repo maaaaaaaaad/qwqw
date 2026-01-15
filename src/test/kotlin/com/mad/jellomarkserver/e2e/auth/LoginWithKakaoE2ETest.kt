@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.*
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 
@@ -82,7 +82,8 @@ class LoginWithKakaoE2ETest {
         val memberEntity = members[0]
         assertThat(memberEntity.socialProvider).isEqualTo("KAKAO")
         assertThat(memberEntity.socialId).isEqualTo(kakaoId.toString())
-        assertThat(memberEntity.nickname).isEqualTo(nickname)
+        assertThat(memberEntity.displayName).isEqualTo(nickname)
+        assertThat(memberEntity.nickname).startsWith(nickname)
 
         val refreshTokens = refreshTokenJpaRepository.findAll()
         assertThat(refreshTokens).hasSize(1)

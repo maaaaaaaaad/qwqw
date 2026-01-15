@@ -51,6 +51,7 @@ class LoginWithKakaoUseCaseImplTest {
             socialProvider = SocialProvider.KAKAO,
             socialId = SocialId.fromKakaoId(kakaoId),
             memberNickname = MemberNickname.of("기존유저"),
+            displayName = MemberDisplayName.of("기존유저"),
             createdAt = Instant.parse("2024-01-01T00:00:00Z"),
             updatedAt = Instant.parse("2024-01-01T00:00:00Z")
         )
@@ -60,13 +61,22 @@ class LoginWithKakaoUseCaseImplTest {
         val socialIdValue = SocialId.fromKakaoId(kakaoId).value
         whenever(kakaoApiClient.verifyAccessToken(kakaoAccessToken)).thenReturn(tokenInfo)
         whenever(kakaoApiClient.getUserInfo(kakaoAccessToken)).thenReturn(userInfo)
-        whenever(memberPort.findBySocial(SocialProvider.KAKAO, SocialId.fromKakaoId(kakaoId))).thenReturn(existingMember)
-        whenever(issueTokenUseCase.execute(IssueTokenCommand(
-            identifier = socialIdValue,
-            userType = "MEMBER",
-            socialProvider = "KAKAO",
-            socialId = socialIdValue
-        ))).thenReturn(expectedTokenPair)
+        whenever(
+            memberPort.findBySocial(
+                SocialProvider.KAKAO,
+                SocialId.fromKakaoId(kakaoId)
+            )
+        ).thenReturn(existingMember)
+        whenever(
+            issueTokenUseCase.execute(
+                IssueTokenCommand(
+                    identifier = socialIdValue,
+                    userType = "MEMBER",
+                    socialProvider = "KAKAO",
+                    socialId = socialIdValue
+                )
+            )
+        ).thenReturn(expectedTokenPair)
 
         val result = useCase.execute(command)
 
@@ -91,12 +101,16 @@ class LoginWithKakaoUseCaseImplTest {
         whenever(kakaoApiClient.getUserInfo(kakaoAccessToken)).thenReturn(userInfo)
         whenever(memberPort.findBySocial(SocialProvider.KAKAO, SocialId.fromKakaoId(kakaoId))).thenReturn(null)
         whenever(memberPort.save(any())).thenAnswer { invocation -> invocation.arguments[0] as Member }
-        whenever(issueTokenUseCase.execute(IssueTokenCommand(
-            identifier = socialIdValue,
-            userType = "MEMBER",
-            socialProvider = "KAKAO",
-            socialId = socialIdValue
-        ))).thenReturn(expectedTokenPair)
+        whenever(
+            issueTokenUseCase.execute(
+                IssueTokenCommand(
+                    identifier = socialIdValue,
+                    userType = "MEMBER",
+                    socialProvider = "KAKAO",
+                    socialId = socialIdValue
+                )
+            )
+        ).thenReturn(expectedTokenPair)
 
         val result = useCase.execute(command)
 
@@ -151,21 +165,27 @@ class LoginWithKakaoUseCaseImplTest {
         whenever(kakaoApiClient.getUserInfo(kakaoAccessToken)).thenReturn(userInfo)
         whenever(memberPort.findBySocial(SocialProvider.KAKAO, SocialId.fromKakaoId(kakaoId))).thenReturn(null)
         whenever(memberPort.save(any())).thenAnswer { invocation -> invocation.arguments[0] as Member }
-        whenever(issueTokenUseCase.execute(IssueTokenCommand(
-            identifier = socialIdValue,
-            userType = "MEMBER",
-            socialProvider = "KAKAO",
-            socialId = socialIdValue
-        ))).thenReturn(expectedTokenPair)
+        whenever(
+            issueTokenUseCase.execute(
+                IssueTokenCommand(
+                    identifier = socialIdValue,
+                    userType = "MEMBER",
+                    socialProvider = "KAKAO",
+                    socialId = socialIdValue
+                )
+            )
+        ).thenReturn(expectedTokenPair)
 
         val result = useCase.execute(command)
 
         assertThat(result).isEqualTo(expectedTokenPair)
-        verify(issueTokenUseCase).execute(IssueTokenCommand(
-            identifier = socialIdValue,
-            userType = "MEMBER",
-            socialProvider = "KAKAO",
-            socialId = socialIdValue
-        ))
+        verify(issueTokenUseCase).execute(
+            IssueTokenCommand(
+                identifier = socialIdValue,
+                userType = "MEMBER",
+                socialProvider = "KAKAO",
+                socialId = socialIdValue
+            )
+        )
     }
 }

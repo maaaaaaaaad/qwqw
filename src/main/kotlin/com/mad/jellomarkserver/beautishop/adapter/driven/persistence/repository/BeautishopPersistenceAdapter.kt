@@ -57,8 +57,11 @@ class BeautishopPersistenceAdapter(
     }
 
     override fun findAllFiltered(criteria: BeautishopFilterCriteria, pageable: Pageable): Page<Beautishop> {
-        val spec = Specification.where(BeautishopSpecifications.hasCategory(criteria.categoryId))
-            .and(BeautishopSpecifications.hasMinRating(criteria.minRating))
+        val spec = Specification.allOf(
+            BeautishopSpecifications.hasKeywordContaining(criteria.keyword),
+            BeautishopSpecifications.hasCategory(criteria.categoryId),
+            BeautishopSpecifications.hasMinRating(criteria.minRating)
+        )
 
         val sortedPageable = createSortedPageable(criteria, pageable)
 
@@ -66,15 +69,11 @@ class BeautishopPersistenceAdapter(
     }
 
     private fun createSortedPageable(criteria: BeautishopFilterCriteria, pageable: Pageable): Pageable {
-        if (criteria.sortBy == SortBy.DISTANCE) {
-            return pageable
-        }
-
         val sortField = when (criteria.sortBy) {
             SortBy.RATING -> "averageRating"
             SortBy.REVIEW_COUNT -> "reviewCount"
             SortBy.CREATED_AT -> "createdAt"
-            SortBy.DISTANCE -> "createdAt"
+            SortBy.DISTANCE -> return pageable
         }
 
         val direction = when (criteria.sortOrder) {

@@ -269,4 +269,168 @@ class ListBeautishopsFilteringE2ETest {
         assertThat(items).hasSize(1)
         assertThat(items[0]["distance"]).isNull()
     }
+
+    @Test
+    fun `should filter beautishops by keyword in name`() {
+        createBeautishop("예쁜네일 강남점", "111-11-11111")
+        createBeautishop("러블리네일 홍대점", "222-22-22222")
+        createBeautishop("강남 헤어샵", "333-33-33333")
+
+        val response = rest.exchange(
+            url("/api/beautishops?keyword=강남"),
+            HttpMethod.GET,
+            null,
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val json = requireNotNull(response.body)
+
+        @Suppress("UNCHECKED_CAST")
+        val items = json["items"] as List<Map<String, Any?>>
+        assertThat(items).hasSize(2)
+        assertThat(items.map { it["name"] }).containsExactlyInAnyOrder("예쁜네일 강남점", "강남 헤어샵")
+    }
+
+    @Test
+    fun `should filter beautishops by keyword case insensitively`() {
+        createBeautishop("Beautiful Nail", "111-11-11111")
+        createBeautishop("Lovely Hair", "222-22-22222")
+
+        val response = rest.exchange(
+            url("/api/beautishops?keyword=beautiful"),
+            HttpMethod.GET,
+            null,
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val json = requireNotNull(response.body)
+
+        @Suppress("UNCHECKED_CAST")
+        val items = json["items"] as List<Map<String, Any?>>
+        assertThat(items).hasSize(1)
+        assertThat(items[0]["name"]).isEqualTo("Beautiful Nail")
+    }
+
+    @Test
+    fun `should return empty list when no shops match the keyword`() {
+        createBeautishop("예쁜네일 강남점", "111-11-11111")
+
+        val response = rest.exchange(
+            url("/api/beautishops?keyword=홍대"),
+            HttpMethod.GET,
+            null,
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val json = requireNotNull(response.body)
+
+        @Suppress("UNCHECKED_CAST")
+        val items = json["items"] as List<Map<String, Any?>>
+        assertThat(items).isEmpty()
+    }
+
+    @Test
+    fun `should combine keyword filter with category filter`() {
+        val shopId1 = createBeautishop("예쁜네일 강남점", "111-11-11111")
+        val shopId2 = createBeautishop("강남 헤어샵", "222-22-22222")
+        createBeautishop("예쁜네일 홍대점", "333-33-33333")
+
+        setShopCategories(shopId1, listOf(nailCategoryId))
+
+        val response = rest.exchange(
+            url("/api/beautishops?keyword=강남&categoryId=$nailCategoryId"),
+            HttpMethod.GET,
+            null,
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val json = requireNotNull(response.body)
+
+        @Suppress("UNCHECKED_CAST")
+        val items = json["items"] as List<Map<String, Any?>>
+        assertThat(items).hasSize(1)
+        assertThat(items[0]["name"]).isEqualTo("예쁜네일 강남점")
+    }
+
+    @Test
+    fun `should filter beautishops by address containing keyword`() {
+        createBeautishopWithAddress("예쁜네일샵", "111-11-11111", "서울특별시 강남구 테헤란로 123")
+        createBeautishopWithAddress("러블리헤어", "222-22-22222", "서울특별시 홍대입구 234")
+        createBeautishopWithAddress("스타일샵", "333-33-33333", "서울특별시 강남구 역삼동 456")
+
+        val response = rest.exchange(
+            url("/api/beautishops?keyword=강남"),
+            HttpMethod.GET,
+            null,
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val json = requireNotNull(response.body)
+
+        @Suppress("UNCHECKED_CAST")
+        val items = json["items"] as List<Map<String, Any?>>
+        assertThat(items).hasSize(2)
+        assertThat(items.map { it["name"] }).containsExactlyInAnyOrder("예쁜네일샵", "스타일샵")
+    }
+
+    @Test
+    fun `should filter beautishops by name OR address containing keyword`() {
+        createBeautishopWithAddress("강남네일", "111-11-11111", "서울특별시 홍대입구 123")
+        createBeautishopWithAddress("러블리헤어", "222-22-22222", "서울특별시 강남구 역삼동 234")
+        createBeautishopWithAddress("스타일샵", "333-33-33333", "서울특별시 마포구 456")
+
+        val response = rest.exchange(
+            url("/api/beautishops?keyword=강남"),
+            HttpMethod.GET,
+            null,
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val json = requireNotNull(response.body)
+
+        @Suppress("UNCHECKED_CAST")
+        val items = json["items"] as List<Map<String, Any?>>
+        assertThat(items).hasSize(2)
+        assertThat(items.map { it["name"] }).containsExactlyInAnyOrder("강남네일", "러블리헤어")
+    }
+
+    private fun createBeautishopWithAddress(
+        shopName: String,
+        regNum: String,
+        address: String,
+        latitude: Double = 37.4979,
+        longitude: Double = 127.0276
+    ): String {
+        val request = CreateBeautishopRequest(
+            shopName = shopName,
+            shopRegNum = regNum,
+            shopPhoneNumber = "02-1234-5678",
+            shopAddress = address,
+            latitude = latitude,
+            longitude = longitude,
+            operatingTime = mapOf("Monday" to "09:00-18:00"),
+            shopDescription = "Premium beauty salon",
+            shopImage = "https://example.com/image.jpg"
+        )
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            set("Authorization", "Bearer $accessToken")
+        }
+
+        val response = rest.exchange(
+            url("/api/beautishops"),
+            HttpMethod.POST,
+            HttpEntity(request, headers),
+            object : ParameterizedTypeReference<Map<String, Any?>>() {}
+        )
+
+        return response.body?.get("id") as String
+    }
 }

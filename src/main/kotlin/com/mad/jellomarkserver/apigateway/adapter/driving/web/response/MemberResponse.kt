@@ -9,6 +9,7 @@ data class MemberResponse(
     val socialProvider: String,
     val socialId: String,
     val nickname: String,
+    val displayName: String,
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
@@ -19,6 +20,7 @@ data class MemberResponse(
                 socialProvider = member.socialProvider.name,
                 socialId = member.socialId.value,
                 nickname = member.memberNickname.value,
+                displayName = member.displayName.value,
                 createdAt = member.createdAt,
                 updatedAt = member.updatedAt
             )

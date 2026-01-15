@@ -173,52 +173,52 @@ class MemberNicknameTest {
     }
 
     @Test
-    fun `should throw when nickname is 9 characters`() {
+    fun `should create Nickname with 9 characters`() {
+        val memberNickname = MemberNickname.of("abcdefghi")
+        assertEquals("abcdefghi", memberNickname.value)
+    }
+
+    @Test
+    fun `should create Nickname with 10 characters`() {
+        val memberNickname = MemberNickname.of("abcdefghij")
+        assertEquals("abcdefghij", memberNickname.value)
+    }
+
+    @Test
+    fun `should create Nickname with 20 characters`() {
+        val memberNickname = MemberNickname.of("12345678901234567890")
+        assertEquals("12345678901234567890", memberNickname.value)
+    }
+
+    @Test
+    fun `should throw when nickname is 21 characters`() {
         assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("abcdefghi")
+            MemberNickname.of("123456789012345678901")
         }
     }
 
     @Test
-    fun `should throw when nickname is 10 characters`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("abcdefghij")
-        }
+    fun `should remove space in middle and create valid nickname`() {
+        val memberNickname = MemberNickname.of("user name")
+        assertEquals("username", memberNickname.value)
     }
 
     @Test
-    fun `should throw when nickname is too long`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("verylongnickname")
-        }
+    fun `should remove tab character and create valid nickname`() {
+        val memberNickname = MemberNickname.of("user\tname")
+        assertEquals("username", memberNickname.value)
     }
 
     @Test
-    fun `should throw when nickname contains space in middle`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("user name")
-        }
+    fun `should remove newline character and create valid nickname`() {
+        val memberNickname = MemberNickname.of("user\nname")
+        assertEquals("username", memberNickname.value)
     }
 
     @Test
-    fun `should throw when nickname contains tab character`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("user\tname")
-        }
-    }
-
-    @Test
-    fun `should throw when nickname contains newline character`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("user\nname")
-        }
-    }
-
-    @Test
-    fun `should throw when nickname contains carriage return`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("user\rname")
-        }
+    fun `should remove carriage return and create valid nickname`() {
+        val memberNickname = MemberNickname.of("user\rname")
+        assertEquals("username", memberNickname.value)
     }
 
     @Test
@@ -229,16 +229,21 @@ class MemberNicknameTest {
     }
 
     @Test
-    fun `should throw when nickname after trimming is too long`() {
+    fun `should create valid nickname after trimming 9 characters`() {
+        val memberNickname = MemberNickname.of("  123456789  ")
+        assertEquals("123456789", memberNickname.value)
+    }
+
+    @Test
+    fun `should throw when nickname after trimming is 21 characters`() {
         assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("  123456789  ")
+            MemberNickname.of("  123456789012345678901  ")
         }
     }
 
     @Test
-    fun `should throw when nickname after trimming contains space`() {
-        assertFailsWith<InvalidMemberNicknameException> {
-            MemberNickname.of("  ab cd  ")
-        }
+    fun `should remove inner spaces and create valid nickname`() {
+        val memberNickname = MemberNickname.of("  ab cd  ")
+        assertEquals("abcd", memberNickname.value)
     }
 }

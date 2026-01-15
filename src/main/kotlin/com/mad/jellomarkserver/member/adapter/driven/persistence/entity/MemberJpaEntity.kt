@@ -1,12 +1,8 @@
 package com.mad.jellomarkserver.member.adapter.driven.persistence.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
+import jakarta.persistence.*
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(
@@ -28,6 +24,9 @@ class MemberJpaEntity(
 
     @Column(name = "nickname", nullable = false, length = 100)
     var nickname: String,
+
+    @Column(name = "display_name", nullable = false, length = 100)
+    var displayName: String,
 
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant,

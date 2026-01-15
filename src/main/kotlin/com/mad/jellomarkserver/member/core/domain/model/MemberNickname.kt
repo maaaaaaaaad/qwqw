@@ -5,15 +5,27 @@ import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknam
 @JvmInline
 value class MemberNickname private constructor(val value: String) {
     companion object {
-        private val pattern = Regex("^\\S{2,8}$")
+        private val pattern = Regex("^\\S{2,20}$")
+
         fun of(input: String): MemberNickname {
-            val trimmed = input.trim()
+            val processed = input.trim().replace("\\s+".toRegex(), "")
             try {
-                require(trimmed.isNotBlank())
-                require(pattern.matches(trimmed))
-                return MemberNickname(trimmed)
+                require(processed.isNotBlank())
+                require(pattern.matches(processed))
+                return MemberNickname(processed)
             } catch (ex: IllegalArgumentException) {
-                throw InvalidMemberNicknameException(trimmed)
+                throw InvalidMemberNicknameException(processed)
+            }
+        }
+
+        fun generate(baseName: String, suffix: String = ""): MemberNickname {
+            val processed = baseName.trim().replace("\\s+".toRegex(), "")
+            val truncated = if (processed.length > 12) processed.take(12) else processed
+            val result = if (suffix.isNotEmpty()) "$truncated$suffix" else truncated
+            return if (result.length >= 2) {
+                MemberNickname(result.take(20))
+            } else {
+                MemberNickname("user$suffix")
             }
         }
     }

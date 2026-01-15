@@ -4,10 +4,7 @@ import com.mad.jellomarkserver.auth.core.domain.model.TokenPair
 import com.mad.jellomarkserver.auth.port.driven.KakaoApiClient
 import com.mad.jellomarkserver.auth.port.driving.IssueTokenCommand
 import com.mad.jellomarkserver.auth.port.driving.IssueTokenUseCase
-import com.mad.jellomarkserver.member.core.domain.model.Member
-import com.mad.jellomarkserver.member.core.domain.model.MemberNickname
-import com.mad.jellomarkserver.member.core.domain.model.SocialId
-import com.mad.jellomarkserver.member.core.domain.model.SocialProvider
+import com.mad.jellomarkserver.member.core.domain.model.*
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoCommand
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoUseCase
@@ -42,11 +39,16 @@ class LoginWithKakaoUseCaseImpl(
         )
     }
 
-    private fun createNewMember(socialId: SocialId, nickname: String): Member {
+    private fun createNewMember(socialId: SocialId, kakaoNickname: String): Member {
+        val displayName = MemberDisplayName.of(kakaoNickname)
+        val uniqueSuffix = socialId.value.takeLast(6)
+        val memberNickname = MemberNickname.generate(kakaoNickname, uniqueSuffix)
+
         val member = Member.create(
             socialProvider = SocialProvider.KAKAO,
             socialId = socialId,
-            memberNickname = MemberNickname.of(nickname),
+            memberNickname = memberNickname,
+            displayName = displayName,
             clock = clock
         )
         return memberPort.save(member)
