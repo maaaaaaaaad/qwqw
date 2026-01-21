@@ -10,6 +10,7 @@ import java.util.*
 interface ShopReviewJpaRepository : JpaRepository<ShopReviewJpaEntity, UUID> {
     fun findByShopId(shopId: UUID, pageable: Pageable): Page<ShopReviewJpaEntity>
     fun findByMemberId(memberId: UUID): List<ShopReviewJpaEntity>
+    fun findByMemberId(memberId: UUID, pageable: Pageable): Page<ShopReviewJpaEntity>
     fun existsByShopIdAndMemberId(shopId: UUID, memberId: UUID): Boolean
     fun countByShopId(shopId: UUID): Int
 

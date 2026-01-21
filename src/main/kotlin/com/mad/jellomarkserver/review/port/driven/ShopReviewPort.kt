@@ -17,6 +17,7 @@ interface ShopReviewPort {
     fun findById(id: ReviewId): ShopReview?
     fun findByShopId(shopId: ShopId, pageable: Pageable): Page<ShopReview>
     fun findByMemberId(memberId: MemberId): List<ShopReview>
+    fun findByMemberId(memberId: MemberId, pageable: Pageable): Page<ShopReview>
     fun existsByShopIdAndMemberId(shopId: ShopId, memberId: MemberId): Boolean
     fun delete(id: ReviewId)
     fun calculateStats(shopId: ShopId): ReviewStats

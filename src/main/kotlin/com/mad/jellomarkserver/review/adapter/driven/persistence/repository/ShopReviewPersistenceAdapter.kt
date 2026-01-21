@@ -52,6 +52,10 @@ class ShopReviewPersistenceAdapter(
         return jpaRepository.findByMemberId(memberId.value).map { mapper.toDomain(it) }
     }
 
+    override fun findByMemberId(memberId: MemberId, pageable: Pageable): Page<ShopReview> {
+        return jpaRepository.findByMemberId(memberId.value, pageable).map { mapper.toDomain(it) }
+    }
+
     override fun existsByShopIdAndMemberId(shopId: ShopId, memberId: MemberId): Boolean {
         return jpaRepository.existsByShopIdAndMemberId(shopId.value, memberId.value)
     }

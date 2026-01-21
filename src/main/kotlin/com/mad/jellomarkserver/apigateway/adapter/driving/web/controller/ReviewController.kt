@@ -19,6 +19,7 @@ class ReviewController(
     private val listReviewsUseCase: ListReviewsUseCase,
     private val updateReviewUseCase: UpdateReviewUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
+    private val getMemberReviewsUseCase: GetMemberReviewsUseCase,
     private val memberPort: MemberPort
 ) {
     @PostMapping("/api/beautishops/{shopId}/reviews")
@@ -121,5 +122,36 @@ class ReviewController(
         )
 
         deleteReviewUseCase.execute(command)
+    }
+
+    @GetMapping("/api/reviews/me")
+    fun getMyReviews(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") size: Int,
+        @RequestParam(defaultValue = "createdAt,desc") sort: String,
+        servletRequest: HttpServletRequest
+    ): PagedReviewsResponse {
+        val identifier = servletRequest.getAttribute("email") as String
+        val userType = servletRequest.getAttribute("userType") as String
+
+        if (userType != "MEMBER") {
+            throw IllegalStateException("Only members can view their reviews")
+        }
+
+        val member = memberPort.findBySocialId(SocialId(identifier))
+            ?: throw MemberNotFoundException(identifier)
+
+        val command = GetMemberReviewsCommand(
+            memberId = member.id.value.toString(),
+            page = page,
+            size = size,
+            sort = sort
+        )
+
+        val result = getMemberReviewsUseCase.execute(command)
+
+        val memberDisplayNames = mapOf(member.id.value.toString() to member.displayName.value)
+
+        return PagedReviewsResponse.from(result, memberDisplayNames)
     }
 }
