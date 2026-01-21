@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable
 interface BeautishopPort {
     fun save(beautishop: Beautishop, ownerId: OwnerId): Beautishop
     fun findById(id: ShopId): Beautishop?
+    fun findByIds(ids: List<ShopId>): List<Beautishop>
     fun findByOwnerId(ownerId: OwnerId): List<Beautishop>
     fun findByShopRegNum(shopRegNum: ShopRegNum): Beautishop?
     fun findAllPaged(pageable: Pageable): Page<Beautishop>

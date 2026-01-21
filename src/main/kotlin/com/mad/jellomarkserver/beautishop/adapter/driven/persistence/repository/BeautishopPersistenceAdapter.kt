@@ -44,6 +44,11 @@ class BeautishopPersistenceAdapter(
         return jpaRepository.findById(id.value).map { mapper.toDomain(it) }.orElse(null)
     }
 
+    override fun findByIds(ids: List<ShopId>): List<Beautishop> {
+        if (ids.isEmpty()) return emptyList()
+        return jpaRepository.findAllById(ids.map { it.value }).map { mapper.toDomain(it) }
+    }
+
     override fun findByOwnerId(ownerId: OwnerId): List<Beautishop> {
         return jpaRepository.findByOwnerId(ownerId.value).map { mapper.toDomain(it) }
     }
