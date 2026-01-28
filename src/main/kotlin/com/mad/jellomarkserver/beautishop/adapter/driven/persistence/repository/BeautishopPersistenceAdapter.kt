@@ -73,6 +73,16 @@ class BeautishopPersistenceAdapter(
         return jpaRepository.findAll(spec, sortedPageable).map { mapper.toDomain(it) }
     }
 
+    override fun findAllFilteredWithoutPaging(criteria: BeautishopFilterCriteria): List<Beautishop> {
+        val spec = Specification.allOf(
+            BeautishopSpecifications.hasKeywordContaining(criteria.keyword),
+            BeautishopSpecifications.hasCategory(criteria.categoryId),
+            BeautishopSpecifications.hasMinRating(criteria.minRating)
+        )
+
+        return jpaRepository.findAll(spec).map { mapper.toDomain(it) }
+    }
+
     private fun createSortedPageable(criteria: BeautishopFilterCriteria, pageable: Pageable): Pageable {
         val sortField = when (criteria.sortBy) {
             SortBy.RATING -> "averageRating"
