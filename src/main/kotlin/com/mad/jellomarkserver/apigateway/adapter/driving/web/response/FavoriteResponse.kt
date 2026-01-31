@@ -15,7 +15,7 @@ data class FavoriteResponse(
         val id: UUID,
         val name: String,
         val address: String,
-        val image: String?,
+        val images: List<String>,
         val averageRating: Double,
         val reviewCount: Int
     ) {
@@ -25,7 +25,7 @@ data class FavoriteResponse(
                     id = beautishop.id.value,
                     name = beautishop.name.value,
                     address = beautishop.address.value,
-                    image = beautishop.image?.value,
+                    images = beautishop.images.toStringList(),
                     averageRating = beautishop.averageRating.value,
                     reviewCount = beautishop.reviewCount.value
                 )
