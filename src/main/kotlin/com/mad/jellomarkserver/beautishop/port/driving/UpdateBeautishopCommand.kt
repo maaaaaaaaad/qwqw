@@ -5,5 +5,5 @@ data class UpdateBeautishopCommand(
     val ownerId: String,
     val operatingTime: Map<String, String>?,
     val shopDescription: String?,
-    val shopImage: String?
+    val shopImages: List<String>?
 )
