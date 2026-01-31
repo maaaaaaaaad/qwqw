@@ -25,7 +25,7 @@ class CreateBeautishopUseCaseImpl(
         val gps = ShopGPS.of(command.latitude, command.longitude)
         val operatingTime = OperatingTime.of(command.operatingTime)
         val description = ShopDescription.ofNullable(command.shopDescription)
-        val image = ShopImage.ofNullable(command.shopImage)
+        val images = ShopImages.ofNullable(command.shopImages)
 
         val beautishop = Beautishop.create(
             name = name,
@@ -35,7 +35,7 @@ class CreateBeautishopUseCaseImpl(
             gps = gps,
             operatingTime = operatingTime,
             description = description,
-            image = image
+            images = images
         )
 
         return beautishopPort.save(beautishop, ownerId)
