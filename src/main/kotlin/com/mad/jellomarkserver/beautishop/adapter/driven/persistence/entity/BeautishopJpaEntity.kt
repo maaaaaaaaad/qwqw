@@ -46,8 +46,10 @@ class BeautishopJpaEntity(
     @Column(name = "description", nullable = true, length = 500)
     var description: String?,
 
-    @Column(name = "image", nullable = true, length = 2048)
-    var image: String?,
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "shop_id")
+    @OrderBy("displayOrder ASC")
+    var images: MutableList<ShopImageJpaEntity> = mutableListOf(),
 
     @Column(name = "average_rating", nullable = false)
     var averageRating: Double = 0.0,
