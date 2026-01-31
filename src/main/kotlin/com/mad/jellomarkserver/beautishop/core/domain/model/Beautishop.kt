@@ -12,7 +12,7 @@ class Beautishop private constructor(
     val gps: ShopGPS,
     val operatingTime: OperatingTime,
     val description: ShopDescription?,
-    val image: ShopImage?,
+    val images: ShopImages,
     val averageRating: AverageRating,
     val reviewCount: ReviewCount,
     val createdAt: Instant,
@@ -27,7 +27,7 @@ class Beautishop private constructor(
             gps: ShopGPS,
             operatingTime: OperatingTime,
             description: ShopDescription?,
-            image: ShopImage?,
+            images: ShopImages,
             clock: Clock = Clock.systemUTC()
         ): Beautishop {
             val now = Instant.now(clock)
@@ -40,7 +40,7 @@ class Beautishop private constructor(
                 gps = gps,
                 operatingTime = operatingTime,
                 description = description,
-                image = image,
+                images = images,
                 averageRating = AverageRating.zero(),
                 reviewCount = ReviewCount.zero(),
                 createdAt = now,
@@ -57,7 +57,7 @@ class Beautishop private constructor(
             gps: ShopGPS,
             operatingTime: OperatingTime,
             description: ShopDescription?,
-            image: ShopImage?,
+            images: ShopImages,
             averageRating: AverageRating,
             reviewCount: ReviewCount,
             createdAt: Instant,
@@ -72,7 +72,7 @@ class Beautishop private constructor(
                 gps = gps,
                 operatingTime = operatingTime,
                 description = description,
-                image = image,
+                images = images,
                 averageRating = averageRating,
                 reviewCount = reviewCount,
                 createdAt = createdAt,
@@ -84,7 +84,7 @@ class Beautishop private constructor(
     fun update(
         operatingTime: OperatingTime,
         description: ShopDescription?,
-        image: ShopImage?,
+        images: ShopImages,
         clock: Clock = Clock.systemUTC()
     ): Beautishop {
         return Beautishop(
@@ -96,7 +96,7 @@ class Beautishop private constructor(
             gps = this.gps,
             operatingTime = operatingTime,
             description = description,
-            image = image,
+            images = images,
             averageRating = this.averageRating,
             reviewCount = this.reviewCount,
             createdAt = this.createdAt,
@@ -117,7 +117,7 @@ class Beautishop private constructor(
             gps = this.gps,
             operatingTime = this.operatingTime,
             description = this.description,
-            image = this.image,
+            images = this.images,
             averageRating = averageRating,
             reviewCount = reviewCount,
             createdAt = this.createdAt,
