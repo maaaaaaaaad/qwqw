@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.beautishop.adapter.driven.persistence.mapper
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.BeautishopJpaEntity
+import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.ShopImageJpaEntity
 import com.mad.jellomarkserver.beautishop.core.domain.model.*
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
 import org.springframework.stereotype.Component
@@ -9,6 +10,14 @@ import org.springframework.stereotype.Component
 @Component
 class BeautishopMapperImpl : BeautishopMapper {
     override fun toEntity(domain: Beautishop, ownerId: OwnerId): BeautishopJpaEntity {
+        val imageEntities = domain.images.values.mapIndexed { index, shopImage ->
+            ShopImageJpaEntity(
+                shopId = domain.id.value,
+                imageUrl = shopImage.value,
+                displayOrder = index
+            )
+        }.toMutableList()
+
         return BeautishopJpaEntity(
             id = domain.id.value,
             ownerId = ownerId.value,
@@ -20,7 +29,7 @@ class BeautishopMapperImpl : BeautishopMapper {
             longitude = domain.gps.longitude,
             operatingTime = serializeOperatingTime(domain.operatingTime),
             description = domain.description?.value,
-            image = domain.image?.value,
+            images = imageEntities,
             averageRating = domain.averageRating.value,
             reviewCount = domain.reviewCount.value,
             createdAt = domain.createdAt,
@@ -37,7 +46,8 @@ class BeautishopMapperImpl : BeautishopMapper {
         val gps = ShopGPS.of(entity.latitude, entity.longitude)
         val operatingTime = deserializeOperatingTime(entity.operatingTime)
         val description = entity.description?.let { ShopDescription.of(it) }
-        val image = entity.image?.let { ShopImage.of(it) }
+        val imageUrls = entity.images.sortedBy { it.displayOrder }.map { it.imageUrl }
+        val images = ShopImages.ofNullable(imageUrls)
         val averageRating = AverageRating.of(entity.averageRating)
         val reviewCount = ReviewCount.of(entity.reviewCount)
 
@@ -50,7 +60,7 @@ class BeautishopMapperImpl : BeautishopMapper {
             gps = gps,
             operatingTime = operatingTime,
             description = description,
-            image = image,
+            images = images,
             averageRating = averageRating,
             reviewCount = reviewCount,
             createdAt = entity.createdAt,
