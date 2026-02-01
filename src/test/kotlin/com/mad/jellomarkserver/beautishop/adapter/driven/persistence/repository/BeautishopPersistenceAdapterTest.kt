@@ -181,7 +181,7 @@ class BeautishopPersistenceAdapterTest {
             gps = ShopGPS.of(37.5665, 126.9780),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = ShopDescription.of("아름다운 네일샵입니다"),
-            image = ShopImage.of("https://example.com/image.jpg")
+            images = ShopImages.of(listOf("https://example.com/image.jpg"))
         )
     }
 
