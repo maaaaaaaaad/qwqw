@@ -8,11 +8,22 @@ data class PagedReviewsResponse(
     val totalElements: Long
 ) {
     companion object {
-        fun from(pagedReviews: PagedReviews, memberNicknames: Map<String, String> = emptyMap()): PagedReviewsResponse {
+        fun from(
+            pagedReviews: PagedReviews,
+            memberNicknames: Map<String, String> = emptyMap(),
+            shopNames: Map<String, String> = emptyMap(),
+            shopImages: Map<String, String> = emptyMap()
+        ): PagedReviewsResponse {
             return PagedReviewsResponse(
                 items = pagedReviews.items.map { review ->
                     val memberId = review.memberId.value.toString()
-                    ReviewResponse.from(review, memberNicknames[memberId])
+                    val shopId = review.shopId.value.toString()
+                    ReviewResponse.from(
+                        review = review,
+                        authorName = memberNicknames[memberId],
+                        shopName = shopNames[shopId],
+                        shopImage = shopImages[shopId]
+                    )
                 },
                 hasNext = pagedReviews.hasNext,
                 totalElements = pagedReviews.totalElements
