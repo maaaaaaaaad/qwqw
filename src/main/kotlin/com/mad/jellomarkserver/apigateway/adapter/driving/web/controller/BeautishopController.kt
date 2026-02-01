@@ -138,7 +138,8 @@ class BeautishopController(
         @RequestParam(defaultValue = "CREATED_AT") sortBy: SortBy,
         @RequestParam(defaultValue = "DESC") sortOrder: SortOrder,
         @RequestParam(required = false) latitude: Double?,
-        @RequestParam(required = false) longitude: Double?
+        @RequestParam(required = false) longitude: Double?,
+        @RequestParam(required = false) radiusKm: Double?
     ): PagedBeautishopsResponse {
         val command = ListBeautishopsCommand(
             page = page,
@@ -149,7 +150,8 @@ class BeautishopController(
             sortBy = sortBy,
             sortOrder = sortOrder,
             latitude = latitude,
-            longitude = longitude
+            longitude = longitude,
+            radiusKm = radiusKm
         )
         val result = listBeautishopsUseCase.execute(command)
         return PagedBeautishopsResponse.from(result)
