@@ -11,7 +11,8 @@ data class ListBeautishopsCommand(
     val sortBy: SortBy = SortBy.CREATED_AT,
     val sortOrder: SortOrder = SortOrder.DESC,
     val latitude: Double? = null,
-    val longitude: Double? = null
+    val longitude: Double? = null,
+    val radiusKm: Double? = null
 )
 
 enum class SortBy {
