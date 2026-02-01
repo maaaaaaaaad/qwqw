@@ -123,7 +123,7 @@ class CreateBeautishopE2ETest {
             longitude = 127.0276,
             operatingTime = mapOf("Monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
@@ -151,7 +151,7 @@ class CreateBeautishopE2ETest {
             longitude = 127.0276,
             operatingTime = mapOf("Monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply {
