@@ -4,6 +4,8 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.CreateRevi
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.UpdateReviewRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.PagedReviewsResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ReviewResponse
+import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
+import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.SocialId
@@ -20,7 +22,8 @@ class ReviewController(
     private val updateReviewUseCase: UpdateReviewUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val getMemberReviewsUseCase: GetMemberReviewsUseCase,
-    private val memberPort: MemberPort
+    private val memberPort: MemberPort,
+    private val beautishopPort: BeautishopPort
 ) {
     @PostMapping("/api/beautishops/{shopId}/reviews")
     @ResponseStatus(HttpStatus.CREATED)
@@ -152,6 +155,15 @@ class ReviewController(
 
         val memberDisplayNames = mapOf(member.id.value.toString() to member.displayName.value)
 
-        return PagedReviewsResponse.from(result, memberDisplayNames)
+        val shopIds = result.items.map { ShopId.from(it.shopId.value) }
+        val shops = beautishopPort.findByIds(shopIds)
+        val shopNames = shops.associate {
+            it.id.value.toString() to it.name.value
+        }
+        val shopImages = shops.associate {
+            it.id.value.toString() to (it.images.values.firstOrNull()?.value ?: "")
+        }.filterValues { it.isNotEmpty() }
+
+        return PagedReviewsResponse.from(result, memberDisplayNames, shopNames, shopImages)
     }
 }
