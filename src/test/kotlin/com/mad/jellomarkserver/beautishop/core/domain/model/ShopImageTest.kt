@@ -10,13 +10,13 @@ class ShopImageTest {
 
     @Test
     fun `should create ShopImage with valid HTTP URL`() {
-        val image = ShopImage.of("http://example.com/image.jpg")
+        val images = ShopImages.of(listOf("http://example.com/image.jpg"))
         assertEquals("http://example.com/image.jpg", image.value)
     }
 
     @Test
     fun `should create ShopImage with valid HTTPS URL`() {
-        val image = ShopImage.of("https://example.com/image.png")
+        val images = ShopImages.of(listOf("https://example.com/image.png"))
         assertEquals("https://example.com/image.png", image.value)
     }
 
@@ -40,13 +40,13 @@ class ShopImageTest {
 
     @Test
     fun `should trim whitespace from image URL`() {
-        val image = ShopImage.of("  https://example.com/image.jpg  ")
+        val images = ShopImages.of(listOf("  https://example.com/image.jpg  "))
         assertEquals("https://example.com/image.jpg", image.value)
     }
 
     @Test
     fun `should allow image URL with query parameters`() {
-        val image = ShopImage.of("https://example.com/image.jpg?size=large&quality=high")
+        val images = ShopImages.of(listOf("https://example.com/image.jpg?size=large&quality=high"))
         assertEquals("https://example.com/image.jpg?size=large&quality=high", image.value)
     }
 
