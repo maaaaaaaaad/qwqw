@@ -27,7 +27,7 @@ class BeautishopTest {
             gps = gps,
             operatingTime = operatingTime,
             description = null,
-            image = null,
+            images = ShopImages.ofNullable(null),
             clock = fixedClock
         )
 
@@ -53,7 +53,7 @@ class BeautishopTest {
         val gps = ShopGPS.of(37.5665, 126.9780)
         val operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00"))
         val description = ShopDescription.of("아름다운 네일샵입니다")
-        val image = ShopImage.of("https://example.com/image.jpg")
+        val images = ShopImages.of(listOf("https://example.com/image.jpg"))
 
         val beautishop = Beautishop.create(
             name = name,
@@ -92,7 +92,7 @@ class BeautishopTest {
             gps = gps,
             operatingTime = operatingTime,
             description = null,
-            image = null,
+            images = ShopImages.ofNullable(null),
             averageRating = AverageRating.zero(),
             reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
@@ -115,7 +115,7 @@ class BeautishopTest {
             gps = ShopGPS.of(37.5665, 126.9780),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = null,
-            image = null,
+            images = ShopImages.ofNullable(null),
             clock = fixedClock
         )
 
@@ -159,7 +159,7 @@ class BeautishopTest {
             gps = gps,
             operatingTime = operatingTime,
             description = null,
-            image = null,
+            images = ShopImages.ofNullable(null),
             averageRating = AverageRating.zero(),
             reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
@@ -174,7 +174,7 @@ class BeautishopTest {
             gps = gps,
             operatingTime = operatingTime,
             description = null,
-            image = null,
+            images = ShopImages.ofNullable(null),
             averageRating = AverageRating.zero(),
             reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
