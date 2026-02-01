@@ -66,7 +66,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = null,
             shopDescription = "Updated description",
-            shopImage = null
+            shopImages = null
         )
 
         val result = useCase.update(command)
@@ -89,7 +89,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         val result = useCase.update(command)
@@ -111,7 +111,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<BeautishopNotFoundException> {
@@ -132,7 +132,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         val exception = assertFailsWith<UnauthorizedBeautishopAccessException> {
@@ -154,7 +154,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = emptyMap(),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidOperatingTimeException> {
@@ -174,7 +174,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = "a".repeat(501),
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidShopDescriptionException> {
@@ -216,7 +216,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("tuesday" to "10:00-20:00"),
             shopDescription = "Updated",
-            shopImage = null
+            shopImages = null
         )
 
         val result = useCase.update(command)
@@ -262,7 +262,7 @@ class UpdateBeautishopUseCaseImplTest {
             gps = ShopGPS.of(37.5, 127.0),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = ShopDescription.of("Original description"),
-            image = ShopImage.of("https://example.com/image.jpg")
+            images = ShopImages.of(listOf("https://example.com/image.jpg"))
         )
     }
 }
