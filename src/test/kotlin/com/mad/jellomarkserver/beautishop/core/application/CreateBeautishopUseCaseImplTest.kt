@@ -55,7 +55,7 @@ class CreateBeautishopUseCaseImplTest {
                     gps = ShopGPS.of(37.5665, 126.9780),
                     operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
                     description = ShopDescription.of("아름다운 네일샵입니다"),
-                    image = ShopImage.of("https://example.com/image.jpg")
+                    images = ShopImages.of(listOf("https://example.com/image.jpg"))
                 ),
                 ArgumentMatchers.any() ?: ownerId
             )
@@ -93,7 +93,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         `when`(
@@ -106,7 +106,7 @@ class CreateBeautishopUseCaseImplTest {
                     gps = ShopGPS.of(37.5665, 126.9780),
                     operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
                     description = null,
-                    image = null
+                    images = ShopImages.ofNullable(null)
                 ),
                 ArgumentMatchers.any() ?: ownerId
             )
@@ -133,7 +133,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidShopNameException> {
@@ -153,7 +153,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidShopRegNumException> {
@@ -173,7 +173,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidShopPhoneNumberException> {
@@ -193,7 +193,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidShopAddressException> {
@@ -213,7 +213,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidShopGPSException> {
@@ -233,7 +233,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = emptyMap(),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         assertFailsWith<InvalidOperatingTimeException> {
@@ -254,7 +254,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = null
+            shopImages = null
         )
 
         `when`(
@@ -267,7 +267,7 @@ class CreateBeautishopUseCaseImplTest {
                     gps = ShopGPS.of(37.5665, 126.9780),
                     operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
                     description = null,
-                    image = null
+                    images = ShopImages.ofNullable(null)
                 ),
                 ArgumentMatchers.any() ?: ownerId
             )
@@ -306,7 +306,7 @@ class CreateBeautishopUseCaseImplTest {
                     gps = ShopGPS.of(37.5665, 126.9780),
                     operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
                     description = ShopDescription.of("아름다운 네일샵입니다"),
-                    image = ShopImage.of("https://example.com/image.jpg")
+                    images = ShopImages.of(listOf("https://example.com/image.jpg"))
                 ),
                 ArgumentMatchers.any() ?: ownerId
             )
