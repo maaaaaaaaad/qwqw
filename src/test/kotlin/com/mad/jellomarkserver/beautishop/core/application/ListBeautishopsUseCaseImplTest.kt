@@ -134,6 +134,68 @@ class ListBeautishopsUseCaseImplTest {
         assertEquals("Shop B", result.items[0].name.value)
     }
 
+    @Test
+    fun `should filter by radiusKm when provided`() {
+        val nearShop = createBeautishopWithGps("Near Shop", 37.5010, 127.0010)
+        val farShop = createBeautishopWithGps("Far Shop", 37.6000, 127.1000)
+        val beautishops = listOf(nearShop, farShop)
+
+        whenever(beautishopPort.findAllFilteredWithoutPaging(any())).thenReturn(beautishops)
+
+        val command = ListBeautishopsCommand(
+            page = 0,
+            size = 20,
+            latitude = 37.5000,
+            longitude = 127.0000,
+            radiusKm = 5.0
+        )
+        val result = useCase.execute(command)
+
+        assertEquals(1, result.items.size)
+        assertEquals("Near Shop", result.items[0].name.value)
+    }
+
+    @Test
+    fun `should return empty when no shops within radius`() {
+        val farShop = createBeautishopWithGps("Far Shop", 38.0000, 128.0000)
+        val beautishops = listOf(farShop)
+
+        whenever(beautishopPort.findAllFilteredWithoutPaging(any())).thenReturn(beautishops)
+
+        val command = ListBeautishopsCommand(
+            page = 0,
+            size = 20,
+            latitude = 37.5000,
+            longitude = 127.0000,
+            radiusKm = 5.0
+        )
+        val result = useCase.execute(command)
+
+        assertEquals(0, result.items.size)
+    }
+
+    @Test
+    fun `should paginate radius filtered results`() {
+        val shops = (1..10).map { i ->
+            createBeautishopWithGps("Shop $i", 37.5000 + (i * 0.001), 127.0000)
+        }
+
+        whenever(beautishopPort.findAllFilteredWithoutPaging(any())).thenReturn(shops)
+
+        val command = ListBeautishopsCommand(
+            page = 0,
+            size = 3,
+            latitude = 37.5000,
+            longitude = 127.0000,
+            radiusKm = 50.0
+        )
+        val result = useCase.execute(command)
+
+        assertEquals(3, result.items.size)
+        assertEquals(true, result.hasNext)
+        assertEquals(10, result.totalElements)
+    }
+
     private fun createBeautishop(name: String): Beautishop {
         return createBeautishopWithGps(name, 37.5665, 126.9780)
     }
@@ -147,7 +209,7 @@ class ListBeautishopsUseCaseImplTest {
             gps = ShopGPS.of(latitude, longitude),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = ShopDescription.of("아름다운 네일샵입니다"),
-            image = ShopImage.of("https://example.com/image.jpg")
+            images = ShopImages.of(listOf("https://example.com/image.jpg"))
         )
     }
 }
