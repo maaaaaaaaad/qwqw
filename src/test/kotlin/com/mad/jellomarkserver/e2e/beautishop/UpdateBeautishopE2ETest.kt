@@ -142,7 +142,7 @@ class UpdateBeautishopE2ETest {
         val updateRequest = UpdateBeautishopRequest(
             operatingTime = null,
             shopDescription = "Only description updated",
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply {
@@ -187,7 +187,7 @@ class UpdateBeautishopE2ETest {
         val updateRequest = UpdateBeautishopRequest(
             operatingTime = mapOf("Tuesday" to "10:00-20:00"),
             shopDescription = "Trying to update",
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply {
@@ -213,7 +213,7 @@ class UpdateBeautishopE2ETest {
         val updateRequest = UpdateBeautishopRequest(
             operatingTime = mapOf("Tuesday" to "10:00-20:00"),
             shopDescription = "Trying to update non-existent shop",
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply {
@@ -239,7 +239,7 @@ class UpdateBeautishopE2ETest {
         val updateRequest = UpdateBeautishopRequest(
             operatingTime = mapOf("Tuesday" to "10:00-20:00"),
             shopDescription = "Updated",
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
@@ -262,7 +262,7 @@ class UpdateBeautishopE2ETest {
         val updateRequest = UpdateBeautishopRequest(
             operatingTime = emptyMap(),
             shopDescription = "Updated",
-            shopImage = null
+            shopImages = null
         )
 
         val headers = HttpHeaders().apply {
