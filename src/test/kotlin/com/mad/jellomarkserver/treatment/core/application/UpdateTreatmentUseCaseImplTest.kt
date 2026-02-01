@@ -46,7 +46,7 @@ class UpdateTreatmentUseCaseImplTest {
             gps = ShopGPS.of(37.5, 127.0),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = null,
-            image = null
+            images = ShopImages.empty()
         )
     }
 
