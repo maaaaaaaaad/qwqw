@@ -24,6 +24,13 @@ class ListBeautishopsUseCaseImpl(
             longitude = command.longitude
         )
 
+        val hasRadiusFilter = command.radiusKm != null &&
+            command.latitude != null && command.longitude != null
+
+        if (hasRadiusFilter) {
+            return executeWithRadiusFilter(command, criteria)
+        }
+
         val isDistanceSort = command.sortBy == SortBy.DISTANCE &&
             command.latitude != null && command.longitude != null
 
@@ -88,6 +95,47 @@ class ListBeautishopsUseCaseImpl(
                 totalElements = page.totalElements
             )
         }
+    }
+
+    private fun executeWithRadiusFilter(
+        command: ListBeautishopsCommand,
+        criteria: BeautishopFilterCriteria
+    ): PagedBeautishops {
+        val allItems = beautishopPort.findAllFilteredWithoutPaging(criteria)
+
+        val itemsWithDistance = allItems.map { beautishop ->
+            BeautishopWithDistance(
+                beautishop = beautishop,
+                distance = GpsDistanceCalculator.calculateDistanceKm(
+                    lat1 = command.latitude!!,
+                    lon1 = command.longitude!!,
+                    lat2 = beautishop.gps.latitude,
+                    lon2 = beautishop.gps.longitude
+                )
+            )
+        }
+
+        val filteredByRadius = itemsWithDistance.filter { it.distance!! <= command.radiusKm!! }
+
+        val sortedItems = when (command.sortOrder) {
+            SortOrder.ASC -> filteredByRadius.sortedBy { it.distance }
+            SortOrder.DESC -> filteredByRadius.sortedByDescending { it.distance }
+        }
+
+        val startIndex = command.page * command.size
+        val endIndex = minOf(startIndex + command.size, sortedItems.size)
+        val pagedItems = if (startIndex < sortedItems.size) {
+            sortedItems.subList(startIndex, endIndex)
+        } else {
+            emptyList()
+        }
+
+        return PagedBeautishops(
+            items = pagedItems.map { it.beautishop },
+            distances = pagedItems.map { it.distance },
+            hasNext = endIndex < sortedItems.size,
+            totalElements = sortedItems.size.toLong()
+        )
     }
 
     private data class BeautishopWithDistance(
