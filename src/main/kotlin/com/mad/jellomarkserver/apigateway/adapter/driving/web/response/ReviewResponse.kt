@@ -6,6 +6,8 @@ import java.time.Instant
 data class ReviewResponse(
     val id: String,
     val shopId: String,
+    val shopName: String?,
+    val shopImage: String?,
     val memberId: String,
     val authorName: String?,
     val rating: Int?,
@@ -15,10 +17,17 @@ data class ReviewResponse(
     val updatedAt: Instant
 ) {
     companion object {
-        fun from(review: ShopReview, authorName: String? = null): ReviewResponse {
+        fun from(
+            review: ShopReview,
+            authorName: String? = null,
+            shopName: String? = null,
+            shopImage: String? = null
+        ): ReviewResponse {
             return ReviewResponse(
                 id = review.id.value.toString(),
                 shopId = review.shopId.value.toString(),
+                shopName = shopName,
+                shopImage = shopImage,
                 memberId = review.memberId.value.toString(),
                 authorName = authorName,
                 rating = review.rating?.value,
