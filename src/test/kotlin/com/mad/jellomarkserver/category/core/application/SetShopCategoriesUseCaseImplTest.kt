@@ -137,7 +137,7 @@ class SetShopCategoriesUseCaseImplTest {
             gps = ShopGPS.of(37.5, 127.0),
             operatingTime = OperatingTime.of(mapOf("monday" to "09:00-18:00")),
             description = ShopDescription.of("설명"),
-            image = ShopImage.of("https://example.com/image.jpg")
+            images = ShopImages.of(listOf("https://example.com/image.jpg"))
         )
     }
 }
