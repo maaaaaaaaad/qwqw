@@ -17,7 +17,9 @@ data class FavoriteResponse(
         val address: String,
         val images: List<String>,
         val averageRating: Double,
-        val reviewCount: Int
+        val reviewCount: Int,
+        val latitude: Double,
+        val longitude: Double
     ) {
         companion object {
             fun from(beautishop: Beautishop): ShopSummary {
@@ -27,7 +29,9 @@ data class FavoriteResponse(
                     address = beautishop.address.value,
                     images = beautishop.images.toStringList(),
                     averageRating = beautishop.averageRating.value,
-                    reviewCount = beautishop.reviewCount.value
+                    reviewCount = beautishop.reviewCount.value,
+                    latitude = beautishop.gps.latitude,
+                    longitude = beautishop.gps.longitude
                 )
             }
         }
