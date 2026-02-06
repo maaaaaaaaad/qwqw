@@ -77,7 +77,7 @@ class UpdateBeautishopE2ETest {
             longitude = 127.0276,
             operatingTime = mapOf("Monday" to "09:00-18:00"),
             shopDescription = "Premium beauty salon",
-            shopImage = "https://example.com/image.jpg"
+            shopImages = listOf("https://example.com/image.jpg")
         )
 
         val headers = HttpHeaders().apply {
@@ -104,7 +104,7 @@ class UpdateBeautishopE2ETest {
         val updateRequest = UpdateBeautishopRequest(
             operatingTime = mapOf("Tuesday" to "10:00-20:00", "Wednesday" to "10:00-20:00"),
             shopDescription = "Updated premium beauty salon",
-            shopImage = "https://example.com/new-image.jpg"
+            shopImages = listOf("https://example.com/new-image.jpg")
         )
 
         val headers = HttpHeaders().apply {
