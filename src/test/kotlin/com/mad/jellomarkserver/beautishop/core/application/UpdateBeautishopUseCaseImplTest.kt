@@ -42,7 +42,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("tuesday" to "10:00-20:00"),
             shopDescription = "Updated description",
-            shopImage = "https://example.com/new-image.jpg"
+            shopImages = listOf("https://example.com/new-image.jpg")
         )
 
         val result = useCase.update(command)
@@ -50,7 +50,7 @@ class UpdateBeautishopUseCaseImplTest {
         assertEquals(shop.id, result.id)
         assertEquals(mapOf("tuesday" to "10:00-20:00"), result.operatingTime.schedule)
         assertEquals("Updated description", result.description?.value)
-        assertEquals("https://example.com/new-image.jpg", result.image?.value)
+        assertEquals("https://example.com/new-image.jpg", result.images.values[0].value)
     }
 
     @Test
@@ -73,7 +73,7 @@ class UpdateBeautishopUseCaseImplTest {
 
         assertEquals(shop.operatingTime.schedule, result.operatingTime.schedule)
         assertEquals("Updated description", result.description?.value)
-        assertNull(result.image)
+        assertEquals(shop.images, result.images)
     }
 
     @Test
@@ -95,7 +95,7 @@ class UpdateBeautishopUseCaseImplTest {
         val result = useCase.update(command)
 
         assertNull(result.description)
-        assertNull(result.image)
+        assertEquals(shop.images, result.images)
     }
 
     @Test
@@ -194,7 +194,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = null,
-            shopImage = "not-a-valid-url"
+            shopImages = listOf("not-a-valid-url")
         )
 
         assertFailsWith<InvalidShopImageException> {
@@ -237,7 +237,7 @@ class UpdateBeautishopUseCaseImplTest {
             ownerId = ownerId.value.toString(),
             operatingTime = mapOf("tuesday" to "10:00-20:00"),
             shopDescription = "Updated",
-            shopImage = "https://example.com/new.jpg"
+            shopImages = listOf("https://example.com/new.jpg")
         )
 
         val result = useCase.update(command)
