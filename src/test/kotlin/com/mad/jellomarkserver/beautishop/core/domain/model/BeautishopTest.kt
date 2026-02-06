@@ -39,7 +39,7 @@ class BeautishopTest {
         assertEquals(gps, beautishop.gps)
         assertEquals(operatingTime, beautishop.operatingTime)
         assertNull(beautishop.description)
-        assertNull(beautishop.image)
+        assertEquals(0, beautishop.images.size)
         assertEquals(Instant.parse("2025-01-01T00:00:00Z"), beautishop.createdAt)
         assertEquals(Instant.parse("2025-01-01T00:00:00Z"), beautishop.updatedAt)
     }
@@ -63,12 +63,12 @@ class BeautishopTest {
             gps = gps,
             operatingTime = operatingTime,
             description = description,
-            image = image,
+            images = images,
             clock = fixedClock
         )
 
         assertEquals(description, beautishop.description)
-        assertEquals(image, beautishop.image)
+        assertEquals(images, beautishop.images)
     }
 
     @Test
@@ -121,19 +121,19 @@ class BeautishopTest {
 
         val newOperatingTime = OperatingTime.of(mapOf("monday" to "10:00-19:00"))
         val newDescription = ShopDescription.of("새로운 소개문구")
-        val newImage = ShopImage.of("https://example.com/new-image.jpg")
+        val newImages = ShopImages.of(listOf("https://example.com/new-image.jpg"))
         val updateClock = Clock.fixed(Instant.parse("2025-01-02T00:00:00Z"), ZoneId.of("UTC"))
 
         val updated = beautishop.update(
             operatingTime = newOperatingTime,
             description = newDescription,
-            image = newImage,
+            images = newImages,
             clock = updateClock
         )
 
         assertEquals(newOperatingTime, updated.operatingTime)
         assertEquals(newDescription, updated.description)
-        assertEquals(newImage, updated.image)
+        assertEquals(newImages, updated.images)
         assertEquals(Instant.parse("2025-01-02T00:00:00Z"), updated.updatedAt)
         assertEquals(beautishop.createdAt, updated.createdAt)
     }
