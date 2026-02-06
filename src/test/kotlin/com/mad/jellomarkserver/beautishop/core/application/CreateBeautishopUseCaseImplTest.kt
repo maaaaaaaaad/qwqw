@@ -42,7 +42,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = "아름다운 네일샵입니다",
-            shopImage = "https://example.com/image.jpg"
+            shopImages = listOf("https://example.com/image.jpg")
         )
 
         `when`(
@@ -75,7 +75,7 @@ class CreateBeautishopUseCaseImplTest {
         assertEquals(126.9780, result.gps.longitude)
         assertEquals(mapOf("monday" to "09:00-18:00"), result.operatingTime.schedule)
         assertEquals("아름다운 네일샵입니다", result.description?.value)
-        assertEquals("https://example.com/image.jpg", result.image?.value)
+        assertEquals(ShopImages.of(listOf("https://example.com/image.jpg")), result.images)
         assertNotNull(result.createdAt)
         assertNotNull(result.updatedAt)
     }
@@ -118,7 +118,7 @@ class CreateBeautishopUseCaseImplTest {
 
         assertNotNull(result)
         assertNull(result.description)
-        assertNull(result.image)
+        assertTrue(result.images.isEmpty())
     }
 
     @Test
@@ -293,7 +293,7 @@ class CreateBeautishopUseCaseImplTest {
             longitude = 126.9780,
             operatingTime = mapOf("monday" to "09:00-18:00"),
             shopDescription = "  아름다운 네일샵입니다  ",
-            shopImage = "  https://example.com/image.jpg  "
+            shopImages = listOf("  https://example.com/image.jpg  ")
         )
 
         `when`(
@@ -321,6 +321,6 @@ class CreateBeautishopUseCaseImplTest {
         assertEquals("010-1234-5678", result.phoneNumber.value)
         assertEquals("서울특별시 강남구 테헤란로 123", result.address.value)
         assertEquals("아름다운 네일샵입니다", result.description?.value)
-        assertEquals("https://example.com/image.jpg", result.image?.value)
+        assertEquals(ShopImages.of(listOf("https://example.com/image.jpg")), result.images)
     }
 }
