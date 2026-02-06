@@ -1,10 +1,10 @@
 package com.mad.jellomarkserver.beautishop.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.BeautishopJpaEntity
+import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.ShopImageJpaEntity
 import com.mad.jellomarkserver.beautishop.core.domain.model.*
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.util.*
@@ -30,7 +30,9 @@ class BeautishopMapperImplTest {
             longitude = 126.9780,
             operatingTime = "monday:09:00-18:00,tuesday:09:00-18:00",
             description = "아름다운 네일샵입니다",
-            image = "https://example.com/image.jpg",
+            images = mutableListOf(
+                ShopImageJpaEntity(shopId = id, imageUrl = "https://example.com/image.jpg", displayOrder = 0)
+            ),
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -46,7 +48,7 @@ class BeautishopMapperImplTest {
         assertEquals(126.9780, result.gps.longitude)
         assertEquals(mapOf("monday" to "09:00-18:00", "tuesday" to "09:00-18:00"), result.operatingTime.schedule)
         assertEquals(ShopDescription.of("아름다운 네일샵입니다"), result.description)
-        assertEquals(ShopImage.of("https://example.com/image.jpg"), result.image)
+        assertEquals(ShopImages.of(listOf("https://example.com/image.jpg")), result.images)
         assertEquals(createdAt, result.createdAt)
         assertEquals(updatedAt, result.updatedAt)
     }
@@ -68,7 +70,7 @@ class BeautishopMapperImplTest {
             longitude = 126.9780,
             operatingTime = "monday:09:00-18:00",
             description = null,
-            images = ShopImages.ofNullable(null),
+            images = mutableListOf(),
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -76,7 +78,7 @@ class BeautishopMapperImplTest {
         val result = mapper.toDomain(entity)
 
         assertNull(result.description)
-        assertNull(result.image)
+        assertTrue(result.images.isEmpty())
     }
 
     @Test
@@ -103,7 +105,7 @@ class BeautishopMapperImplTest {
             gps = gps,
             operatingTime = operatingTime,
             description = description,
-            image = image,
+            images = images,
             averageRating = AverageRating.of(4.5),
             reviewCount = ReviewCount.of(10),
             createdAt = createdAt,
@@ -121,7 +123,8 @@ class BeautishopMapperImplTest {
         assertEquals(37.5665, entity.latitude)
         assertEquals(126.9780, entity.longitude)
         assertEquals("아름다운 네일샵입니다", entity.description)
-        assertEquals("https://example.com/image.jpg", entity.image)
+        assertEquals(1, entity.images.size)
+        assertEquals("https://example.com/image.jpg", entity.images[0].imageUrl)
         assertEquals(createdAt, entity.createdAt)
         assertEquals(updatedAt, entity.updatedAt)
     }
@@ -148,7 +151,7 @@ class BeautishopMapperImplTest {
             gps = gps,
             operatingTime = operatingTime,
             description = null,
-            images = ShopImages.ofNullable(null),
+            images = ShopImages.empty(),
             averageRating = AverageRating.zero(),
             reviewCount = ReviewCount.zero(),
             createdAt = createdAt,
@@ -158,7 +161,7 @@ class BeautishopMapperImplTest {
         val entity = mapper.toEntity(domain, ownerId)
 
         assertNull(entity.description)
-        assertNull(entity.image)
+        assertTrue(entity.images.isEmpty())
     }
 
     @Test
@@ -191,7 +194,7 @@ class BeautishopMapperImplTest {
             gps = gps,
             operatingTime = operatingTime,
             description = description,
-            image = image,
+            images = images,
             averageRating = AverageRating.of(4.2),
             reviewCount = ReviewCount.of(5),
             createdAt = createdAt,
@@ -209,7 +212,7 @@ class BeautishopMapperImplTest {
         assertEquals(original.gps, roundTripped.gps)
         assertEquals(original.operatingTime.schedule, roundTripped.operatingTime.schedule)
         assertEquals(original.description, roundTripped.description)
-        assertEquals(original.image, roundTripped.image)
+        assertEquals(original.images, roundTripped.images)
         assertEquals(original.createdAt, roundTripped.createdAt)
         assertEquals(original.updatedAt, roundTripped.updatedAt)
     }
