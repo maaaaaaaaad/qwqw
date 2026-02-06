@@ -77,7 +77,7 @@ class CreateBeautishopE2ETest {
                 "Tuesday" to "09:00-18:00"
             ),
             shopDescription = "Premium beauty salon",
-            shopImage = "https://example.com/image.jpg"
+            shopImages = listOf("https://example.com/image.jpg")
         )
 
         val headers = HttpHeaders().apply {
