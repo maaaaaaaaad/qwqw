@@ -67,7 +67,7 @@ class ListBeautishopsE2ETest {
             longitude = 127.0276,
             operatingTime = mapOf("Monday" to "09:00-18:00"),
             shopDescription = "Premium beauty salon",
-            shopImage = "https://example.com/image.jpg"
+            shopImages = listOf("https://example.com/image.jpg")
         )
 
         val headers = HttpHeaders().apply {
