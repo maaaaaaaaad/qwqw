@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.beautishop.adapter.driven.persistence.repository
 
 import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.BeautishopJpaEntity
+import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.entity.ShopImageJpaEntity
 import com.mad.jellomarkserver.beautishop.adapter.driven.persistence.mapper.BeautishopMapper
 import com.mad.jellomarkserver.beautishop.core.domain.exception.DuplicateShopRegNumException
 import com.mad.jellomarkserver.beautishop.core.domain.model.*
@@ -186,8 +187,9 @@ class BeautishopPersistenceAdapterTest {
     }
 
     private fun createEntity(): BeautishopJpaEntity {
+        val shopId = UUID.randomUUID()
         return BeautishopJpaEntity(
-            id = UUID.randomUUID(),
+            id = shopId,
             ownerId = UUID.randomUUID(),
             name = "Beautiful Salon",
             shopRegNum = "123-45-67890",
@@ -197,7 +199,9 @@ class BeautishopPersistenceAdapterTest {
             longitude = 126.9780,
             operatingTime = "monday:09:00-18:00",
             description = "아름다운 네일샵입니다",
-            image = "https://example.com/image.jpg",
+            images = mutableListOf(
+                ShopImageJpaEntity(shopId = shopId, imageUrl = "https://example.com/image.jpg", displayOrder = 0)
+            ),
             createdAt = Instant.now(),
             updatedAt = Instant.now()
         )
