@@ -10,6 +10,7 @@ import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccou
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.owner.core.domain.exception.*
+import com.mad.jellomarkserver.reservation.core.domain.exception.*
 import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.treatment.core.domain.exception.*
 import org.springframework.http.HttpStatus
@@ -244,6 +245,46 @@ class ApiGatewayExceptionHandler {
     @ExceptionHandler(UnauthorizedTreatmentAccessException::class)
     fun handleUnauthorizedTreatmentAccess(ex: UnauthorizedTreatmentAccessException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
+    }
+
+    @ExceptionHandler(ReservationNotFoundException::class)
+    fun handleReservationNotFound(ex: ReservationNotFoundException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
+    }
+
+    @ExceptionHandler(InvalidReservationStatusTransitionException::class)
+    fun handleInvalidReservationStatusTransition(ex: InvalidReservationStatusTransitionException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(ReservationTimeConflictException::class)
+    fun handleReservationTimeConflict(ex: ReservationTimeConflictException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
+    }
+
+    @ExceptionHandler(PastReservationException::class)
+    fun handlePastReservation(ex: PastReservationException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(TreatmentNotInShopException::class)
+    fun handleTreatmentNotInShop(ex: TreatmentNotInShopException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(UnauthorizedReservationAccessException::class)
+    fun handleUnauthorizedReservationAccess(ex: UnauthorizedReservationAccessException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
+    }
+
+    @ExceptionHandler(InvalidReservationMemoException::class)
+    fun handleInvalidReservationMemo(ex: InvalidReservationMemoException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
+    @ExceptionHandler(InvalidRejectionReasonException::class)
+    fun handleInvalidRejectionReason(ex: InvalidRejectionReasonException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
     @ExceptionHandler(Exception::class)
