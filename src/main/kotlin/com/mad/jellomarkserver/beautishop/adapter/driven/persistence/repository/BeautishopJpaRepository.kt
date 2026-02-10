@@ -12,6 +12,9 @@ interface BeautishopJpaRepository : JpaRepository<BeautishopJpaEntity, UUID>,
     fun findByOwnerId(ownerId: UUID): List<BeautishopJpaEntity>
     fun findByShopRegNum(shopRegNum: String): BeautishopJpaEntity?
 
+    @Query("SELECT b.ownerId FROM BeautishopJpaEntity b WHERE b.id = :shopId")
+    fun findOwnerIdByShopId(shopId: UUID): UUID?
+
     @Modifying
     @Query("UPDATE BeautishopJpaEntity b SET b.averageRating = :averageRating, b.reviewCount = :reviewCount WHERE b.id = :id")
     fun updateStats(id: UUID, averageRating: Double, reviewCount: Int)
