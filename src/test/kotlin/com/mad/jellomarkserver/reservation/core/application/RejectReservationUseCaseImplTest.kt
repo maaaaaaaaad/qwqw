@@ -3,6 +3,8 @@ package com.mad.jellomarkserver.reservation.core.application
 import com.mad.jellomarkserver.beautishop.core.domain.model.*
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.notification.port.driving.SendNotificationCommand
+import com.mad.jellomarkserver.notification.port.driving.SendNotificationUseCase
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
 import com.mad.jellomarkserver.reservation.core.domain.exception.ReservationNotFoundException
 import com.mad.jellomarkserver.reservation.core.domain.exception.UnauthorizedReservationAccessException
@@ -18,8 +20,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.any
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import kotlin.test.assertFailsWith
@@ -33,11 +35,14 @@ class RejectReservationUseCaseImplTest {
     @Mock
     private lateinit var beautishopPort: BeautishopPort
 
+    @Mock
+    private lateinit var sendNotificationUseCase: SendNotificationUseCase
+
     private lateinit var useCase: RejectReservationUseCaseImpl
 
     @BeforeEach
     fun setup() {
-        useCase = RejectReservationUseCaseImpl(reservationPort, beautishopPort)
+        useCase = RejectReservationUseCaseImpl(reservationPort, beautishopPort, sendNotificationUseCase)
     }
 
     @Test
@@ -99,10 +104,43 @@ class RejectReservationUseCaseImplTest {
         }
     }
 
-    private fun createTestReservation(shopId: ShopId = ShopId.new()): Reservation {
+    @Test
+    fun `should send notification to member after rejection`() {
+        val shopId = ShopId.new()
+        val memberId = MemberId.new()
+        val ownerId = OwnerId.new()
+        val reservation = createTestReservation(shopId = shopId, memberId = memberId)
+        val shop = createBeautishop(shopId)
+
+        whenever(reservationPort.findById(reservation.id)).thenReturn(reservation)
+        whenever(beautishopPort.findByOwnerId(ownerId)).thenReturn(listOf(shop))
+        whenever(reservationPort.save(any())).thenAnswer { it.arguments[0] as Reservation }
+        whenever(beautishopPort.findById(shopId)).thenReturn(shop)
+
+        val command = RejectReservationCommand(
+            reservationId = reservation.id.value.toString(),
+            ownerId = ownerId.value.toString(),
+            rejectionReason = "해당 시간에 예약이 불가합니다"
+        )
+
+        useCase.execute(command)
+
+        verify(sendNotificationUseCase).execute(argThat<SendNotificationCommand> { cmd ->
+            cmd.userId == memberId.value.toString() &&
+                cmd.userRole == "MEMBER" &&
+                cmd.type == "RESERVATION_REJECTED" &&
+                cmd.body.contains("Test Shop") &&
+                cmd.body.contains("해당 시간에 예약이 불가합니다")
+        })
+    }
+
+    private fun createTestReservation(
+        shopId: ShopId = ShopId.new(),
+        memberId: MemberId = MemberId.new()
+    ): Reservation {
         return Reservation.create(
             shopId = shopId,
-            memberId = MemberId.new(),
+            memberId = memberId,
             treatmentId = TreatmentId.new(),
             reservationDate = LocalDate.of(2025, 3, 15),
             startTime = LocalTime.of(14, 0),
@@ -124,8 +162,8 @@ class RejectReservationUseCaseImplTest {
             images = ShopImages.empty(),
             averageRating = AverageRating.zero(),
             reviewCount = ReviewCount.zero(),
-            createdAt = java.time.Instant.now(),
-            updatedAt = java.time.Instant.now()
+            createdAt = Instant.now(),
+            updatedAt = Instant.now()
         )
     }
 }
