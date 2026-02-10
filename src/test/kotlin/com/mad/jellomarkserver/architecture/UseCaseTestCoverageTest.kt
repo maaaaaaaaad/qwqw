@@ -13,7 +13,7 @@ class UseCaseTestCoverageTest {
         private const val MAIN_SRC = "src/main/kotlin/com/mad/jellomarkserver"
         private const val TEST_SRC = "src/test/kotlin/com/mad/jellomarkserver"
 
-        private val domains = listOf("auth", "member", "owner", "beautishop", "review", "category", "treatment", "reservation")
+        private val domains = listOf("auth", "member", "owner", "beautishop", "review", "category", "treatment", "reservation", "usagehistory", "notification")
     }
 
     @Test
