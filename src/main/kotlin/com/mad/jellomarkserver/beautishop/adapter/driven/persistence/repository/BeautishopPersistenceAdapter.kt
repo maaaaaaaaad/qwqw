@@ -99,6 +99,10 @@ class BeautishopPersistenceAdapter(
         return PageRequest.of(pageable.pageNumber, pageable.pageSize, Sort.by(direction, sortField))
     }
 
+    override fun findOwnerIdByShopId(shopId: ShopId): OwnerId? {
+        return jpaRepository.findOwnerIdByShopId(shopId.value)?.let { OwnerId.from(it) }
+    }
+
     override fun delete(id: ShopId) {
         jpaRepository.deleteById(id.value)
     }
