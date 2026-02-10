@@ -2,6 +2,8 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.CreateReservationRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.RejectReservationRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.AvailableDatesResponse
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.AvailableSlotsResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ReservationResponse
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
@@ -13,6 +15,10 @@ import com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import com.mad.jellomarkserver.reservation.core.domain.model.Reservation
 import com.mad.jellomarkserver.reservation.port.driving.*
+import com.mad.jellomarkserver.reservation.port.driving.GetAvailableDatesQuery
+import com.mad.jellomarkserver.reservation.port.driving.GetAvailableDatesUseCase
+import com.mad.jellomarkserver.reservation.port.driving.GetAvailableSlotsQuery
+import com.mad.jellomarkserver.reservation.port.driving.GetAvailableSlotsUseCase
 import com.mad.jellomarkserver.treatment.core.domain.model.TreatmentId
 import com.mad.jellomarkserver.treatment.port.driven.TreatmentPort
 import jakarta.servlet.http.HttpServletRequest
@@ -31,6 +37,8 @@ class ReservationController(
     private val cancelReservationUseCase: CancelReservationUseCase,
     private val completeReservationUseCase: CompleteReservationUseCase,
     private val noShowReservationUseCase: NoShowReservationUseCase,
+    private val getAvailableSlotsUseCase: GetAvailableSlotsUseCase,
+    private val getAvailableDatesUseCase: GetAvailableDatesUseCase,
     private val memberPort: MemberPort,
     private val ownerPort: OwnerPort,
     private val beautishopPort: BeautishopPort,
@@ -201,6 +209,36 @@ class ReservationController(
 
         val reservation = noShowReservationUseCase.execute(command)
         return enrichResponse(reservation)
+    }
+
+    @GetMapping("/api/beautishops/{shopId}/available-dates")
+    fun getAvailableDates(
+        @PathVariable shopId: String,
+        @RequestParam yearMonth: String,
+        @RequestParam treatmentId: String
+    ): AvailableDatesResponse {
+        val query = GetAvailableDatesQuery(
+            shopId = shopId,
+            treatmentId = treatmentId,
+            yearMonth = yearMonth
+        )
+        val result = getAvailableDatesUseCase.execute(query)
+        return AvailableDatesResponse.from(result)
+    }
+
+    @GetMapping("/api/beautishops/{shopId}/available-slots")
+    fun getAvailableSlots(
+        @PathVariable shopId: String,
+        @RequestParam date: String,
+        @RequestParam treatmentId: String
+    ): AvailableSlotsResponse {
+        val query = GetAvailableSlotsQuery(
+            shopId = shopId,
+            treatmentId = treatmentId,
+            date = date
+        )
+        val result = getAvailableSlotsUseCase.execute(query)
+        return AvailableSlotsResponse.from(result)
     }
 
     private fun resolveOwner(servletRequest: HttpServletRequest): com.mad.jellomarkserver.owner.core.domain.model.Owner {
