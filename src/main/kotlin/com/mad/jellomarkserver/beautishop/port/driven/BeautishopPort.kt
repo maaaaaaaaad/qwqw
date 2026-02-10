@@ -16,6 +16,7 @@ interface BeautishopPort {
     fun findAllPaged(pageable: Pageable): Page<Beautishop>
     fun findAllFiltered(criteria: BeautishopFilterCriteria, pageable: Pageable): Page<Beautishop>
     fun findAllFilteredWithoutPaging(criteria: BeautishopFilterCriteria): List<Beautishop>
+    fun findOwnerIdByShopId(shopId: ShopId): OwnerId?
     fun delete(id: ShopId)
     fun updateStats(id: ShopId, averageRating: Double, reviewCount: Int)
 }
