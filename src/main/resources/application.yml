@@ -9,6 +9,9 @@ spring:
     serialization:
       write-dates-as-timestamps: false
 
+firebase:
+  service-account-path: classpath:firebase-service-account.json
+
 jwt:
   secret-key: jello-mark-secret-key-for-development-only-do-not-use-in-production-minimum-256-bits-required
   access-token-expiration: 3600000
