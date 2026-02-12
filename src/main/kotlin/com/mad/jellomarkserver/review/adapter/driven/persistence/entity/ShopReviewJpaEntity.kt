@@ -41,5 +41,11 @@ class ShopReviewJpaEntity(
     var createdAt: Instant,
 
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: Instant
+    var updatedAt: Instant,
+
+    @Column(name = "owner_reply_content", nullable = true, columnDefinition = "TEXT")
+    var ownerReplyContent: String? = null,
+
+    @Column(name = "owner_reply_created_at", nullable = true)
+    var ownerReplyCreatedAt: Instant? = null
 )
