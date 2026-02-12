@@ -18,7 +18,9 @@ class ShopReviewMapperImpl : ShopReviewMapper {
             content = domain.content?.value,
             images = serializeImages(domain.images),
             createdAt = domain.createdAt,
-            updatedAt = domain.updatedAt
+            updatedAt = domain.updatedAt,
+            ownerReplyContent = domain.ownerReplyContent?.value,
+            ownerReplyCreatedAt = domain.ownerReplyCreatedAt
         )
     }
 
@@ -31,7 +33,9 @@ class ShopReviewMapperImpl : ShopReviewMapper {
             content = entity.content?.let { ReviewContent.of(it) },
             images = deserializeImages(entity.images),
             createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
+            updatedAt = entity.updatedAt,
+            ownerReplyContent = entity.ownerReplyContent?.let { ReplyContent.of(it) },
+            ownerReplyCreatedAt = entity.ownerReplyCreatedAt
         )
     }
 
