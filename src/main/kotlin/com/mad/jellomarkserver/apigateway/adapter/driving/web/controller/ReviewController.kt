@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.CreateReviewRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.ReplyToReviewRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.UpdateReviewRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.PagedReviewsResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ReviewResponse
@@ -22,6 +23,8 @@ class ReviewController(
     private val updateReviewUseCase: UpdateReviewUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val getMemberReviewsUseCase: GetMemberReviewsUseCase,
+    private val replyToReviewUseCase: ReplyToReviewUseCase,
+    private val deleteReviewReplyUseCase: DeleteReviewReplyUseCase,
     private val memberPort: MemberPort,
     private val beautishopPort: BeautishopPort
 ) {
@@ -165,5 +168,52 @@ class ReviewController(
         }.filterValues { it.isNotEmpty() }
 
         return PagedReviewsResponse.from(result, memberDisplayNames, shopNames, shopImages)
+    }
+
+    @PutMapping("/api/beautishops/{shopId}/reviews/{reviewId}/reply")
+    fun replyToReview(
+        @PathVariable shopId: String,
+        @PathVariable reviewId: String,
+        @RequestBody request: ReplyToReviewRequest,
+        servletRequest: HttpServletRequest
+    ) {
+        val email = servletRequest.getAttribute("email") as String
+        val userType = servletRequest.getAttribute("userType") as String
+
+        if (userType != "OWNER") {
+            throw IllegalStateException("Only owners can reply to reviews")
+        }
+
+        val command = ReplyToReviewCommand(
+            shopId = shopId,
+            reviewId = reviewId,
+            ownerEmail = email,
+            content = request.content
+        )
+
+        replyToReviewUseCase.execute(command)
+    }
+
+    @DeleteMapping("/api/beautishops/{shopId}/reviews/{reviewId}/reply")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteReviewReply(
+        @PathVariable shopId: String,
+        @PathVariable reviewId: String,
+        servletRequest: HttpServletRequest
+    ) {
+        val email = servletRequest.getAttribute("email") as String
+        val userType = servletRequest.getAttribute("userType") as String
+
+        if (userType != "OWNER") {
+            throw IllegalStateException("Only owners can delete review replies")
+        }
+
+        val command = DeleteReviewReplyCommand(
+            shopId = shopId,
+            reviewId = reviewId,
+            ownerEmail = email
+        )
+
+        deleteReviewReplyUseCase.execute(command)
     }
 }
