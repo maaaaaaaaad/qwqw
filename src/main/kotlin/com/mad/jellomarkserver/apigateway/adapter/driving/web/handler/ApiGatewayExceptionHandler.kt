@@ -187,6 +187,11 @@ class ApiGatewayExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
     }
 
+    @ExceptionHandler(InvalidReplyContentException::class)
+    fun handleInvalidReplyContent(ex: InvalidReplyContentException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
+    }
+
     @ExceptionHandler(UnauthorizedReviewAccessException::class)
     fun handleUnauthorizedReviewAccess(ex: UnauthorizedReviewAccessException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
