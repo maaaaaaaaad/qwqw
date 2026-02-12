@@ -13,7 +13,9 @@ class ShopReview private constructor(
     val content: ReviewContent?,
     val images: ReviewImages?,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
+    val ownerReplyContent: ReplyContent? = null,
+    val ownerReplyCreatedAt: Instant? = null
 ) {
     companion object {
         fun create(
@@ -45,7 +47,9 @@ class ShopReview private constructor(
             content: ReviewContent?,
             images: ReviewImages?,
             createdAt: Instant,
-            updatedAt: Instant
+            updatedAt: Instant,
+            ownerReplyContent: ReplyContent? = null,
+            ownerReplyCreatedAt: Instant? = null
         ): ShopReview {
             return ShopReview(
                 id = id,
@@ -55,7 +59,9 @@ class ShopReview private constructor(
                 content = content,
                 images = images,
                 createdAt = createdAt,
-                updatedAt = updatedAt
+                updatedAt = updatedAt,
+                ownerReplyContent = ownerReplyContent,
+                ownerReplyCreatedAt = ownerReplyCreatedAt
             )
         }
     }
@@ -74,9 +80,43 @@ class ShopReview private constructor(
             content = content,
             images = images,
             createdAt = this.createdAt,
-            updatedAt = Instant.now(clock)
+            updatedAt = Instant.now(clock),
+            ownerReplyContent = this.ownerReplyContent,
+            ownerReplyCreatedAt = this.ownerReplyCreatedAt
         )
     }
+
+    fun reply(content: ReplyContent, clock: Clock = Clock.systemUTC()): ShopReview {
+        return ShopReview(
+            id = this.id,
+            shopId = this.shopId,
+            memberId = this.memberId,
+            rating = this.rating,
+            content = this.content,
+            images = this.images,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt,
+            ownerReplyContent = content,
+            ownerReplyCreatedAt = Instant.now(clock)
+        )
+    }
+
+    fun deleteReply(): ShopReview {
+        return ShopReview(
+            id = this.id,
+            shopId = this.shopId,
+            memberId = this.memberId,
+            rating = this.rating,
+            content = this.content,
+            images = this.images,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt,
+            ownerReplyContent = null,
+            ownerReplyCreatedAt = null
+        )
+    }
+
+    fun hasReply(): Boolean = ownerReplyContent != null
 
     fun isOwnedBy(memberId: MemberId): Boolean {
         return this.memberId == memberId
