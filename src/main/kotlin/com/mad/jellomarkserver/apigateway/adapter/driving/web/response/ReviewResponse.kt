@@ -14,7 +14,9 @@ data class ReviewResponse(
     val content: String?,
     val images: List<String>?,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
+    val ownerReplyContent: String?,
+    val ownerReplyCreatedAt: Instant?
 ) {
     companion object {
         fun from(
@@ -34,7 +36,9 @@ data class ReviewResponse(
                 content = review.content?.value,
                 images = review.images?.urls,
                 createdAt = review.createdAt,
-                updatedAt = review.updatedAt
+                updatedAt = review.updatedAt,
+                ownerReplyContent = review.ownerReplyContent?.value,
+                ownerReplyCreatedAt = review.ownerReplyCreatedAt
             )
         }
     }
