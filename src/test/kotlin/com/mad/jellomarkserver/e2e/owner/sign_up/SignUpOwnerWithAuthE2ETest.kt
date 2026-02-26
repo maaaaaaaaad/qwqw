@@ -51,7 +51,7 @@ class SignUpOwnerWithAuthE2ETest {
     @Test
     fun `should create both Owner and Auth when signing up`() {
         val request = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testshop",
             email = "owner@example.com",
@@ -68,7 +68,7 @@ class SignUpOwnerWithAuthE2ETest {
         assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
         val json = requireNotNull(response.body)
         assertThat(json["id"]).isNotNull()
-        assertThat(json["businessNumber"]).isEqualTo("123456789")
+        assertThat(json["businessNumber"]).isEqualTo("1234567890")
         assertThat(json["phoneNumber"]).isEqualTo("010-1234-5678")
         assertThat(json["nickname"]).isEqualTo("testshop")
         assertThat(json["accessToken"]).isNotNull()
@@ -77,7 +77,7 @@ class SignUpOwnerWithAuthE2ETest {
         val owners = ownerJpaRepository.findAll()
         assertThat(owners).hasSize(1)
         val ownerEntity = owners[0]
-        assertThat(ownerEntity.businessNumber).isEqualTo("123456789")
+        assertThat(ownerEntity.businessNumber).isEqualTo("1234567890")
         assertThat(ownerEntity.phoneNumber).isEqualTo("010-1234-5678")
         assertThat(ownerEntity.nickname).isEqualTo("testshop")
 
@@ -100,7 +100,7 @@ class SignUpOwnerWithAuthE2ETest {
     @Test
     fun `should create Auth with different passwords for different owners`() {
         val request1 = SignUpOwnerRequest(
-            businessNumber = "111111111",
+            businessNumber = "1111111110",
             phoneNumber = "010-1111-1111",
             nickname = "shop1",
             email = "owner1@example.com",
@@ -108,7 +108,7 @@ class SignUpOwnerWithAuthE2ETest {
         )
 
         val request2 = SignUpOwnerRequest(
-            businessNumber = "222222222",
+            businessNumber = "2222222220",
             phoneNumber = "010-2222-2222",
             nickname = "shop2",
             email = "owner2@example.com",
@@ -145,7 +145,7 @@ class SignUpOwnerWithAuthE2ETest {
     @Test
     fun `should create Auth with OWNER user type`() {
         val request = SignUpOwnerRequest(
-            businessNumber = "333333333",
+            businessNumber = "3333333330",
             phoneNumber = "010-3333-3333",
             nickname = "shop3",
             email = "shop3@example.com",
