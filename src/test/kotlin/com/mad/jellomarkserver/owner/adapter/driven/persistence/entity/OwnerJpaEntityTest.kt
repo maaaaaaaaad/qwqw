@@ -10,7 +10,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with valid values`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -35,7 +35,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with mobile phone number starting with 010`() {
         val id = UUID.randomUUID()
-        val businessNumber = "987654321"
+        val businessNumber = "9876543210"
         val phoneNumber = "010-9876-5432"
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -61,7 +61,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with Seoul area phone number`() {
         val id = UUID.randomUUID()
-        val businessNumber = "111111111"
+        val businessNumber = "1111111111"
         val phoneNumber = "02-1234-5678"
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -86,7 +86,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with regional phone number`() {
         val id = UUID.randomUUID()
-        val businessNumber = "222222222"
+        val businessNumber = "2222222222"
         val phoneNumber = "031-123-4567"
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -111,7 +111,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with phone number starting with 011`() {
         val id = UUID.randomUUID()
-        val businessNumber = "333333333"
+        val businessNumber = "3333333333"
         val phoneNumber = "011-123-4567"
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -136,7 +136,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with epoch timestamps`() {
         val id = UUID.randomUUID()
-        val businessNumber = "000000000"
+        val businessNumber = "0000000000"
         val phoneNumber = "010-0000-0000"
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -161,7 +161,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with far future timestamps`() {
         val id = UUID.randomUUID()
-        val businessNumber = "999999999"
+        val businessNumber = "9999999999"
         val phoneNumber = "010-9999-9999"
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
@@ -186,7 +186,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with different created and updated timestamps`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-12-31T23:59:59Z")
@@ -212,7 +212,7 @@ class OwnerJpaEntityTest {
     fun `should update businessNumber field`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -220,7 +220,7 @@ class OwnerJpaEntityTest {
             updatedAt = Instant.now()
         )
 
-        val newBusinessNumber = "987654321"
+        val newBusinessNumber = "9876543210"
         entity.businessNumber = newBusinessNumber
 
         assertEquals(newBusinessNumber, entity.businessNumber)
@@ -230,7 +230,7 @@ class OwnerJpaEntityTest {
     fun `should update phoneNumber field`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -249,7 +249,7 @@ class OwnerJpaEntityTest {
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -268,7 +268,7 @@ class OwnerJpaEntityTest {
     fun `should update id field`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -286,7 +286,7 @@ class OwnerJpaEntityTest {
     fun `should update createdAt field`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -303,7 +303,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with all zeros UUID`() {
         val id = UUID(0L, 0L)
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -329,7 +329,7 @@ class OwnerJpaEntityTest {
     fun `should create multiple OwnerJpaEntity instances with different values`() {
         val entity1 = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "111111111",
+            businessNumber = "1111111111",
             phoneNumber = "010-1111-1111",
             nickname = "test",
             email = "test@example.com",
@@ -338,7 +338,7 @@ class OwnerJpaEntityTest {
         )
         val entity2 = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "222222222",
+            businessNumber = "2222222222",
             phoneNumber = "010-2222-2222",
             nickname = "test",
             email = "test@example.com",
@@ -346,9 +346,9 @@ class OwnerJpaEntityTest {
             updatedAt = Instant.now()
         )
 
-        assertEquals("111111111", entity1.businessNumber)
+        assertEquals("1111111111", entity1.businessNumber)
         assertEquals("010-1111-1111", entity1.phoneNumber)
-        assertEquals("222222222", entity2.businessNumber)
+        assertEquals("2222222222", entity2.businessNumber)
         assertEquals("010-2222-2222", entity2.phoneNumber)
     }
 
@@ -356,7 +356,7 @@ class OwnerJpaEntityTest {
     fun `should update all mutable fields`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -365,7 +365,7 @@ class OwnerJpaEntityTest {
         )
 
         val newId = UUID.randomUUID()
-        val newBusinessNumber = "987654321"
+        val newBusinessNumber = "9876543210"
         val newPhoneNumber = "010-9876-5432"
         val newCreatedAt = Instant.parse("2024-06-01T00:00:00Z")
         val newUpdatedAt = Instant.parse("2024-12-31T23:59:59Z")
@@ -386,7 +386,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with timestamp precision`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val createdAt = Instant.parse("2024-10-27T12:34:56.789123456Z")
         val updatedAt = Instant.parse("2024-10-27T12:34:56.789123456Z")
@@ -411,7 +411,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with maximum length phone number`() {
         val id = UUID.randomUUID()
-        val businessNumber = "555555555"
+        val businessNumber = "5555555555"
         val phoneNumber = "010-1234-5678"
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -437,7 +437,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with 4-digit middle part phone number`() {
         val id = UUID.randomUUID()
-        val businessNumber = "666666666"
+        val businessNumber = "6666666666"
         val phoneNumber = "02-1234-5678"
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -463,7 +463,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with 3-digit middle part phone number`() {
         val id = UUID.randomUUID()
-        val businessNumber = "777777777"
+        val businessNumber = "7777777777"
         val phoneNumber = "031-123-4567"
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -489,7 +489,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with minimum length nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "ab"
         val createdAt = Instant.now()
@@ -516,7 +516,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with maximum length nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "a".repeat(100)
         val createdAt = Instant.now()
@@ -543,7 +543,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with special characters in nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "user_123-test.name"
         val createdAt = Instant.now()
@@ -570,7 +570,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with Korean characters in nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "한글닉네임"
         val createdAt = Instant.now()
@@ -597,7 +597,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with numeric nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "12345678"
         val createdAt = Instant.now()
@@ -624,7 +624,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with mixed case nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "TestUser123"
         val createdAt = Instant.now()
@@ -651,7 +651,7 @@ class OwnerJpaEntityTest {
     @Test
     fun `should create OwnerJpaEntity with uppercase nickname`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val nickname = "TESTUSER"
         val createdAt = Instant.now()
@@ -679,7 +679,7 @@ class OwnerJpaEntityTest {
     fun `should update nickname field`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "oldnickname",
             email = "test@example.com",
@@ -694,9 +694,9 @@ class OwnerJpaEntityTest {
     }
 
     @Test
-    fun `should create OwnerJpaEntity with maximum length businessNumber`() {
+    fun `should create OwnerJpaEntity with valid 10 digit businessNumber`() {
         val id = UUID.randomUUID()
-        val businessNumber = "a".repeat(50)
+        val businessNumber = "8888888888"
         val phoneNumber = "010-1234-5678"
         val nickname = "test"
         val createdAt = Instant.now()
@@ -721,9 +721,9 @@ class OwnerJpaEntityTest {
     }
 
     @Test
-    fun `should create OwnerJpaEntity with alphanumeric businessNumber`() {
+    fun `should create OwnerJpaEntity with another valid 10 digit businessNumber`() {
         val id = UUID.randomUUID()
-        val businessNumber = "ABC123XYZ"
+        val businessNumber = "4567890123"
         val phoneNumber = "010-1234-5678"
         val nickname = "test"
         val createdAt = Instant.now()
