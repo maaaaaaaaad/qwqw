@@ -11,7 +11,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with valid business number`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -26,8 +26,8 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with 9 digit business number`() {
-        val businessNumber = BusinessNumber.of("101234567")
+    fun `should create Owner with 10 digit business number`() {
+        val businessNumber = BusinessNumber.of("1012345670")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -37,8 +37,8 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with alphanumeric business number`() {
-        val businessNumber = BusinessNumber.of("abc123def")
+    fun `should create Owner with another valid 10 digit business number`() {
+        val businessNumber = BusinessNumber.of("1234567891")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -48,8 +48,8 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with uppercase business number`() {
-        val businessNumber = BusinessNumber.of("ABCDEFGHI")
+    fun `should create Owner with sequential digits business number`() {
+        val businessNumber = BusinessNumber.of("1234567892")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -59,8 +59,8 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with lowercase business number`() {
-        val businessNumber = BusinessNumber.of("abcdefghi")
+    fun `should create Owner with repeating digits business number`() {
+        val businessNumber = BusinessNumber.of("1111111111")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -70,8 +70,8 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with special characters in business number`() {
-        val businessNumber = BusinessNumber.of("!@#$%^&*(")
+    fun `should create Owner with alternating digits business number`() {
+        val businessNumber = BusinessNumber.of("1010101010")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -82,7 +82,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with hyphens in business number`() {
-        val businessNumber = BusinessNumber.of("123-45-67")
+        val businessNumber = BusinessNumber.of("123-45-67890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -92,8 +92,8 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with dots in business number`() {
-        val businessNumber = BusinessNumber.of("123.456.7")
+    fun `should create Owner with hyphenated format business number`() {
+        val businessNumber = BusinessNumber.of("987-65-43210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -104,7 +104,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with all zeros business number`() {
-        val businessNumber = BusinessNumber.of("000000000")
+        val businessNumber = BusinessNumber.of("0000000000")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -115,7 +115,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with all nines business number`() {
-        val businessNumber = BusinessNumber.of("999999999")
+        val businessNumber = BusinessNumber.of("9999999999")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner =
@@ -126,7 +126,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with fixed clock`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val fixedInstant = Instant.parse("2025-01-01T00:00:00Z")
         val fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"))
@@ -145,7 +145,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with system clock by default`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val before = Instant.now()
 
@@ -160,7 +160,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner with all fields`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -185,7 +185,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner with epoch timestamps`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -210,7 +210,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner with far future timestamps`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
@@ -232,7 +232,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner with different created and updated timestamps`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-06-01T12:30:45Z")
@@ -255,7 +255,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner with high precision timestamp`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T12:34:56.123456789Z")
         val updatedAt = Instant.parse("2025-01-01T12:34:56.987654321Z")
@@ -277,7 +277,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner with all zeros UUID`() {
         val id = OwnerId.from(UUID(0, 0))
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -298,8 +298,8 @@ class OwnerTest {
     @Test
     fun `should have equality based on id`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber1 = BusinessNumber.of("123456789")
-        val businessNumber2 = BusinessNumber.of("987654321")
+        val businessNumber1 = BusinessNumber.of("1234567890")
+        val businessNumber2 = BusinessNumber.of("9876543210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -330,7 +330,7 @@ class OwnerTest {
     fun `should not be equal when ids are different`() {
         val id1 = OwnerId.from(UUID.randomUUID())
         val id2 = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -360,7 +360,7 @@ class OwnerTest {
     @Test
     fun `should be equal to itself`() {
         val owner = Owner.create(
-            BusinessNumber.of("123456789"),
+            BusinessNumber.of("1234567890"),
             OwnerPhoneNumber.of("010-1234-5678"),
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
@@ -372,7 +372,7 @@ class OwnerTest {
     @Test
     fun `should not be equal to null`() {
         val owner = Owner.create(
-            BusinessNumber.of("123456789"),
+            BusinessNumber.of("1234567890"),
             OwnerPhoneNumber.of("010-1234-5678"),
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
@@ -384,7 +384,7 @@ class OwnerTest {
     @Test
     fun `should not be equal to different type`() {
         val owner = Owner.create(
-            BusinessNumber.of("123456789"),
+            BusinessNumber.of("1234567890"),
             OwnerPhoneNumber.of("010-1234-5678"),
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
@@ -396,8 +396,8 @@ class OwnerTest {
     @Test
     fun `should have same hashCode when ids are equal`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber1 = BusinessNumber.of("123456789")
-        val businessNumber2 = BusinessNumber.of("987654321")
+        val businessNumber1 = BusinessNumber.of("1234567890")
+        val businessNumber2 = BusinessNumber.of("9876543210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -428,7 +428,7 @@ class OwnerTest {
     fun `should have different hashCode when ids are different`() {
         val id1 = OwnerId.from(UUID.randomUUID())
         val id2 = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -457,7 +457,7 @@ class OwnerTest {
 
     @Test
     fun `should generate unique ids for different owners created`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
 
         val owner1 =
@@ -471,7 +471,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with epoch timestamp using fixed clock`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val fixedClock = Clock.fixed(Instant.EPOCH, ZoneId.of("UTC"))
 
@@ -489,7 +489,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner with far future timestamp using fixed clock`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val futureInstant = Instant.parse("2099-12-31T23:59:59Z")
         val fixedClock = Clock.fixed(futureInstant, ZoneId.of("UTC"))
@@ -507,9 +507,9 @@ class OwnerTest {
     }
 
     @Test
-    fun `should reconstruct Owner with alphanumeric business number`() {
+    fun `should reconstruct Owner with valid 10 digit business number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("abc123XYZ")
+        val businessNumber = BusinessNumber.of("5678901234")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -531,13 +531,13 @@ class OwnerTest {
     fun `should create multiple owners with different values`() {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val owner1 = Owner.create(
-            BusinessNumber.of("123456789"),
+            BusinessNumber.of("1234567890"),
             ownerPhoneNumber,
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
         )
         val owner2 = Owner.create(
-            BusinessNumber.of("987654321"),
+            BusinessNumber.of("9876543210"),
             ownerPhoneNumber,
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
@@ -550,7 +550,7 @@ class OwnerTest {
     @Test
     fun `should maintain id consistency across multiple operations`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -570,9 +570,9 @@ class OwnerTest {
     }
 
     @Test
-    fun `should reconstruct Owner with mixed case business number`() {
+    fun `should reconstruct Owner with descending digits business number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("AbCdEfGhI")
+        val businessNumber = BusinessNumber.of("6789012345")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -591,9 +591,9 @@ class OwnerTest {
     }
 
     @Test
-    fun `should reconstruct Owner with business number containing hyphens and dots`() {
+    fun `should reconstruct Owner with hyphenated business number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("12-34.567")
+        val businessNumber = BusinessNumber.of("12-3456-7890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -612,22 +612,22 @@ class OwnerTest {
     }
 
     @Test
-    fun `should create Owner with different business number formats`() {
+    fun `should create Owner with different business number values`() {
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val owner1 = Owner.create(
-            BusinessNumber.of("123456789"),
+            BusinessNumber.of("1234567890"),
             ownerPhoneNumber,
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
         )
         val owner2 = Owner.create(
-            BusinessNumber.of("ABCDEFGHI"),
+            BusinessNumber.of("1111111110"),
             ownerPhoneNumber,
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
         )
         val owner3 = Owner.create(
-            BusinessNumber.of("abc123xyz"),
+            BusinessNumber.of("2222222220"),
             ownerPhoneNumber,
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com")
@@ -640,7 +640,7 @@ class OwnerTest {
 
     @Test
     fun `should create Owner and verify all properties are set`() {
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val fixedInstant = Instant.parse("2025-01-01T00:00:00Z")
         val fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"))
@@ -664,7 +664,7 @@ class OwnerTest {
     @Test
     fun `should reconstruct Owner and verify all properties match input`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("987654321")
+        val businessNumber = BusinessNumber.of("9876543210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.parse("2024-06-15T10:30:45.123456789Z")
         val updatedAt = Instant.parse("2024-06-15T10:30:45.987654321Z")
