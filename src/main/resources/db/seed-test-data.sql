@@ -17,11 +17,11 @@ ON CONFLICT (id) DO NOTHING;
 -- 2. Owners (required for beautishops)
 -- =====================================================
 INSERT INTO owners (id, business_number, phone_number, nickname, email, created_at, updated_at) VALUES
-('aaaa0001-0001-0001-0001-000000000001', '123456789', '010-1234-0001', 'owner1', 'owner1@test.com', NOW(), NOW()),
-('aaaa0002-0002-0002-0002-000000000002', '234567890', '010-1234-0002', 'owner2', 'owner2@test.com', NOW(), NOW()),
-('aaaa0003-0003-0003-0003-000000000003', '345678901', '010-1234-0003', 'owner3', 'owner3@test.com', NOW(), NOW()),
-('aaaa0004-0004-0004-0004-000000000004', '456789012', '010-1234-0004', 'owner4', 'owner4@test.com', NOW(), NOW()),
-('aaaa0005-0005-0005-0005-000000000005', '567890123', '010-1234-0005', 'owner5', 'owner5@test.com', NOW(), NOW())
+('aaaa0001-0001-0001-0001-000000000001', '1234567890', '010-1234-0001', 'owner1', 'owner1@test.com', NOW(), NOW()),
+('aaaa0002-0002-0002-0002-000000000002', '2345678901', '010-1234-0002', 'owner2', 'owner2@test.com', NOW(), NOW()),
+('aaaa0003-0003-0003-0003-000000000003', '3456789012', '010-1234-0003', 'owner3', 'owner3@test.com', NOW(), NOW()),
+('aaaa0004-0004-0004-0004-000000000004', '4567890123', '010-1234-0004', 'owner4', 'owner4@test.com', NOW(), NOW()),
+('aaaa0005-0005-0005-0005-000000000005', '5678901234', '010-1234-0005', 'owner5', 'owner5@test.com', NOW(), NOW())
 ON CONFLICT DO NOTHING;
 
 -- =====================================================
