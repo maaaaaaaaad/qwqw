@@ -37,14 +37,14 @@ class OwnerSignUpNicknameExceptionE2ETest {
     @Test
     fun `409 duplicate nickname`() {
         val first = SignUpOwnerRequest(
-            businessNumber = "111111111",
+            businessNumber = "1111111110",
             phoneNumber = "010-1111-1111",
             nickname = "myshop",
             email = "first@example.com",
             password = "Password123!",
         )
         val second = SignUpOwnerRequest(
-            businessNumber = "222222222",
+            businessNumber = "2222222220",
             phoneNumber = "010-2222-2222",
             nickname = "myshop",
             email = "second@example.com",
@@ -74,7 +74,7 @@ class OwnerSignUpNicknameExceptionE2ETest {
     @Test
     fun `422 when nickname is null`() {
         val body = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "",
             email = "test@example.com",
@@ -95,7 +95,7 @@ class OwnerSignUpNicknameExceptionE2ETest {
     @Test
     fun `422 when nickname format is invalid`() {
         val body = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "toolongname",
             email = "test@example.com",
