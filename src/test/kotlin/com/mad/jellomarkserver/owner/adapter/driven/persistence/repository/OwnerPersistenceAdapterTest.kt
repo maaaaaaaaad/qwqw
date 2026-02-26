@@ -6,6 +6,7 @@ import com.mad.jellomarkserver.owner.adapter.driven.persistence.entity.OwnerJpaE
 import com.mad.jellomarkserver.owner.adapter.driven.persistence.mapper.OwnerMapper
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerBusinessNumberException
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessNumberException
 import com.mad.jellomarkserver.owner.core.domain.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -40,7 +41,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner successfully`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -79,7 +80,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with valid business number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("987654321")
+        val businessNumber = BusinessNumber.of("9876543210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -115,7 +116,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with all zeros business number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("000000000")
+        val businessNumber = BusinessNumber.of("0000000000")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-0000-0000")
         val createdAt = Instant.parse("2099-12-31T23:59:59Z")
         val updatedAt = Instant.parse("2099-12-31T23:59:59Z")
@@ -151,7 +152,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with alphanumeric business number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("abc123def")
+        val businessNumber = BusinessNumber.of("1234509876")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -187,7 +188,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with mobile phone number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("111111111")
+        val businessNumber = BusinessNumber.of("1111111110")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1111-1111")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -223,7 +224,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with Seoul area phone number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("222222222")
+        val businessNumber = BusinessNumber.of("2222222220")
         val ownerPhoneNumber = OwnerPhoneNumber.of("02-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -259,7 +260,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with regional phone number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("333333333")
+        val businessNumber = BusinessNumber.of("3333333330")
         val ownerPhoneNumber = OwnerPhoneNumber.of("031-123-4567")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -295,7 +296,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with different created and updated timestamps`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("444444444")
+        val businessNumber = BusinessNumber.of("4444444440")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-4444-4444")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-06-01T12:30:45Z")
@@ -331,7 +332,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should correctly handle round-trip with mapper`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("555555555")
+        val businessNumber = BusinessNumber.of("5555555550")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-5555-5555")
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -382,7 +383,7 @@ class OwnerPersistenceAdapterTest {
     fun `should save multiple owners with different values`() {
         val owner1 = Owner.reconstruct(
             OwnerId.from(UUID.randomUUID()),
-            BusinessNumber.of("111111111"),
+            BusinessNumber.of("1111111110"),
             OwnerPhoneNumber.of("010-1111-1111"),
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com"),
@@ -392,7 +393,7 @@ class OwnerPersistenceAdapterTest {
 
         val owner2 = Owner.reconstruct(
             OwnerId.from(UUID.randomUUID()),
-            BusinessNumber.of("222222222"),
+            BusinessNumber.of("2222222220"),
             OwnerPhoneNumber.of("010-2222-2222"),
             OwnerNickname.of("test"),
             OwnerEmail.of("test@example.com"),
@@ -438,7 +439,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with phone number starting with 011`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("666666666")
+        val businessNumber = BusinessNumber.of("6666666660")
         val ownerPhoneNumber = OwnerPhoneNumber.of("011-123-4567")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -474,7 +475,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with all zeros UUID`() {
         val id = OwnerId.from(UUID(0, 0))
-        val businessNumber = BusinessNumber.of("777777777")
+        val businessNumber = BusinessNumber.of("7777777770")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-7777-7777")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -510,7 +511,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should save owner with high precision timestamp`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("888888888")
+        val businessNumber = BusinessNumber.of("8888888880")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-8888-8888")
         val createdAt = Instant.parse("2025-01-01T12:34:56.123456789Z")
         val updatedAt = Instant.parse("2025-01-01T12:34:56.987654321Z")
@@ -544,81 +545,23 @@ class OwnerPersistenceAdapterTest {
     }
 
     @Test
-    fun `should save owner with business number containing special characters`() {
-        val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("12-34.567")
-        val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
-        val createdAt = Instant.now()
-        val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(
-            id,
-            businessNumber,
-            ownerPhoneNumber,
-            OwnerNickname.of("test"),
-            OwnerEmail.of("test@example.com"),
-            createdAt,
-            updatedAt
-        )
-
-        val entity = OwnerJpaEntity(
-            id = id.value,
-            businessNumber = businessNumber.value,
-            phoneNumber = ownerPhoneNumber.value,
-            email = "test@example.com",
-            nickname = "test",
-            createdAt = createdAt,
-            updatedAt = updatedAt
-        )
-
-        `when`(mapper.toEntity(owner)).thenReturn(entity)
-        `when`(jpaRepository.saveAndFlush(entity)).thenReturn(entity)
-        `when`(mapper.toDomain(entity)).thenReturn(owner)
-
-        val result = adapter.save(owner)
-
-        assertEquals(owner, result)
+    fun `should throw when business number contains special characters`() {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
+            BusinessNumber.of("12-34.567")
+        }
     }
 
     @Test
-    fun `should save owner with uppercase business number`() {
-        val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("ABCDEFGHI")
-        val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
-        val createdAt = Instant.now()
-        val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(
-            id,
-            businessNumber,
-            ownerPhoneNumber,
-            OwnerNickname.of("test"),
-            OwnerEmail.of("test@example.com"),
-            createdAt,
-            updatedAt
-        )
-
-        val entity = OwnerJpaEntity(
-            id = id.value,
-            businessNumber = businessNumber.value,
-            phoneNumber = ownerPhoneNumber.value,
-            email = "test@example.com",
-            nickname = "test",
-            createdAt = createdAt,
-            updatedAt = updatedAt
-        )
-
-        `when`(mapper.toEntity(owner)).thenReturn(entity)
-        `when`(jpaRepository.saveAndFlush(entity)).thenReturn(entity)
-        `when`(mapper.toDomain(entity)).thenReturn(owner)
-
-        val result = adapter.save(owner)
-
-        assertEquals(owner, result)
+    fun `should throw when business number contains letters`() {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
+            BusinessNumber.of("ABCDEFGHI")
+        }
     }
 
     @Test
     fun `should throw DuplicateBusinessNumberException when business number constraint is violated`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -651,7 +594,7 @@ class OwnerPersistenceAdapterTest {
             adapter.save(owner)
         }
 
-        assertEquals("Duplicate business number: 123456789", thrownException.message)
+        assertEquals("Duplicate business number: 1234567890", thrownException.message)
         verify(mapper).toEntity(owner)
         verify(jpaRepository).saveAndFlush(entity)
     }
@@ -659,7 +602,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should throw DuplicatePhoneNumberException when phone number constraint is violated`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("987654321")
+        val businessNumber = BusinessNumber.of("9876543210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -700,7 +643,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should throw DuplicateBusinessNumberException with correct business number value`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("111222333")
+        val businessNumber = BusinessNumber.of("1112223334")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1111-2222")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -733,13 +676,13 @@ class OwnerPersistenceAdapterTest {
             adapter.save(owner)
         }
 
-        assertEquals("Duplicate business number: 111222333", thrownException.message)
+        assertEquals("Duplicate business number: 1112223334", thrownException.message)
     }
 
     @Test
     fun `should throw DuplicatePhoneNumberException with correct phone number value`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("444555666")
+        val businessNumber = BusinessNumber.of("4445556660")
         val ownerPhoneNumber = OwnerPhoneNumber.of("02-4444-5555")
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -776,48 +719,16 @@ class OwnerPersistenceAdapterTest {
     }
 
     @Test
-    fun `should throw DuplicateBusinessNumberException for alphanumeric business number`() {
-        val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("abc123xyz")
-        val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
-        val createdAt = Instant.now()
-        val updatedAt = Instant.now()
-        val owner = Owner.reconstruct(
-            id,
-            businessNumber,
-            ownerPhoneNumber,
-            OwnerNickname.of("test"),
-            OwnerEmail.of("test@example.com"),
-            createdAt,
-            updatedAt
-        )
-
-        val entity = OwnerJpaEntity(
-            id = id.value,
-            businessNumber = businessNumber.value,
-            phoneNumber = ownerPhoneNumber.value,
-            email = "test@example.com",
-            nickname = "test",
-            createdAt = createdAt,
-            updatedAt = updatedAt
-        )
-
-        val exception = DataIntegrityViolationException("uk_owners_business_number")
-
-        `when`(mapper.toEntity(owner)).thenReturn(entity)
-        `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
-
-        val thrownException = assertFailsWith<DuplicateOwnerBusinessNumberException> {
-            adapter.save(owner)
+    fun `should throw when business number is alphanumeric`() {
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
+            BusinessNumber.of("abc123xyz")
         }
-
-        assertEquals("Duplicate business number: abc123xyz", thrownException.message)
     }
 
     @Test
     fun `should throw DuplicatePhoneNumberException for regional phone number`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("031-123-4567")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
@@ -856,7 +767,7 @@ class OwnerPersistenceAdapterTest {
     @Test
     fun `should call constraintTranslator when DataIntegrityViolationException occurs`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("999999999")
+        val businessNumber = BusinessNumber.of("9999999990")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9999-9999")
         val createdAt = Instant.now()
         val updatedAt = Instant.now()
