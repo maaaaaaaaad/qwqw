@@ -9,7 +9,7 @@
 INSERT INTO owners (id, business_number, phone_number, nickname, email, created_at, updated_at)
 SELECT
     ('aaaa' || LPAD(n::text, 4, '0') || '-' || LPAD(n::text, 4, '0') || '-' || LPAD(n::text, 4, '0') || '-' || LPAD(n::text, 4, '0') || '-' || LPAD(n::text, 12, '0'))::uuid,
-    LPAD((100000000 + n)::text, 9, '0'),
+    LPAD((1000000000 + n)::text, 10, '0'),
     '010-' || LPAD((1000 + n)::text, 4, '0') || '-' || LPAD((1000 + n)::text, 4, '0'),
     'owner_' || n,
     'owner' || n || '@test.com',
