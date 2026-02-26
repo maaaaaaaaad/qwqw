@@ -17,10 +17,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice(basePackages = ["com.mad.jellomarkserver.apigateway"])
 class ApiGatewayExceptionHandler {
+
+    private val log = LoggerFactory.getLogger(ApiGatewayExceptionHandler::class.java)
 
     @ExceptionHandler(AuthenticationFailedException::class)
     fun handleAuthenticationFailed(ex: AuthenticationFailedException): ProblemDetail {
@@ -294,6 +297,7 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleGeneric(ex: Exception): ResponseEntity<ErrorResponse> {
+        log.error("Unhandled exception caught", ex)
         val body = ErrorResponse(
             code = "INTERNAL_SERVER_ERROR",
             message = "Unexpected server error"
