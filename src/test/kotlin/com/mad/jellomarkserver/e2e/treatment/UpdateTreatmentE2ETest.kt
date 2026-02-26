@@ -44,7 +44,7 @@ class UpdateTreatmentE2ETest {
 
     private fun signUpOwnerAndGetAccessToken(
         email: String = "owner@example.com",
-        businessNumber: String = "123456789",
+        businessNumber: String = "1234567890",
         phoneNumber: String = "010-1234-5678",
         nickname: String = "testshop"
     ): String {
@@ -195,7 +195,7 @@ class UpdateTreatmentE2ETest {
     fun `should return 403 when owner tries to update another owner's treatment`() {
         val ownerToken1 = signUpOwnerAndGetAccessToken(
             email = "owner1@example.com",
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1111-1111",
             nickname = "owner1"
         )
@@ -204,7 +204,7 @@ class UpdateTreatmentE2ETest {
 
         val ownerToken2 = signUpOwnerAndGetAccessToken(
             email = "owner2@example.com",
-            businessNumber = "987654321",
+            businessNumber = "9876543210",
             phoneNumber = "010-2222-2222",
             nickname = "owner2"
         )
