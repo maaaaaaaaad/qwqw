@@ -48,7 +48,7 @@ class GetMyReviewsE2ETest {
     private fun url(path: String) = "http://localhost:$port$path"
 
     private fun signUpOwnerAndGetAccessToken(
-        businessNumber: String = "123456789",
+        businessNumber: String = "1234567890",
         email: String = "owner@example.com"
     ): String {
         val request = SignUpOwnerRequest(
@@ -180,8 +180,8 @@ class GetMyReviewsE2ETest {
 
     @Test
     fun `should return multiple reviews with correct shopNames`() {
-        val owner1Token = signUpOwnerAndGetAccessToken("111111111", "owner1@example.com")
-        val owner2Token = signUpOwnerAndGetAccessToken("222222222", "owner2@example.com")
+        val owner1Token = signUpOwnerAndGetAccessToken("1111111110", "owner1@example.com")
+        val owner2Token = signUpOwnerAndGetAccessToken("2222222220", "owner2@example.com")
 
         val shop1Name = "네일아트 홍대점"
         val shop2Name = "뷰티살롱 강남본점"
