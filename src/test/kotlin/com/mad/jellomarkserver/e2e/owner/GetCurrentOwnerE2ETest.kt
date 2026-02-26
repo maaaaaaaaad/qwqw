@@ -39,7 +39,7 @@ class GetCurrentOwnerE2ETest {
 
     private fun signUpAndGetAccessToken(): String {
         val request = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testshop",
             email = "owner@example.com",
@@ -77,7 +77,7 @@ class GetCurrentOwnerE2ETest {
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         val json = requireNotNull(response.body)
         assertThat(json["id"]).isNotNull()
-        assertThat(json["businessNumber"]).isEqualTo("123456789")
+        assertThat(json["businessNumber"]).isEqualTo("1234567890")
         assertThat(json["phoneNumber"]).isEqualTo("010-1234-5678")
         assertThat(json["nickname"]).isEqualTo("testshop")
     }
