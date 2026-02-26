@@ -3,6 +3,7 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SignUpOwnerRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.SignUpResponse
 import com.mad.jellomarkserver.apigateway.port.driving.SignUpOwnerOrchestrator
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,9 +15,12 @@ class SignUpController(
     private val signUpOwnerOrchestrator: SignUpOwnerOrchestrator
 ) {
 
+    private val log = LoggerFactory.getLogger(SignUpController::class.java)
+
     @PostMapping("/api/sign-up/owner")
     @ResponseStatus(HttpStatus.CREATED)
     fun signUpOwner(@RequestBody request: SignUpOwnerRequest): SignUpResponse {
+        log.info("Sign-up request received: businessNumber={}, phoneNumber={}, nickname={}, email={}", request.businessNumber, request.phoneNumber, request.nickname, request.email)
         return signUpOwnerOrchestrator.signUp(request)
     }
 }
