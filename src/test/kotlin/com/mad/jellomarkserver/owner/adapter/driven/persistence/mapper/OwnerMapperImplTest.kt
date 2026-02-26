@@ -17,7 +17,7 @@ class OwnerMapperImplTest {
     @Test
     fun `should correctly map OwnerJpaEntity to Owner`() {
         val id = UUID.randomUUID()
-        val businessNumber = "123456789"
+        val businessNumber = "1234567890"
         val phoneNumber = "010-1234-5678"
         val createdAt = Instant.parse("2025-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -43,7 +43,7 @@ class OwnerMapperImplTest {
     @Test
     fun `should correctly map OwnerJpaEntity with edge case values`() {
         val id = UUID.randomUUID()
-        val businessNumber = "999999999"
+        val businessNumber = "9999999999"
         val phoneNumber = "02-1234-5678"
         val createdAt = Instant.parse("2000-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2025-01-01T00:00:00Z")
@@ -69,7 +69,7 @@ class OwnerMapperImplTest {
     @Test
     fun `should correctly map OwnerJpaEntity with various phone number formats`() {
         val id = UUID.randomUUID()
-        val businessNumber = "111222333"
+        val businessNumber = "1112223334"
         val phoneNumber = "011-123-4567"
         val createdAt = Instant.EPOCH
         val updatedAt = Instant.EPOCH
@@ -95,7 +95,7 @@ class OwnerMapperImplTest {
     @Test
     fun `should correctly map Owner to OwnerJpaEntity`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("123456789")
+        val businessNumber = BusinessNumber.of("1234567890")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678")
         val createdAt = Instant.parse("2024-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2024-06-01T00:00:00Z")
@@ -122,7 +122,7 @@ class OwnerMapperImplTest {
     @Test
     fun `domain - entity - domain round-trip should keep values`() {
         val id = OwnerId.from(UUID.randomUUID())
-        val businessNumber = BusinessNumber.of("987654321")
+        val businessNumber = BusinessNumber.of("9876543210")
         val ownerPhoneNumber = OwnerPhoneNumber.of("010-9876-5432")
         val createdAt = Instant.parse("2020-01-01T00:00:00Z")
         val updatedAt = Instant.parse("2021-01-01T00:00:00Z")
@@ -150,7 +150,7 @@ class OwnerMapperImplTest {
     fun `should trim businessNumber and phoneNumber when mapping`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "  123456789  ",
+            businessNumber = "  1234567890  ",
             phoneNumber = "  010-1234-5678  ",
             nickname = "test",
             email = "test@example.com",
@@ -160,7 +160,7 @@ class OwnerMapperImplTest {
 
         val domain = ownerMapper.toDomain(entity)
 
-        assertEquals("123456789", domain.businessNumber.value)
+        assertEquals("1234567890", domain.businessNumber.value)
         assertEquals("010-1234-5678", domain.ownerPhoneNumber.value)
     }
 
@@ -185,7 +185,7 @@ class OwnerMapperImplTest {
     fun `should throw when businessNumber is invalid - too long`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "1234567890",
+            businessNumber = "12345678901",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com",
@@ -202,7 +202,7 @@ class OwnerMapperImplTest {
     fun `should throw when phoneNumber is invalid`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "invalid-phone",
             nickname = "test",
             email = "test@example.com",
@@ -219,8 +219,8 @@ class OwnerMapperImplTest {
     fun `should throw when phoneNumber format is incorrect`() {
         val entity = OwnerJpaEntity(
             id = UUID.randomUUID(),
-            businessNumber = "123456789",
-            phoneNumber = "01012345678",
+            businessNumber = "1234567890",
+            phoneNumber = "012-1234-5678",
             nickname = "test",
             email = "test@example.com",
             createdAt = Instant.EPOCH,
