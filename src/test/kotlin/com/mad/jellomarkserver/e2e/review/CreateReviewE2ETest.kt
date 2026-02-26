@@ -53,7 +53,7 @@ class CreateReviewE2ETest {
 
     private fun signUpOwnerAndGetAccessToken(): String {
         val request = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testshop",
             email = "owner@example.com",
