@@ -37,14 +37,14 @@ class OwnerSignUpBusinessNumberExceptionE2ETest {
     @Test
     fun `409 duplicate business number`() {
         val first = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1111-1111",
             nickname = "first",
             email = "first@example.com",
             password = "Password123!",
         )
         val second = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-2222-2222",
             nickname = "second",
             email = "second@example.com",
