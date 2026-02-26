@@ -34,7 +34,7 @@ class GetOwnerBeautishopsUseCaseImplTest {
     @Test
     fun `should return beautishops owned by the owner`() {
         val owner = Owner.create(
-            businessNumber = BusinessNumber.of("123456789"),
+            businessNumber = BusinessNumber.of("1234567890"),
             ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678"),
             ownerNickname = OwnerNickname.of("test"),
             ownerEmail = OwnerEmail.of("owner@example.com")
@@ -76,7 +76,7 @@ class GetOwnerBeautishopsUseCaseImplTest {
     @Test
     fun `should return empty list when owner has no shops`() {
         val owner = Owner.create(
-            businessNumber = BusinessNumber.of("123456789"),
+            businessNumber = BusinessNumber.of("1234567890"),
             ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678"),
             ownerNickname = OwnerNickname.of("test"),
             ownerEmail = OwnerEmail.of("owner@example.com")
