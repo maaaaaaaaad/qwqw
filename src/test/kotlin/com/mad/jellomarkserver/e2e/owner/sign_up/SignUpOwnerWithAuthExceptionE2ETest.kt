@@ -45,7 +45,7 @@ class SignUpOwnerWithAuthExceptionE2ETest {
     @Test
     fun `should return 409 CONFLICT when email is duplicated and not create second Owner or Auth`() {
         val first = SignUpOwnerRequest(
-            businessNumber = "111111111",
+            businessNumber = "1111111110",
             phoneNumber = "010-1111-1111",
             nickname = "first",
             email = "dup@example.com",
@@ -53,7 +53,7 @@ class SignUpOwnerWithAuthExceptionE2ETest {
         )
 
         val second = SignUpOwnerRequest(
-            businessNumber = "222222222",
+            businessNumber = "2222222220",
             phoneNumber = "010-2222-2222",
             nickname = "second",
             email = "dup@example.com",
@@ -95,7 +95,7 @@ class SignUpOwnerWithAuthExceptionE2ETest {
     @Test
     fun `should rollback Auth creation when Owner creation fails due to duplicate nickname`() {
         val first = SignUpOwnerRequest(
-            businessNumber = "111111111",
+            businessNumber = "1111111110",
             phoneNumber = "010-1111-1111",
             nickname = "samename",
             email = "email1@example.com",
@@ -103,7 +103,7 @@ class SignUpOwnerWithAuthExceptionE2ETest {
         )
 
         val second = SignUpOwnerRequest(
-            businessNumber = "222222222",
+            businessNumber = "2222222220",
             phoneNumber = "010-2222-2222",
             nickname = "samename",
             email = "email2@example.com",
@@ -141,7 +141,7 @@ class SignUpOwnerWithAuthExceptionE2ETest {
     @Test
     fun `should return 422 UNPROCESSABLE_ENTITY when password is invalid and not create Owner or Auth`() {
         val request = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testowner",
             email = "test@example.com",
@@ -168,7 +168,7 @@ class SignUpOwnerWithAuthExceptionE2ETest {
     @Test
     fun `should return 422 UNPROCESSABLE_ENTITY when email is invalid and not create Owner or Auth`() {
         val request = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testowner",
             email = "invalid-email",
