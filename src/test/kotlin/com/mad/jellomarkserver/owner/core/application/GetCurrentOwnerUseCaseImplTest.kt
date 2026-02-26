@@ -29,7 +29,7 @@ class GetCurrentOwnerUseCaseImplTest {
     @Test
     fun `should return owner when found by email`() {
         val owner = Owner.create(
-            businessNumber = BusinessNumber.of("123456789"),
+            businessNumber = BusinessNumber.of("1234567890"),
             ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678"),
             ownerNickname = OwnerNickname.of("test"),
             ownerEmail = OwnerEmail.of("test@example.com")
