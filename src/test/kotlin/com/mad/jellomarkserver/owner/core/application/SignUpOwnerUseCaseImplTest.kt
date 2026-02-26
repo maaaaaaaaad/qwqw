@@ -75,7 +75,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidBusinessNumberException when business number is too long`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "1234567890",
+            businessNumber = "12345678901",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -89,7 +89,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidPhoneNumberException when phone number is blank`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "   ",
             nickname = "test",
             email = "test@example.com"
@@ -103,7 +103,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidPhoneNumberException when phone number is empty`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "",
             nickname = "test",
             email = "test@example.com"
@@ -115,10 +115,10 @@ class SignUpOwnerUseCaseImplTest {
     }
 
     @Test
-    fun `should throw InvalidPhoneNumberException when phone number format is invalid`() {
+    fun `should throw InvalidPhoneNumberException when phone number has invalid prefix`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
-            phoneNumber = "01012345678",
+            businessNumber = "1234567890",
+            phoneNumber = "012-1234-5678",
             nickname = "test",
             email = "test@example.com"
         )
@@ -129,9 +129,9 @@ class SignUpOwnerUseCaseImplTest {
     }
 
     @Test
-    fun `should throw InvalidPhoneNumberException when phone number has no hyphens`() {
+    fun `should throw InvalidPhoneNumberException when phone number has spaces instead of hyphens`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010 1234 5678",
             nickname = "test",
             email = "test@example.com"
@@ -145,7 +145,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidPhoneNumberException when phone number starts with invalid prefix`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "090-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -159,7 +159,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw DuplicateBusinessNumberException when business number already exists`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -168,25 +168,25 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
                 )
             )
-        ).thenThrow(DuplicateOwnerBusinessNumberException("123456789"))
+        ).thenThrow(DuplicateOwnerBusinessNumberException("1234567890"))
 
         val exception = assertFailsWith<DuplicateOwnerBusinessNumberException> {
             useCase.signUp(command)
         }
 
-        assertEquals("Duplicate business number: 123456789", exception.message)
+        assertEquals("Duplicate business number: 1234567890", exception.message)
     }
 
     @Test
     fun `should throw DuplicatePhoneNumberException when phone number already exists`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -195,7 +195,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -213,7 +213,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should validate and trim whitespace from business number`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "  123456789  ",
+            businessNumber = "  1234567890  ",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -222,7 +222,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -230,7 +230,7 @@ class SignUpOwnerUseCaseImplTest {
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("123456789", owner.businessNumber.value)
+            assertEquals("1234567890", owner.businessNumber.value)
             owner
         }
 
@@ -241,7 +241,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should validate and trim whitespace from phone number`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "  010-1234-5678  ",
             nickname = "test",
             email = "test@example.com"
@@ -250,7 +250,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -267,65 +267,37 @@ class SignUpOwnerUseCaseImplTest {
     }
 
     @Test
-    fun `should accept alphanumeric business number`() {
+    fun `should throw InvalidBusinessNumberException when business number contains letters`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "abc123xyz",
+            businessNumber = "abc1234567",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
         )
 
-        `when`(
-            ownerPort.save(
-                org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("abc123xyz"),
-                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
-                    OwnerNickname.of("test"),
-                    OwnerEmail.of("test@example.com")
-                )
-            )
-        ).thenAnswer { invocation ->
-            val owner = invocation.arguments[0] as Owner
-            assertEquals("abc123xyz", owner.businessNumber.value)
-            owner
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
+            useCase.signUp(command)
         }
-
-        val result = useCase.signUp(command)
-        assertNotNull(result)
     }
 
     @Test
-    fun `should accept business number with special characters`() {
+    fun `should throw InvalidBusinessNumberException when business number contains special characters`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "12-34.567",
+            businessNumber = "12-34.56789",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
         )
 
-        `when`(
-            ownerPort.save(
-                org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("12-34.567"),
-                    com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
-                    OwnerNickname.of("test"),
-                    OwnerEmail.of("test@example.com")
-                )
-            )
-        ).thenAnswer { invocation ->
-            val owner = invocation.arguments[0] as Owner
-            assertEquals("12-34.567", owner.businessNumber.value)
-            owner
+        assertFailsWith<InvalidOwnerBusinessNumberException> {
+            useCase.signUp(command)
         }
-
-        val result = useCase.signUp(command)
-        assertNotNull(result)
     }
 
     @Test
-    fun `should accept uppercase business number`() {
+    fun `should accept business number with hyphens when digits total 10`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "ABCDEFGHI",
+            businessNumber = "123-45-67890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -334,7 +306,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("ABCDEFGHI"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123-45-67890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -342,7 +314,7 @@ class SignUpOwnerUseCaseImplTest {
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("ABCDEFGHI", owner.businessNumber.value)
+            assertEquals("1234567890", owner.businessNumber.value)
             owner
         }
 
@@ -353,7 +325,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should accept Seoul area phone number`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "02-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -362,7 +334,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("02-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -381,7 +353,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should accept regional phone number`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "031-123-4567",
             nickname = "test",
             email = "test@example.com"
@@ -390,7 +362,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("031-123-4567"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -409,7 +381,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should accept phone number starting with 011`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "011-123-4567",
             nickname = "test",
             email = "test@example.com"
@@ -418,7 +390,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("011-123-4567"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -437,7 +409,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidOwnerNicknameException when nickname is blank`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "   ",
             email = "test@example.com"
@@ -451,7 +423,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidOwnerNicknameException when nickname is empty`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "",
             email = "test@example.com"
@@ -465,7 +437,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidOwnerNicknameException when nickname is too short`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "a",
             email = "test@example.com"
@@ -479,7 +451,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidOwnerNicknameException when nickname is too long`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "verylongnickname",
             email = "test@example.com"
@@ -493,7 +465,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidOwnerNicknameException when nickname contains whitespace`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test user",
             email = "test@example.com"
@@ -507,7 +479,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should sign up owner successfully with minimum length nickname`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "ab",
             email = "test@example.com"
@@ -516,7 +488,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("ab"),
                     OwnerEmail.of("test@example.com")
@@ -535,7 +507,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should sign up owner successfully with maximum length nickname`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "12345678",
             email = "test@example.com"
@@ -544,7 +516,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("12345678"),
                     OwnerEmail.of("test@example.com")
@@ -563,7 +535,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should sign up owner successfully with special characters in nickname`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "user_123",
             email = "test@example.com"
@@ -572,7 +544,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("user_123"),
                     OwnerEmail.of("test@example.com")
@@ -591,7 +563,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should sign up owner successfully with numeric nickname`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "12345678",
             email = "test@example.com"
@@ -600,7 +572,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("12345678"),
                     OwnerEmail.of("test@example.com")
@@ -619,7 +591,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should sign up owner with hyphenated nickname`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "user-123",
             email = "test@example.com"
@@ -628,7 +600,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("user-123"),
                     OwnerEmail.of("test@example.com")
@@ -647,7 +619,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should trim whitespace from nickname before validation`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "  testuser  ",
             email = "test@example.com"
@@ -656,7 +628,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("testuser"),
                     OwnerEmail.of("test@example.com")
@@ -675,7 +647,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw DuplicateOwnerNicknameException when nickname already exists`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "dupname",
             email = "test@example.com"
@@ -684,7 +656,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("dupname"),
                     OwnerEmail.of("test@example.com")
@@ -702,7 +674,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw DuplicateOwnerNicknameException with correct nickname value`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "admin123",
             email = "test@example.com"
@@ -711,7 +683,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("admin123"),
                     OwnerEmail.of("test@example.com")
@@ -729,7 +701,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should create owner with non-null id`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testuser",
             email = "test@example.com"
@@ -738,7 +710,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("testuser"),
                     OwnerEmail.of("test@example.com")
@@ -757,7 +729,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should create owner with non-null timestamps`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "testuser",
             email = "test@example.com"
@@ -766,7 +738,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("testuser"),
                     OwnerEmail.of("test@example.com")
@@ -799,7 +771,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should throw InvalidPhoneNumberException when phone number has invalid separators`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010.1234.5678",
             nickname = "test",
             email = "test@example.com"
@@ -813,7 +785,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should accept business number with minimum length`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -822,7 +794,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
@@ -830,7 +802,7 @@ class SignUpOwnerUseCaseImplTest {
             )
         ).thenAnswer { invocation ->
             val owner = invocation.arguments[0] as Owner
-            assertEquals("123456789", owner.businessNumber.value)
+            assertEquals("1234567890", owner.businessNumber.value)
             owner
         }
 
@@ -841,7 +813,7 @@ class SignUpOwnerUseCaseImplTest {
     @Test
     fun `should accept phone number with different valid formats`() {
         val command = SignUpOwnerCommand(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "test",
             email = "test@example.com"
@@ -850,7 +822,7 @@ class SignUpOwnerUseCaseImplTest {
         `when`(
             ownerPort.save(
                 org.mockito.ArgumentMatchers.any() ?: Owner.create(
-                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("123456789"),
+                    com.mad.jellomarkserver.owner.core.domain.model.BusinessNumber.of("1234567890"),
                     com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber.of("010-1234-5678"),
                     OwnerNickname.of("test"),
                     OwnerEmail.of("test@example.com")
