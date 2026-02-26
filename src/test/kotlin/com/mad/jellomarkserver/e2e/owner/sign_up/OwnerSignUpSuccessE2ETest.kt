@@ -37,7 +37,7 @@ class OwnerSignUpSuccessE2ETest {
     @Test
     fun `success signup for owner`() {
         val body = SignUpOwnerRequest(
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "shop",
             email = "owner@example.com",
@@ -54,7 +54,7 @@ class OwnerSignUpSuccessE2ETest {
         assertThat(response.statusCode).isEqualTo(HttpStatus.CREATED)
         val json = requireNotNull(response.body)
         assertThat(json["id"]).isNotNull()
-        assertThat(json["businessNumber"]).isEqualTo("123456789")
+        assertThat(json["businessNumber"]).isEqualTo("1234567890")
         assertThat(json["phoneNumber"]).isEqualTo("010-1234-5678")
         assertThat(json["nickname"]).isEqualTo("shop")
         assertThat(json.keys).containsAll(listOf("createdAt", "updatedAt"))
