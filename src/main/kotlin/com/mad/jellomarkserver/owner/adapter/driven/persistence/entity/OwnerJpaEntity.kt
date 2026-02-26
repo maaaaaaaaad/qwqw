@@ -18,7 +18,7 @@ class OwnerJpaEntity(
     @Column(name = "id", nullable = false)
     var id: UUID,
 
-    @Column(name = "business_number", nullable = false, length = 9)
+    @Column(name = "business_number", nullable = false, length = 10)
     var businessNumber: String,
 
     @Column(name = "phone_number", nullable = false, length = 13)
