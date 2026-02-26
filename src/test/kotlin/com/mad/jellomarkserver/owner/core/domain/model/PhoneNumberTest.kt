@@ -172,10 +172,27 @@ class PhoneNumberTest {
     }
 
     @Test
-    fun `should throw when phone number has no hyphens`() {
-        assertFailsWith<InvalidOwnerPhoneNumberException> {
-            OwnerPhoneNumber.of("01012345678")
-        }
+    fun `should accept phone number without hyphens and normalize to hyphenated format`() {
+        val ownerPhoneNumber = OwnerPhoneNumber.of("01012345678")
+        assertEquals("010-1234-5678", ownerPhoneNumber.value)
+    }
+
+    @Test
+    fun `should accept 010 without hyphens with 3 digit middle part`() {
+        val ownerPhoneNumber = OwnerPhoneNumber.of("0101234567")
+        assertEquals("010-123-4567", ownerPhoneNumber.value)
+    }
+
+    @Test
+    fun `should accept Seoul number without hyphens`() {
+        val ownerPhoneNumber = OwnerPhoneNumber.of("0212345678")
+        assertEquals("02-1234-5678", ownerPhoneNumber.value)
+    }
+
+    @Test
+    fun `should accept regional number without hyphens`() {
+        val ownerPhoneNumber = OwnerPhoneNumber.of("03112345678")
+        assertEquals("031-1234-5678", ownerPhoneNumber.value)
     }
 
     @Test
@@ -221,10 +238,9 @@ class PhoneNumberTest {
     }
 
     @Test
-    fun `should throw when last part has too few digits`() {
-        assertFailsWith<InvalidOwnerPhoneNumberException> {
-            OwnerPhoneNumber.of("010-1234-567")
-        }
+    fun `should normalize incorrectly hyphenated number when digits form valid pattern`() {
+        val ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-567")
+        assertEquals("010-123-4567", ownerPhoneNumber.value)
     }
 
     @Test
