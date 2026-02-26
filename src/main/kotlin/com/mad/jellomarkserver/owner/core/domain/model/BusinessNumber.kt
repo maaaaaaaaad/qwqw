@@ -6,14 +6,11 @@ import com.mad.jellomarkserver.owner.core.domain.exception.InvalidOwnerBusinessN
 value class BusinessNumber private constructor(val value: String) {
     companion object {
         fun of(input: String): BusinessNumber {
-            val trimmed = input.trim()
-            try {
-                require(input.isNotBlank())
-                require(trimmed.length == 9)
-                return BusinessNumber(trimmed)
-            } catch (ex: IllegalArgumentException) {
+            val digitsOnly = input.trim().replace("-", "")
+            if (digitsOnly.length != 10 || !digitsOnly.all { it.isDigit() }) {
                 throw InvalidOwnerBusinessNumberException(input)
             }
+            return BusinessNumber(digitsOnly)
         }
     }
 }
