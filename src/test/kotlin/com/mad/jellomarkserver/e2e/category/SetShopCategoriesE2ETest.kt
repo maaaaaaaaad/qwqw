@@ -42,7 +42,7 @@ class SetShopCategoriesE2ETest {
 
     private fun signUpOwnerAndGetAccessToken(
         email: String = "owner@example.com",
-        businessNumber: String = "123456789",
+        businessNumber: String = "1234567890",
         phoneNumber: String = "010-1234-5678",
         nickname: String = "testshop"
     ): String {
@@ -289,7 +289,7 @@ class SetShopCategoriesE2ETest {
     fun `should return 403 when owner tries to set categories for another owner's shop`() {
         val owner1Token = signUpOwnerAndGetAccessToken(
             email = "owner1@example.com",
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             nickname = "shop1"
         )
@@ -297,7 +297,7 @@ class SetShopCategoriesE2ETest {
 
         val owner2Token = signUpOwnerAndGetAccessToken(
             email = "owner2@example.com",
-            businessNumber = "987654321",
+            businessNumber = "9876543210",
             phoneNumber = "010-9876-5432",
             nickname = "shop2"
         )
