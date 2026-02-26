@@ -18,7 +18,7 @@ class SignUpResponseTest {
     @Test
     fun `should create SignUpResponse from Owner`() {
         val owner = Owner.create(
-            businessNumber = BusinessNumber.of("123456789"),
+            businessNumber = BusinessNumber.of("1234567890"),
             ownerPhoneNumber = OwnerPhoneNumber.of("010-1234-5678"),
             ownerNickname = OwnerNickname.of("owner"),
             ownerEmail = com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail.of("owner@example.com"),
@@ -29,7 +29,7 @@ class SignUpResponseTest {
 
         assertThat(response.id).isEqualTo(owner.id.value)
         assertThat(response.userType).isEqualTo("OWNER")
-        assertThat(response.businessNumber).isEqualTo("123456789")
+        assertThat(response.businessNumber).isEqualTo("1234567890")
         assertThat(response.phoneNumber).isEqualTo("010-1234-5678")
         assertThat(response.nickname).isEqualTo("owner")
         assertThat(response.email).isEqualTo("owner@example.com")
@@ -49,7 +49,7 @@ class SignUpResponseTest {
             userType = "OWNER",
             nickname = "testowner",
             email = null,
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             createdAt = now,
             updatedAt = now,
@@ -62,7 +62,7 @@ class SignUpResponseTest {
             userType = "OWNER",
             nickname = "testowner",
             email = null,
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             createdAt = now,
             updatedAt = now,
@@ -84,7 +84,7 @@ class SignUpResponseTest {
             userType = "OWNER",
             nickname = "testowner",
             email = null,
-            businessNumber = "123456789",
+            businessNumber = "1234567890",
             phoneNumber = "010-1234-5678",
             createdAt = now,
             updatedAt = now,
