@@ -5,6 +5,7 @@ import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.reservation.adapter.driven.persistence.mapper.ReservationMapper
 import com.mad.jellomarkserver.reservation.core.domain.model.Reservation
 import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationStatus
 import com.mad.jellomarkserver.reservation.port.driven.ReservationPort
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -40,6 +41,11 @@ class ReservationPersistenceAdapter(
 
     override fun findByShopIdAndDate(shopId: ShopId, date: LocalDate): List<Reservation> {
         return repository.findByShopIdAndReservationDate(shopId.value, date)
+            .map { mapper.toDomain(it) }
+    }
+
+    override fun findByStatusAndDate(status: ReservationStatus, date: LocalDate): List<Reservation> {
+        return repository.findByStatusAndReservationDate(status.name, date)
             .map { mapper.toDomain(it) }
     }
 
