@@ -11,6 +11,7 @@ interface ReservationJpaRepository : JpaRepository<ReservationJpaEntity, UUID> {
     fun findByMemberId(memberId: UUID): List<ReservationJpaEntity>
     fun findByShopId(shopId: UUID): List<ReservationJpaEntity>
     fun findByShopIdAndReservationDate(shopId: UUID, reservationDate: LocalDate): List<ReservationJpaEntity>
+    fun findByStatusAndReservationDate(status: String, reservationDate: LocalDate): List<ReservationJpaEntity>
 
     @Query(
         """
