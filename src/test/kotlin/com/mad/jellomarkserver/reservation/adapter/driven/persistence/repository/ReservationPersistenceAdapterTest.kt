@@ -5,6 +5,7 @@ import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.reservation.adapter.driven.persistence.entity.ReservationJpaEntity
 import com.mad.jellomarkserver.reservation.adapter.driven.persistence.mapper.ReservationMapper
 import com.mad.jellomarkserver.reservation.core.domain.model.*
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationStatus
 import com.mad.jellomarkserver.treatment.core.domain.model.TreatmentId
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -121,6 +122,34 @@ class ReservationPersistenceAdapterTest {
         val result = adapter.findByShopIdAndDate(shopId, date)
 
         assertEquals(1, result.size)
+    }
+
+    @Test
+    fun `should find reservations by status and date`() {
+        val status = ReservationStatus.CONFIRMED
+        val date = LocalDate.of(2025, 3, 15)
+        val entity = createEntity()
+        val reservation = createReservation()
+
+        `when`(jpaRepository.findByStatusAndReservationDate(status.name, date)).thenReturn(listOf(entity))
+        `when`(mapper.toDomain(entity)).thenReturn(reservation)
+
+        val result = adapter.findByStatusAndDate(status, date)
+
+        assertEquals(1, result.size)
+        verify(jpaRepository).findByStatusAndReservationDate(status.name, date)
+    }
+
+    @Test
+    fun `should return empty list when no reservations match status and date`() {
+        val status = ReservationStatus.CONFIRMED
+        val date = LocalDate.of(2025, 3, 15)
+
+        `when`(jpaRepository.findByStatusAndReservationDate(status.name, date)).thenReturn(emptyList())
+
+        val result = adapter.findByStatusAndDate(status, date)
+
+        assertTrue(result.isEmpty())
     }
 
     @Test
