@@ -26,10 +26,15 @@ class BeautishopController(
     private val deleteBeautishopUseCase: DeleteBeautishopUseCase,
     private val getBeautishopUseCase: GetBeautishopUseCase,
     private val listBeautishopsUseCase: ListBeautishopsUseCase,
+    private val checkRegNumAvailabilityUseCase: CheckRegNumAvailabilityUseCase,
     private val ownerPort: OwnerPort,
     private val shopCategoryPort: ShopCategoryPort,
     private val setShopCategoriesUseCase: SetShopCategoriesUseCase
 ) {
+    @GetMapping("/api/beautishops/check-reg-num")
+    fun checkRegNumAvailability(@RequestParam regNum: String) {
+        checkRegNumAvailabilityUseCase.check(regNum)
+    }
     @PostMapping("/api/beautishops")
     @ResponseStatus(HttpStatus.CREATED)
     fun createBeautishop(
