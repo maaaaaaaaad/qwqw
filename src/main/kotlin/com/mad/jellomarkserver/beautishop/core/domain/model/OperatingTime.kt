@@ -23,7 +23,7 @@ data class OperatingTime private constructor(
                     }
                 }
 
-                return OperatingTime(schedule)
+                return OperatingTime(schedule.mapKeys { it.key.lowercase() })
             } catch (ex: IllegalArgumentException) {
                 throw InvalidOperatingTimeException(ex.message ?: "Invalid schedule")
             }
