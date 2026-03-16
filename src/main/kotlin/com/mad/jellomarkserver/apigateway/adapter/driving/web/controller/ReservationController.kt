@@ -275,9 +275,9 @@ class ReservationController(
         val treatmentIds = reservations.map { it.treatmentId }.distinct()
         val memberIds = reservations.map { MemberId.from(it.memberId.value) }.distinct()
 
-        val shops = shopIds.mapNotNull { beautishopPort.findById(it) }
+        val shops = beautishopPort.findByIds(shopIds)
             .associateBy { it.id }
-        val treatments = treatmentIds.mapNotNull { treatmentPort.findById(it) }
+        val treatments = treatmentPort.findByIds(treatmentIds)
             .associateBy { it.id }
         val members = memberPort.findByIds(memberIds)
             .associateBy { it.id }
