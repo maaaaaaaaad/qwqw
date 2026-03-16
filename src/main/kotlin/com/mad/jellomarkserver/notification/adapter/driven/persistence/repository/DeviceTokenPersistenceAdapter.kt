@@ -23,6 +23,7 @@ class DeviceTokenPersistenceAdapter(
     @Transactional
     override fun deleteByToken(token: String) {
         repository.deleteByToken(token)
+        repository.flush()
     }
 
     override fun findByUserIdAndUserRole(userId: UUID, userRole: UserRole): List<DeviceToken> {
