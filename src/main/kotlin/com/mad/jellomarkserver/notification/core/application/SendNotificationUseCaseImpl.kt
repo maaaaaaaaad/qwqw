@@ -6,6 +6,7 @@ import com.mad.jellomarkserver.notification.port.driven.PushNotificationPort
 import com.mad.jellomarkserver.notification.port.driving.SendNotificationCommand
 import com.mad.jellomarkserver.notification.port.driving.SendNotificationUseCase
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -17,6 +18,7 @@ class SendNotificationUseCaseImpl(
 
     private val log = LoggerFactory.getLogger(SendNotificationUseCaseImpl::class.java)
 
+    @Async
     override fun execute(command: SendNotificationCommand) {
         val userId = UUID.fromString(command.userId)
         val userRole = UserRole.valueOf(command.userRole)
