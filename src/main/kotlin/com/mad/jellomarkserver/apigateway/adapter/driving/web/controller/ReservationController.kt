@@ -254,9 +254,19 @@ class ReservationController(
     }
 
     private fun enrichResponse(reservation: Reservation): ReservationResponse {
-        val shop = beautishopPort.findById(reservation.shopId)
-        val treatment = treatmentPort.findById(reservation.treatmentId)
-        val member = memberPort.findById(reservation.memberId)
+        val shopFuture = java.util.concurrent.CompletableFuture.supplyAsync {
+            beautishopPort.findById(reservation.shopId)
+        }
+        val treatmentFuture = java.util.concurrent.CompletableFuture.supplyAsync {
+            treatmentPort.findById(reservation.treatmentId)
+        }
+        val memberFuture = java.util.concurrent.CompletableFuture.supplyAsync {
+            memberPort.findById(reservation.memberId)
+        }
+
+        val shop = shopFuture.get()
+        val treatment = treatmentFuture.get()
+        val member = memberFuture.get()
 
         return ReservationResponse.from(
             reservation = reservation,
