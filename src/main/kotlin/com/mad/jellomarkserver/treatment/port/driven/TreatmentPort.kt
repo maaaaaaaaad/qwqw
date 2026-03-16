@@ -7,6 +7,7 @@ import com.mad.jellomarkserver.treatment.core.domain.model.TreatmentId
 interface TreatmentPort {
     fun save(treatment: Treatment): Treatment
     fun findById(id: TreatmentId): Treatment?
+    fun findByIds(ids: List<TreatmentId>): List<Treatment>
     fun findByShopId(shopId: ShopId): List<Treatment>
     fun delete(id: TreatmentId)
 }
