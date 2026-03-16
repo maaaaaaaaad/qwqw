@@ -26,6 +26,11 @@ class TreatmentPersistenceAdapter(
             .orElse(null)
     }
 
+    override fun findByIds(ids: List<TreatmentId>): List<Treatment> {
+        if (ids.isEmpty()) return emptyList()
+        return repository.findAllById(ids.map { it.value }).map { mapper.toDomain(it) }
+    }
+
     override fun findByShopId(shopId: ShopId): List<Treatment> {
         return repository.findByShopId(shopId.value)
             .map { mapper.toDomain(it) }
