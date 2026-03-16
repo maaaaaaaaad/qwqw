@@ -16,6 +16,7 @@ import java.time.Clock
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.YearMonth
+import java.time.ZoneId
 import java.util.*
 
 @Service
@@ -23,7 +24,7 @@ class GetAvailableDatesUseCaseImpl(
     private val beautishopPort: BeautishopPort,
     private val treatmentPort: TreatmentPort,
     private val reservationPort: ReservationPort,
-    private val clock: Clock = Clock.systemUTC()
+    private val clock: Clock = Clock.system(KST_ZONE)
 ) : GetAvailableDatesUseCase {
 
     override fun execute(query: GetAvailableDatesQuery): AvailableDatesResult {
@@ -97,6 +98,7 @@ class GetAvailableDatesUseCaseImpl(
     }
 
     companion object {
+        private val KST_ZONE = ZoneId.of("Asia/Seoul")
         private const val CLOSED = "closed"
         private const val SLOT_INTERVAL_MINUTES = 30L
     }
