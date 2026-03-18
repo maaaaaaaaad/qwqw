@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.review.adapter.driven.persistence.repository
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
+import java.util.UUID
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.review.adapter.driven.persistence.mapper.ShopReviewMapper
 import com.mad.jellomarkserver.review.core.domain.exception.DuplicateReviewException
@@ -58,6 +59,12 @@ class ShopReviewPersistenceAdapter(
 
     override fun existsByShopIdAndMemberId(shopId: ShopId, memberId: MemberId): Boolean {
         return jpaRepository.existsByShopIdAndMemberId(shopId.value, memberId.value)
+    }
+
+    override fun findReviewedShopIdsByMemberId(memberId: MemberId): Set<ShopId> {
+        return jpaRepository.findDistinctShopIdsByMemberId(memberId.value)
+            .map { ShopId.from(it) }
+            .toSet()
     }
 
     override fun delete(id: ReviewId) {
