@@ -12,6 +12,9 @@ interface ShopReviewJpaRepository : JpaRepository<ShopReviewJpaEntity, UUID> {
     fun findByMemberId(memberId: UUID): List<ShopReviewJpaEntity>
     fun findByMemberId(memberId: UUID, pageable: Pageable): Page<ShopReviewJpaEntity>
     fun existsByShopIdAndMemberId(shopId: UUID, memberId: UUID): Boolean
+    @Query("SELECT DISTINCT r.shopId FROM ShopReviewJpaEntity r WHERE r.memberId = :memberId")
+    fun findDistinctShopIdsByMemberId(memberId: UUID): List<UUID>
+
     fun countByShopId(shopId: UUID): Int
 
     @Query("SELECT COALESCE(AVG(r.rating), 0.0) FROM ShopReviewJpaEntity r WHERE r.shopId = :shopId AND r.rating IS NOT NULL")
