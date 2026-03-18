@@ -39,6 +39,12 @@ class ReservationPersistenceAdapter(
             .map { mapper.toDomain(it) }
     }
 
+    override fun findByShopIds(shopIds: List<ShopId>): List<Reservation> {
+        if (shopIds.isEmpty()) return emptyList()
+        return repository.findByShopIdIn(shopIds.map { it.value })
+            .map { mapper.toDomain(it) }
+    }
+
     override fun findByShopIdAndDate(shopId: ShopId, date: LocalDate): List<Reservation> {
         return repository.findByShopIdAndReservationDate(shopId.value, date)
             .map { mapper.toDomain(it) }
