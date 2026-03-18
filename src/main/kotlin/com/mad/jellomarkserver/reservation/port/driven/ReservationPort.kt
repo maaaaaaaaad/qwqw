@@ -13,6 +13,7 @@ interface ReservationPort {
     fun findById(id: ReservationId): Reservation?
     fun findByMemberId(memberId: MemberId): List<Reservation>
     fun findByShopId(shopId: ShopId): List<Reservation>
+    fun findByShopIds(shopIds: List<ShopId>): List<Reservation>
     fun findByShopIdAndDate(shopId: ShopId, date: LocalDate): List<Reservation>
     fun findByStatusAndDate(status: ReservationStatus, date: LocalDate): List<Reservation>
     fun existsOverlapping(shopId: ShopId, date: LocalDate, startTime: LocalTime, endTime: LocalTime): Boolean
