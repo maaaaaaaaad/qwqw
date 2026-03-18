@@ -37,6 +37,8 @@ class ReservationController(
     private val cancelReservationUseCase: CancelReservationUseCase,
     private val completeReservationUseCase: CompleteReservationUseCase,
     private val noShowReservationUseCase: NoShowReservationUseCase,
+    private val listOwnerReservationsUseCase: ListOwnerReservationsUseCase,
+    private val listPendingReviewReservationsUseCase: ListPendingReviewReservationsUseCase,
     private val getAvailableSlotsUseCase: GetAvailableSlotsUseCase,
     private val getAvailableDatesUseCase: GetAvailableDatesUseCase,
     private val memberPort: MemberPort,
@@ -209,6 +211,29 @@ class ReservationController(
 
         val reservation = noShowReservationUseCase.execute(command)
         return enrichResponse(reservation)
+    }
+
+    @GetMapping("/api/reservations/me/pending-review")
+    fun listPendingReviewReservations(servletRequest: HttpServletRequest): List<ReservationResponse> {
+        val identifier = servletRequest.getAttribute("email") as String
+        val userType = servletRequest.getAttribute("userType") as String
+
+        if (userType != "MEMBER") {
+            throw IllegalStateException("Only members can view pending review reservations")
+        }
+
+        val command = ListPendingReviewReservationsCommand(identifier)
+        val reservations = listPendingReviewReservationsUseCase.execute(command)
+        return enrichResponses(reservations)
+    }
+
+    @GetMapping("/api/reservations/owner")
+    fun listOwnerReservations(servletRequest: HttpServletRequest): List<ReservationResponse> {
+        val owner = resolveOwner(servletRequest)
+
+        val command = ListOwnerReservationsCommand(owner.ownerEmail.value)
+        val reservations = listOwnerReservationsUseCase.execute(command)
+        return enrichResponses(reservations)
     }
 
     @GetMapping("/api/beautishops/{shopId}/available-dates")
