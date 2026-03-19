@@ -227,7 +227,7 @@ class ReservationController(
         return enrichResponses(reservations)
     }
 
-    @GetMapping("/api/reservations/owner")
+    @GetMapping("/api/owner/reservations")
     fun listOwnerReservations(servletRequest: HttpServletRequest): List<ReservationResponse> {
         val owner = resolveOwner(servletRequest)
 
