@@ -66,7 +66,8 @@ class GetAvailableSlotsUseCaseImpl(
         while (!candidateStart.plusMinutes(durationMinutes).isAfter(closeTime)) {
             val candidateEnd = candidateStart.plusMinutes(durationMinutes)
 
-            val isAvailable = activeReservations.none { reservation ->
+            val isPastSlot = date == LocalDate.now(clock) && candidateStart.isBefore(LocalTime.now(clock))
+            val isAvailable = !isPastSlot && activeReservations.none { reservation ->
                 reservation.startTime.isBefore(candidateEnd) && reservation.endTime.isAfter(candidateStart)
             }
 
