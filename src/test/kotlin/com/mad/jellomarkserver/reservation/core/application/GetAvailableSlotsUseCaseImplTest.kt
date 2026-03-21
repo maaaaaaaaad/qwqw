@@ -274,6 +274,38 @@ class GetAvailableSlotsUseCaseImplTest {
     }
 
     @Test
+    fun `should mark past slots as unavailable when querying today`() {
+        val todayClock = Clock.fixed(Instant.parse("2025-06-15T12:00:00Z"), ZoneId.of("UTC"))
+        val todayUseCase = GetAvailableSlotsUseCaseImpl(beautishopPort, treatmentPort, reservationPort, todayClock)
+
+        val shopId = ShopId.new()
+        val schedule = mapOf("sunday" to "10:00-14:00")
+        val shop = createShop(shopId, schedule)
+        val treatment = createTreatment(shopId, durationMinutes = 60)
+        val today = LocalDate.of(2025, 6, 15)
+
+        whenever(beautishopPort.findById(shopId)).thenReturn(shop)
+        whenever(treatmentPort.findById(treatment.id)).thenReturn(treatment)
+        whenever(reservationPort.findByShopIdAndDate(shopId, today)).thenReturn(emptyList())
+
+        val query = GetAvailableSlotsQuery(
+            shopId = shopId.value.toString(),
+            treatmentId = treatment.id.value.toString(),
+            date = "2025-06-15"
+        )
+
+        val result = todayUseCase.execute(query)
+
+        val pastSlots = result.slots.filter { it.startTime.isBefore(LocalTime.of(12, 0)) }
+        val futureSlots = result.slots.filter { !it.startTime.isBefore(LocalTime.of(12, 0)) }
+
+        assertTrue(pastSlots.isNotEmpty())
+        assertTrue(pastSlots.all { !it.available })
+        assertTrue(futureSlots.isNotEmpty())
+        assertTrue(futureSlots.all { it.available })
+    }
+
+    @Test
     fun `should only consider PENDING and CONFIRMED reservations for overlap`() {
         val shopId = ShopId.new()
         val schedule = mapOf("sunday" to "10:00-14:00")
