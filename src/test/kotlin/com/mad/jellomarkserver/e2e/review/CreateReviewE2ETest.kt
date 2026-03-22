@@ -134,6 +134,7 @@ class CreateReviewE2ETest {
         val memberAccessToken = loginWithKakaoAndGetAccessToken()
 
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = listOf("https://example.com/img1.jpg", "https://example.com/img2.jpg")
@@ -173,6 +174,7 @@ class CreateReviewE2ETest {
         val memberAccessToken = loginWithKakaoAndGetAccessToken()
 
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = 4,
             content = "좋은 경험이었습니다. 친절하게 응대해주셨어요.",
             images = null
@@ -201,6 +203,7 @@ class CreateReviewE2ETest {
         val shopId = createBeautishop(ownerAccessToken)
 
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
@@ -219,12 +222,15 @@ class CreateReviewE2ETest {
     }
 
     @Test
-    fun `should return 409 when member already reviewed the shop`() {
+    fun `should return 409 when reservation already has a review`() {
         val ownerAccessToken = signUpOwnerAndGetAccessToken()
         val shopId = createBeautishop(ownerAccessToken)
         val memberAccessToken = loginWithKakaoAndGetAccessToken()
 
-        val request = CreateReviewRequest(
+        val duplicateReservationId = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+        val firstRequest = CreateReviewRequest(
+            reservationId = duplicateReservationId,
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
@@ -238,15 +244,22 @@ class CreateReviewE2ETest {
         val firstResponse = rest.exchange(
             url("/api/beautishops/$shopId/reviews"),
             HttpMethod.POST,
-            HttpEntity(request, headers),
+            HttpEntity(firstRequest, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {}
         )
         assertThat(firstResponse.statusCode).isEqualTo(HttpStatus.CREATED)
 
+        val secondRequest = CreateReviewRequest(
+            reservationId = duplicateReservationId,
+            rating = 4,
+            content = "같은 예약에 대해 또 리뷰를 작성하려고 합니다.",
+            images = null
+        )
+
         val secondResponse = rest.exchange(
             url("/api/beautishops/$shopId/reviews"),
             HttpMethod.POST,
-            HttpEntity(request, headers),
+            HttpEntity(secondRequest, headers),
             object : ParameterizedTypeReference<Map<String, Any?>>() {}
         )
         assertThat(secondResponse.statusCode).isEqualTo(HttpStatus.CONFLICT)
@@ -259,6 +272,7 @@ class CreateReviewE2ETest {
         val memberAccessToken = loginWithKakaoAndGetAccessToken()
 
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = 6,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
@@ -286,6 +300,7 @@ class CreateReviewE2ETest {
         val memberAccessToken = loginWithKakaoAndGetAccessToken()
 
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = 5,
             content = "좋아요",
             images = null
