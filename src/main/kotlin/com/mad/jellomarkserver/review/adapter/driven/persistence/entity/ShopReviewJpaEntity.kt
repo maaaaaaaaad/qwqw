@@ -8,7 +8,7 @@ import java.util.*
 @Table(
     name = "shop_reviews",
     uniqueConstraints = [
-        UniqueConstraint(name = "uk_shop_reviews_shop_member", columnNames = ["shop_id", "member_id"])
+        UniqueConstraint(name = "uk_shop_reviews_reservation", columnNames = ["reservation_id"])
     ],
     indexes = [
         Index(name = "idx_shop_reviews_shop_id", columnList = "shop_id"),
@@ -27,6 +27,9 @@ class ShopReviewJpaEntity(
 
     @Column(name = "member_id", nullable = false)
     var memberId: UUID,
+
+    @Column(name = "reservation_id", nullable = true)
+    var reservationId: UUID?,
 
     @Column(name = "rating", nullable = true)
     var rating: Int?,
