@@ -12,8 +12,11 @@ interface ShopReviewJpaRepository : JpaRepository<ShopReviewJpaEntity, UUID> {
     fun findByMemberId(memberId: UUID): List<ShopReviewJpaEntity>
     fun findByMemberId(memberId: UUID, pageable: Pageable): Page<ShopReviewJpaEntity>
     fun existsByShopIdAndMemberId(shopId: UUID, memberId: UUID): Boolean
+    fun existsByReservationId(reservationId: UUID): Boolean
     @Query("SELECT DISTINCT r.shopId FROM ShopReviewJpaEntity r WHERE r.memberId = :memberId")
     fun findDistinctShopIdsByMemberId(memberId: UUID): List<UUID>
+    @Query("SELECT DISTINCT r.reservationId FROM ShopReviewJpaEntity r WHERE r.memberId = :memberId AND r.reservationId IS NOT NULL")
+    fun findDistinctReservationIdsByMemberId(memberId: UUID): List<UUID>
 
     fun countByShopId(shopId: UUID): Int
 
