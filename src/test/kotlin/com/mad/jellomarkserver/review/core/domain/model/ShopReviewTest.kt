@@ -23,6 +23,7 @@ class ShopReviewTest {
         val review = ShopReview.create(
             shopId = shopId,
             memberId = memberId,
+            reservationId = null,
             rating = rating,
             content = content,
             images = images,
@@ -49,6 +50,7 @@ class ShopReviewTest {
         val review = ShopReview.create(
             shopId = shopId,
             memberId = memberId,
+            reservationId = null,
             rating = rating,
             content = content,
             images = null,
@@ -85,6 +87,7 @@ class ShopReviewTest {
         val review = ShopReview.create(
             shopId = ShopId.new(),
             memberId = memberId,
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("테스트 리뷰 내용입니다."),
             images = null,
@@ -117,6 +120,7 @@ class ShopReviewTest {
             id = id,
             shopId = shopId,
             memberId = memberId,
+            reservationId = null,
             rating = rating,
             content = content,
             images = images,
@@ -136,6 +140,7 @@ class ShopReviewTest {
         return ShopReview.create(
             shopId = ShopId.new(),
             memberId = MemberId.new(),
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("테스트 리뷰 내용입니다."),
             images = null,
