@@ -28,7 +28,7 @@ class ListPendingReviewReservationsUseCaseImpl(
         val completedReservations = reservations.filter { it.status == ReservationStatus.COMPLETED }
         if (completedReservations.isEmpty()) return emptyList()
 
-        val reviewedShopIds = shopReviewPort.findReviewedShopIdsByMemberId(member.id)
-        return completedReservations.filter { it.shopId !in reviewedShopIds }
+        val reviewedReservationIds = shopReviewPort.findReviewedReservationIdsByMemberId(member.id)
+        return completedReservations.filter { it.id !in reviewedReservationIds }
     }
 }
