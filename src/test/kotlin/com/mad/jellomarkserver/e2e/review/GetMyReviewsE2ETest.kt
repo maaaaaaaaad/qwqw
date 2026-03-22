@@ -126,6 +126,7 @@ class GetMyReviewsE2ETest {
 
     private fun createReview(shopId: String, memberAccessToken: String, rating: Int, content: String) {
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = rating,
             content = content,
             images = null
