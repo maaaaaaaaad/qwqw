@@ -8,6 +8,10 @@ import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNickn
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
+import com.mad.jellomarkserver.beautishop.core.domain.exception.DuplicateShopRegNumException
+import com.mad.jellomarkserver.reservation.core.domain.exception.ReservationTimeConflictException
+import com.mad.jellomarkserver.review.core.domain.exception.DuplicateReviewException
+import com.mad.jellomarkserver.treatment.core.domain.exception.InvalidTreatmentNameException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -105,5 +109,31 @@ class ApiGatewayExceptionHandlerTest {
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), result.status)
         assertEquals("Password too short", result.detail)
+    }
+
+    @Test
+    fun `should include error code in ProblemDetail response`() {
+        val exception = DuplicateAuthEmailException("test@test.com")
+
+        val result = handler.handleDuplicateAuthEmail(exception)
+
+        assertEquals("DUPLICATE_AUTH_EMAIL", result.properties?.get("code"))
+    }
+
+    @Test
+    fun `should derive error code from exception class name`() {
+        val cases = mapOf(
+            handler.handleAuthenticationFailed(AuthenticationFailedException("e")) to "AUTHENTICATION_FAILED",
+            handler.handleInvalidMemberNickname(InvalidMemberNicknameException("n")) to "INVALID_MEMBER_NICKNAME",
+            handler.handleMemberNotFound(MemberNotFoundException("m")) to "MEMBER_NOT_FOUND",
+            handler.handleDuplicateShopRegNum(DuplicateShopRegNumException("r")) to "DUPLICATE_SHOP_REG_NUM",
+            handler.handleReservationTimeConflict(ReservationTimeConflictException("s", "d", "09:00", "10:00")) to "RESERVATION_TIME_CONFLICT",
+            handler.handleDuplicateReview(DuplicateReviewException("r")) to "DUPLICATE_REVIEW",
+            handler.handleInvalidTreatmentName(InvalidTreatmentNameException("t")) to "INVALID_TREATMENT_NAME",
+        )
+
+        cases.forEach { (result, expectedCode) ->
+            assertEquals(expectedCode, result.properties?.get("code"), "Expected code $expectedCode")
+        }
     }
 }
