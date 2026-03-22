@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.review.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.adapter.driven.persistence.entity.ShopReviewJpaEntity
 import com.mad.jellomarkserver.review.core.domain.model.*
 import org.springframework.stereotype.Component
@@ -14,6 +15,7 @@ class ShopReviewMapperImpl : ShopReviewMapper {
             id = domain.id.value,
             shopId = domain.shopId.value,
             memberId = domain.memberId.value,
+            reservationId = domain.reservationId?.value,
             rating = domain.rating?.value,
             content = domain.content?.value,
             images = serializeImages(domain.images),
@@ -29,6 +31,7 @@ class ShopReviewMapperImpl : ShopReviewMapper {
             id = ReviewId.from(entity.id),
             shopId = ShopId.from(entity.shopId),
             memberId = MemberId.from(entity.memberId),
+            reservationId = entity.reservationId?.let { ReservationId.from(it) },
             rating = entity.rating?.let { ReviewRating.of(it) },
             content = entity.content?.let { ReviewContent.of(it) },
             images = deserializeImages(entity.images),
