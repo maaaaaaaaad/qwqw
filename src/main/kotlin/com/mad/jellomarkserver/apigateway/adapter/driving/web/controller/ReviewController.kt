@@ -48,6 +48,7 @@ class ReviewController(
         val command = CreateReviewCommand(
             shopId = shopId,
             memberId = member.id.value.toString(),
+            reservationId = request.reservationId,
             rating = request.rating,
             content = request.content,
             images = request.images
