@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.review.port.driven
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.core.domain.model.ReviewId
 import com.mad.jellomarkserver.review.core.domain.model.ShopReview
 import org.springframework.data.domain.Page
@@ -19,7 +20,9 @@ interface ShopReviewPort {
     fun findByMemberId(memberId: MemberId): List<ShopReview>
     fun findByMemberId(memberId: MemberId, pageable: Pageable): Page<ShopReview>
     fun existsByShopIdAndMemberId(shopId: ShopId, memberId: MemberId): Boolean
+    fun existsByReservationId(reservationId: ReservationId): Boolean
     fun findReviewedShopIdsByMemberId(memberId: MemberId): Set<ShopId>
+    fun findReviewedReservationIdsByMemberId(memberId: MemberId): Set<ReservationId>
     fun delete(id: ReviewId)
     fun calculateStats(shopId: ShopId): ReviewStats
 }
