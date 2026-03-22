@@ -145,6 +145,7 @@ class DeleteReviewReplyUseCaseImplTest {
             id = reviewId,
             shopId = shopId,
             memberId = memberId,
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("좋은 서비스였습니다. 추천합니다!"),
             images = null,
