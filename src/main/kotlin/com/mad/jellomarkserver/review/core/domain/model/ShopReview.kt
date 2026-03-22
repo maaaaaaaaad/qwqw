@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.review.core.domain.model
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import java.time.Clock
 import java.time.Instant
 
@@ -9,6 +10,7 @@ class ShopReview private constructor(
     val id: ReviewId,
     val shopId: ShopId,
     val memberId: MemberId,
+    val reservationId: ReservationId?,
     val rating: ReviewRating?,
     val content: ReviewContent?,
     val images: ReviewImages?,
@@ -21,6 +23,7 @@ class ShopReview private constructor(
         fun create(
             shopId: ShopId,
             memberId: MemberId,
+            reservationId: ReservationId?,
             rating: ReviewRating?,
             content: ReviewContent?,
             images: ReviewImages?,
@@ -31,6 +34,7 @@ class ShopReview private constructor(
                 id = ReviewId.new(),
                 shopId = shopId,
                 memberId = memberId,
+                reservationId = reservationId,
                 rating = rating,
                 content = content,
                 images = images,
@@ -43,6 +47,7 @@ class ShopReview private constructor(
             id: ReviewId,
             shopId: ShopId,
             memberId: MemberId,
+            reservationId: ReservationId?,
             rating: ReviewRating?,
             content: ReviewContent?,
             images: ReviewImages?,
@@ -55,6 +60,7 @@ class ShopReview private constructor(
                 id = id,
                 shopId = shopId,
                 memberId = memberId,
+                reservationId = reservationId,
                 rating = rating,
                 content = content,
                 images = images,
@@ -76,6 +82,7 @@ class ShopReview private constructor(
             id = this.id,
             shopId = this.shopId,
             memberId = this.memberId,
+            reservationId = this.reservationId,
             rating = rating,
             content = content,
             images = images,
@@ -91,6 +98,7 @@ class ShopReview private constructor(
             id = this.id,
             shopId = this.shopId,
             memberId = this.memberId,
+            reservationId = this.reservationId,
             rating = this.rating,
             content = this.content,
             images = this.images,
@@ -106,6 +114,7 @@ class ShopReview private constructor(
             id = this.id,
             shopId = this.shopId,
             memberId = this.memberId,
+            reservationId = this.reservationId,
             rating = this.rating,
             content = this.content,
             images = this.images,
