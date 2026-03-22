@@ -4,6 +4,7 @@ import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslatorImpl
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.adapter.driven.persistence.entity.ShopReviewJpaEntity
 import com.mad.jellomarkserver.review.adapter.driven.persistence.mapper.ShopReviewMapper
 import com.mad.jellomarkserver.review.core.domain.exception.DuplicateReviewException
@@ -58,13 +59,14 @@ class ShopReviewPersistenceAdapterTest {
     }
 
     @Test
-    fun `should throw DuplicateReviewException when shop_member constraint is violated`() {
+    fun `should throw DuplicateReviewException when reservation constraint is violated`() {
         val shopId = ShopId.new()
         val memberId = MemberId.new()
-        val review = createReviewWithIds(shopId, memberId)
+        val reservationId = ReservationId.new()
+        val review = createReviewWithIds(shopId, memberId, reservationId)
         val entity = createEntity()
 
-        val exception = DataIntegrityViolationException("uk_shop_reviews_shop_member")
+        val exception = DataIntegrityViolationException("uk_shop_reviews_reservation")
 
         `when`(mapper.toEntity(review)).thenReturn(entity)
         `when`(jpaRepository.saveAndFlush(entity)).thenThrow(exception)
@@ -73,8 +75,7 @@ class ShopReviewPersistenceAdapterTest {
             adapter.save(review)
         }
 
-        assertTrue(thrownException.message!!.contains(shopId.value.toString()))
-        assertTrue(thrownException.message!!.contains(memberId.value.toString()))
+        assertTrue(thrownException.message!!.contains(reservationId.value.toString()))
         verify(mapper).toEntity(review)
         verify(jpaRepository).saveAndFlush(entity)
     }
@@ -215,6 +216,7 @@ class ShopReviewPersistenceAdapterTest {
             id = ReviewId.new(),
             shopId = ShopId.new(),
             memberId = MemberId.new(),
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("정말 훌륭한 서비스였습니다!"),
             images = ReviewImages.of(listOf("https://example.com/img1.jpg")),
@@ -223,11 +225,12 @@ class ShopReviewPersistenceAdapterTest {
         )
     }
 
-    private fun createReviewWithIds(shopId: ShopId, memberId: MemberId): ShopReview {
+    private fun createReviewWithIds(shopId: ShopId, memberId: MemberId, reservationId: ReservationId): ShopReview {
         return ShopReview.reconstruct(
             id = ReviewId.new(),
             shopId = shopId,
             memberId = memberId,
+            reservationId = reservationId,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("정말 훌륭한 서비스였습니다!"),
             images = ReviewImages.of(listOf("https://example.com/img1.jpg")),
@@ -241,6 +244,7 @@ class ShopReviewPersistenceAdapterTest {
             id = UUID.randomUUID(),
             shopId = UUID.randomUUID(),
             memberId = UUID.randomUUID(),
+            reservationId = UUID.randomUUID(),
             rating = 5,
             content = "정말 훌륭한 서비스였습니다!",
             images = "https://example.com/img1.jpg",
