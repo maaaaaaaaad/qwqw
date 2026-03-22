@@ -129,6 +129,7 @@ class UpdateReviewE2ETest {
 
     private fun createReview(shopId: String, memberAccessToken: String): String {
         val request = CreateReviewRequest(
+            reservationId = null,
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = listOf("https://example.com/img1.jpg")
