@@ -77,6 +77,7 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(MemberNotFoundException::class)
     fun handleMemberNotFound(ex: MemberNotFoundException): ProblemDetail {
+        log.warn("MemberNotFound: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
     }
 
@@ -172,41 +173,49 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(InvalidReviewRatingException::class)
     fun handleInvalidReviewRating(ex: InvalidReviewRatingException): ProblemDetail {
+        log.warn("InvalidReviewRating: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
     @ExceptionHandler(InvalidReviewContentException::class)
     fun handleInvalidReviewContent(ex: InvalidReviewContentException): ProblemDetail {
+        log.warn("InvalidReviewContent: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
     @ExceptionHandler(InvalidReviewImagesException::class)
     fun handleInvalidReviewImages(ex: InvalidReviewImagesException): ProblemDetail {
+        log.warn("InvalidReviewImages: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
     @ExceptionHandler(ReviewNotFoundException::class)
     fun handleReviewNotFound(ex: ReviewNotFoundException): ProblemDetail {
+        log.warn("ReviewNotFound: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message)
     }
 
     @ExceptionHandler(InvalidReplyContentException::class)
     fun handleInvalidReplyContent(ex: InvalidReplyContentException): ProblemDetail {
+        log.warn("InvalidReplyContent: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
     @ExceptionHandler(UnauthorizedReviewAccessException::class)
     fun handleUnauthorizedReviewAccess(ex: UnauthorizedReviewAccessException): ProblemDetail {
+        log.warn("UnauthorizedReviewAccess: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.message)
     }
 
     @ExceptionHandler(DuplicateReviewException::class)
     fun handleDuplicateReview(ex: DuplicateReviewException): ProblemDetail {
+        log.warn("DuplicateReview: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.message)
     }
 
     @ExceptionHandler(EmptyReviewException::class)
     fun handleEmptyReview(ex: EmptyReviewException): ProblemDetail {
+        log.warn("EmptyReview: {}", ex.message)
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.message)
     }
 
