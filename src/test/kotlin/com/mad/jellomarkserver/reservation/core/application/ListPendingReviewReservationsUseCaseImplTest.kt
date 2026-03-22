@@ -6,6 +6,7 @@ import com.mad.jellomarkserver.member.core.domain.model.SocialId
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import com.mad.jellomarkserver.reservation.core.domain.model.Reservation
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.reservation.core.domain.model.ReservationStatus
 import com.mad.jellomarkserver.reservation.port.driven.ReservationPort
 import com.mad.jellomarkserver.reservation.port.driving.ListPendingReviewReservationsCommand
@@ -47,19 +48,17 @@ class ListPendingReviewReservationsUseCaseImplTest {
         val memberId = MemberId.new()
         val socialId = "member@test.com"
         val member = createTestMember(memberId, socialId)
-        val shopId1 = ShopId.new()
-        val shopId2 = ShopId.new()
-        val shopId3 = ShopId.new()
-        val completedRes1 = createCompletedReservation(memberId, shopId1)
-        val completedRes2 = createCompletedReservation(memberId, shopId2)
-        val completedRes3 = createCompletedReservation(memberId, shopId3)
+        val completedRes1 = createCompletedReservation(memberId, ShopId.new())
+        val completedRes2 = createCompletedReservation(memberId, ShopId.new())
+        val completedRes3 = createCompletedReservation(memberId, ShopId.new())
         val pendingRes = createTestReservation(memberId, ShopId.new())
 
         whenever(memberPort.findBySocialId(SocialId(socialId))).thenReturn(member)
         whenever(reservationPort.findByMemberId(memberId)).thenReturn(
             listOf(completedRes1, completedRes2, completedRes3, pendingRes)
         )
-        whenever(shopReviewPort.findReviewedShopIdsByMemberId(memberId)).thenReturn(setOf(shopId1))
+        whenever(shopReviewPort.findReviewedReservationIdsByMemberId(memberId))
+            .thenReturn(setOf(completedRes1.id))
 
         val command = ListPendingReviewReservationsCommand(socialId)
         val result = useCase.execute(command)
@@ -73,12 +72,12 @@ class ListPendingReviewReservationsUseCaseImplTest {
         val memberId = MemberId.new()
         val socialId = "member@test.com"
         val member = createTestMember(memberId, socialId)
-        val shopId = ShopId.new()
-        val completedRes = createCompletedReservation(memberId, shopId)
+        val completedRes = createCompletedReservation(memberId, ShopId.new())
 
         whenever(memberPort.findBySocialId(SocialId(socialId))).thenReturn(member)
         whenever(reservationPort.findByMemberId(memberId)).thenReturn(listOf(completedRes))
-        whenever(shopReviewPort.findReviewedShopIdsByMemberId(memberId)).thenReturn(setOf(shopId))
+        whenever(shopReviewPort.findReviewedReservationIdsByMemberId(memberId))
+            .thenReturn(setOf(completedRes.id))
 
         val command = ListPendingReviewReservationsCommand(socialId)
         val result = useCase.execute(command)
