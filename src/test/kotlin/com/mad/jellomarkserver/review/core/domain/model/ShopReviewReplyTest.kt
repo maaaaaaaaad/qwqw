@@ -102,6 +102,7 @@ class ShopReviewReplyTest {
             id = id,
             shopId = shopId,
             memberId = memberId,
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("좋은 서비스였습니다. 추천합니다!"),
             images = null,
@@ -122,6 +123,7 @@ class ShopReviewReplyTest {
             id = ReviewId.new(),
             shopId = ShopId.new(),
             memberId = MemberId.new(),
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("좋은 서비스였습니다. 추천합니다!"),
             images = null,
@@ -138,6 +140,7 @@ class ShopReviewReplyTest {
         return ShopReview.create(
             shopId = ShopId.new(),
             memberId = MemberId.new(),
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("정말 좋은 서비스였습니다."),
             images = null,
