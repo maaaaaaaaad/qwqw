@@ -4,6 +4,7 @@ import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.common.persistence.ConstraintViolationTranslator
 import java.util.UUID
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.adapter.driven.persistence.mapper.ShopReviewMapper
 import com.mad.jellomarkserver.review.core.domain.exception.DuplicateReviewException
 import com.mad.jellomarkserver.review.core.domain.model.ReviewId
@@ -30,10 +31,9 @@ class ShopReviewPersistenceAdapter(
         } catch (e: DataIntegrityViolationException) {
             constraintTranslator.translateAndThrow(
                 e, mapOf(
-                    "uk_shop_reviews_shop_member" to {
+                    "uk_shop_reviews_reservation" to {
                         DuplicateReviewException(
-                            review.shopId.value.toString(),
-                            review.memberId.value.toString()
+                            review.reservationId?.value?.toString() ?: "unknown"
                         )
                     }
                 )
@@ -61,9 +61,19 @@ class ShopReviewPersistenceAdapter(
         return jpaRepository.existsByShopIdAndMemberId(shopId.value, memberId.value)
     }
 
+    override fun existsByReservationId(reservationId: ReservationId): Boolean {
+        return jpaRepository.existsByReservationId(reservationId.value)
+    }
+
     override fun findReviewedShopIdsByMemberId(memberId: MemberId): Set<ShopId> {
         return jpaRepository.findDistinctShopIdsByMemberId(memberId.value)
             .map { ShopId.from(it) }
+            .toSet()
+    }
+
+    override fun findReviewedReservationIdsByMemberId(memberId: MemberId): Set<ReservationId> {
+        return jpaRepository.findDistinctReservationIdsByMemberId(memberId.value)
+            .map { ReservationId.from(it) }
             .toSet()
     }
 
