@@ -258,6 +258,7 @@ class ListReviewsUseCaseImplTest {
             id = ReviewId.new(),
             shopId = shopId,
             memberId = MemberId.new(),
+            reservationId = null,
             rating = ReviewRating.of(5),
             content = ReviewContent.of("정말 훌륭한 서비스였습니다!"),
             images = null,
