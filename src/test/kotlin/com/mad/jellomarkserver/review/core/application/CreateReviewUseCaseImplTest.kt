@@ -3,6 +3,7 @@ package com.mad.jellomarkserver.review.core.application
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.beautishop.port.driving.UpdateBeautishopStatsUseCase
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.review.core.domain.model.ShopReview
 import com.mad.jellomarkserver.review.port.driven.ShopReviewPort
@@ -38,18 +39,19 @@ class CreateReviewUseCaseImplTest {
     fun `should create review successfully with all fields`() {
         val shopId = ShopId.new()
         val memberId = MemberId.new()
+        val reservationId = ReservationId.new()
         val command = CreateReviewCommand(
             shopId = shopId.value.toString(),
             memberId = memberId.value.toString(),
+            reservationId = reservationId.value.toString(),
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = listOf("https://example.com/img1.jpg", "https://example.com/img2.jpg")
         )
 
         `when`(
-            shopReviewPort.existsByShopIdAndMemberId(
-                ArgumentMatchers.any() ?: shopId,
-                ArgumentMatchers.any() ?: memberId
+            shopReviewPort.existsByReservationId(
+                ArgumentMatchers.any() ?: reservationId
             )
         ).thenReturn(false)
 
@@ -67,6 +69,7 @@ class CreateReviewUseCaseImplTest {
         assertNotNull(result.id)
         assertEquals(shopId.value, result.shopId.value)
         assertEquals(memberId.value, result.memberId.value)
+        assertEquals(reservationId.value, result.reservationId?.value)
         assertEquals(5, result.rating?.value)
         assertEquals("정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.", result.content?.value)
         assertEquals(2, result.images?.urls?.size)
@@ -81,17 +84,11 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = shopId.value.toString(),
             memberId = memberId.value.toString(),
+            reservationId = null,
             rating = 4,
             content = "좋은 경험이었습니다. 친절하게 응대해주셨어요.",
             images = null
         )
-
-        `when`(
-            shopReviewPort.existsByShopIdAndMemberId(
-                ArgumentMatchers.any() ?: shopId,
-                ArgumentMatchers.any() ?: memberId
-            )
-        ).thenReturn(false)
 
         `when`(
             shopReviewPort.save(
@@ -114,17 +111,11 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = shopId.value.toString(),
             memberId = memberId.value.toString(),
+            reservationId = null,
             rating = 4,
             content = "좋은 경험이었습니다. 친절하게 응대해주셨어요.",
             images = emptyList()
         )
-
-        `when`(
-            shopReviewPort.existsByShopIdAndMemberId(
-                ArgumentMatchers.any() ?: shopId,
-                ArgumentMatchers.any() ?: memberId
-            )
-        ).thenReturn(false)
 
         `when`(
             shopReviewPort.save(
@@ -145,6 +136,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = 0,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
@@ -160,6 +152,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = 6,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
@@ -175,6 +168,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = 5,
             content = "좋아요",
             images = null
@@ -190,6 +184,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = 5,
             content = "a".repeat(501),
             images = null
@@ -205,6 +200,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = listOf(
@@ -223,21 +219,22 @@ class CreateReviewUseCaseImplTest {
     }
 
     @Test
-    fun `should throw DuplicateReviewException when member already reviewed the shop`() {
+    fun `should throw DuplicateReviewException when reservation already has review`() {
         val shopId = ShopId.new()
         val memberId = MemberId.new()
+        val reservationId = ReservationId.new()
         val command = CreateReviewCommand(
             shopId = shopId.value.toString(),
             memberId = memberId.value.toString(),
+            reservationId = reservationId.value.toString(),
             rating = 5,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
         )
 
         `when`(
-            shopReviewPort.existsByShopIdAndMemberId(
-                ArgumentMatchers.any() ?: shopId,
-                ArgumentMatchers.any() ?: memberId
+            shopReviewPort.existsByReservationId(
+                ArgumentMatchers.any() ?: reservationId
             )
         ).thenReturn(true)
 
@@ -245,8 +242,7 @@ class CreateReviewUseCaseImplTest {
             useCase.execute(command)
         }
 
-        assertTrue(exception.message!!.contains(shopId.value.toString()))
-        assertTrue(exception.message!!.contains(memberId.value.toString()))
+        assertTrue(exception.message!!.contains(reservationId.value.toString()))
     }
 
     @Test
@@ -256,17 +252,11 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = shopId.value.toString(),
             memberId = memberId.value.toString(),
+            reservationId = null,
             rating = 5,
             content = null,
             images = null
         )
-
-        `when`(
-            shopReviewPort.existsByShopIdAndMemberId(
-                ArgumentMatchers.any() ?: shopId,
-                ArgumentMatchers.any() ?: memberId
-            )
-        ).thenReturn(false)
 
         `when`(
             shopReviewPort.save(
@@ -290,17 +280,11 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = shopId.value.toString(),
             memberId = memberId.value.toString(),
+            reservationId = null,
             rating = null,
             content = "정말 훌륭한 서비스였습니다! 다음에 또 방문하겠습니다.",
             images = null
         )
-
-        `when`(
-            shopReviewPort.existsByShopIdAndMemberId(
-                ArgumentMatchers.any() ?: shopId,
-                ArgumentMatchers.any() ?: memberId
-            )
-        ).thenReturn(false)
 
         `when`(
             shopReviewPort.save(
@@ -322,6 +306,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = null,
             content = null,
             images = null
@@ -337,6 +322,7 @@ class CreateReviewUseCaseImplTest {
         val command = CreateReviewCommand(
             shopId = ShopId.new().value.toString(),
             memberId = MemberId.new().value.toString(),
+            reservationId = null,
             rating = null,
             content = "   ",
             images = null
@@ -351,6 +337,7 @@ class CreateReviewUseCaseImplTest {
         return ShopReview.create(
             shopId = ShopId.new(),
             memberId = MemberId.new(),
+            reservationId = null,
             rating = com.mad.jellomarkserver.review.core.domain.model.ReviewRating.of(5),
             content = com.mad.jellomarkserver.review.core.domain.model.ReviewContent.of("정말 훌륭한 서비스였습니다!"),
             images = null
