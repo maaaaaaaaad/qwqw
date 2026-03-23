@@ -176,6 +176,56 @@ class UpdateReviewUseCaseImplTest {
         assertNull(result.images)
     }
 
+    @Test
+    fun `should update review with rating only when content is null`() {
+        val reviewId = ReviewId.new()
+        val memberId = MemberId.new()
+        val existingReview = createReview(reviewId, memberId)
+
+        `when`(shopReviewPort.findById(any())).thenReturn(existingReview)
+        `when`(shopReviewPort.save(any())).thenAnswer { invocation ->
+            invocation.arguments[0] as ShopReview
+        }
+
+        val command = UpdateReviewCommand(
+            reviewId = reviewId.value.toString(),
+            memberId = memberId.value.toString(),
+            rating = 4,
+            content = null,
+            images = null
+        )
+
+        val result = useCase.execute(command)
+
+        assertEquals(4, result.rating?.value)
+        assertNull(result.content)
+    }
+
+    @Test
+    fun `should update review with content only when rating is null`() {
+        val reviewId = ReviewId.new()
+        val memberId = MemberId.new()
+        val existingReview = createReview(reviewId, memberId)
+
+        `when`(shopReviewPort.findById(any())).thenReturn(existingReview)
+        `when`(shopReviewPort.save(any())).thenAnswer { invocation ->
+            invocation.arguments[0] as ShopReview
+        }
+
+        val command = UpdateReviewCommand(
+            reviewId = reviewId.value.toString(),
+            memberId = memberId.value.toString(),
+            rating = null,
+            content = "수정된 리뷰 내용입니다. 평점은 제거했어요.",
+            images = null
+        )
+
+        val result = useCase.execute(command)
+
+        assertNull(result.rating)
+        assertEquals("수정된 리뷰 내용입니다. 평점은 제거했어요.", result.content?.value)
+    }
+
     private fun createReview(reviewId: ReviewId, memberId: MemberId): ShopReview {
         return ShopReview.reconstruct(
             id = reviewId,
