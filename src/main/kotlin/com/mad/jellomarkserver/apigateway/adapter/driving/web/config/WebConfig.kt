@@ -18,7 +18,8 @@ class WebConfig(
                 "/api/auth/authenticate",
                 "/api/auth/refresh",
                 "/api/auth/kakao",
-                "/api/categories"
+                "/api/categories",
+                "/api/verification/**"
             )
     }
 }
