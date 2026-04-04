@@ -31,6 +31,10 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("com.google.firebase:firebase-admin:9.4.3")
 
+    implementation(platform("software.amazon.awssdk:bom:2.31.5"))
+    implementation("software.amazon.awssdk:ses")
+    implementation("software.amazon.awssdk:s3")
+
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
