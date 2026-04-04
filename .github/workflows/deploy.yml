@@ -46,6 +46,9 @@ jobs:
       - uses: aws-actions/amazon-ecr-login@v2
         id: ecr-login
 
+      - name: Create Firebase service account
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > src/main/resources/firebase-service-account.json
+
       - name: Build and push Docker image
         run: |
           IMAGE_URI=${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
@@ -61,6 +64,6 @@ jobs:
           script: |
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.ecr-login.outputs.registry }}
             cd ~/app
-            docker compose pull
-            docker compose up -d
+            docker-compose pull
+            docker-compose up -d
             docker image prune -f
