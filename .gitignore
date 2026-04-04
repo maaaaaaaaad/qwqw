@@ -49,4 +49,3 @@ src/main/resources/application-dev.yml
 .env.docker
 docker-compose.override.yml
 src/main/resources/application-docker.yml
-src/main/resources/application-prod.yml
