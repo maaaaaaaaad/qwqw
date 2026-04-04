@@ -6,4 +6,5 @@ data class SignUpOwnerRequest(
     val nickname: String,
     val email: String,
     val password: String,
+    val emailVerificationToken: String? = null,
 )
