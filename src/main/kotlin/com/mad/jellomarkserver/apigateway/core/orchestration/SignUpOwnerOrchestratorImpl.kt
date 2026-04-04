@@ -9,6 +9,7 @@ import com.mad.jellomarkserver.auth.port.driving.SignUpAuthCommand
 import com.mad.jellomarkserver.auth.port.driving.SignUpAuthUseCase
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerCommand
 import com.mad.jellomarkserver.owner.port.driving.SignUpOwnerUseCase
+import com.mad.jellomarkserver.verification.core.domain.exception.InvalidVerificationTokenException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -21,6 +22,10 @@ class SignUpOwnerOrchestratorImpl(
 
     @Transactional
     override fun signUp(request: SignUpOwnerRequest): SignUpResponse {
+        if (request.emailVerificationToken.isNullOrBlank()) {
+            throw InvalidVerificationTokenException()
+        }
+
         val ownerCommand = SignUpOwnerCommand(
             businessNumber = request.businessNumber,
             phoneNumber = request.phoneNumber,
