@@ -13,6 +13,8 @@ import com.mad.jellomarkserver.owner.core.domain.exception.*
 import com.mad.jellomarkserver.reservation.core.domain.exception.*
 import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.treatment.core.domain.exception.*
+import com.mad.jellomarkserver.image.core.domain.exception.*
+import com.mad.jellomarkserver.verification.core.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
@@ -316,6 +318,47 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(InvalidRejectionReasonException::class)
     fun handleInvalidRejectionReason(ex: InvalidRejectionReasonException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
+    }
+
+    @ExceptionHandler(InvalidImageFormatException::class)
+    fun handleInvalidImageFormat(ex: InvalidImageFormatException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
+    }
+
+    @ExceptionHandler(ImageTooLargeException::class)
+    fun handleImageTooLarge(ex: ImageTooLargeException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
+    }
+
+    @ExceptionHandler(ImageUploadFailedException::class)
+    fun handleImageUploadFailed(ex: ImageUploadFailedException): ProblemDetail {
+        log.error("Image upload failed", ex)
+        return withCode(HttpStatus.INTERNAL_SERVER_ERROR, ex)
+    }
+
+    @ExceptionHandler(InvalidVerificationCodeException::class)
+    fun handleInvalidVerificationCode(ex: InvalidVerificationCodeException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
+    }
+
+    @ExceptionHandler(VerificationCodeExpiredException::class)
+    fun handleVerificationCodeExpired(ex: VerificationCodeExpiredException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
+    }
+
+    @ExceptionHandler(VerificationCodeNotFoundException::class)
+    fun handleVerificationCodeNotFound(ex: VerificationCodeNotFoundException): ProblemDetail {
+        return withCode(HttpStatus.NOT_FOUND, ex)
+    }
+
+    @ExceptionHandler(VerificationRateLimitException::class)
+    fun handleVerificationRateLimit(ex: VerificationRateLimitException): ProblemDetail {
+        return withCode(HttpStatus.TOO_MANY_REQUESTS, ex)
+    }
+
+    @ExceptionHandler(InvalidVerificationTokenException::class)
+    fun handleInvalidVerificationToken(ex: InvalidVerificationTokenException): ProblemDetail {
         return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
     }
 
