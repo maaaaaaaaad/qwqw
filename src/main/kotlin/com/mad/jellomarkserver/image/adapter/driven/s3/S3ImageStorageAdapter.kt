@@ -4,6 +4,7 @@ import com.mad.jellomarkserver.image.port.driven.ImageStoragePort
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
@@ -11,6 +12,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.io.InputStream
 
 @Component
+@Primary
 @ConditionalOnBean(S3Client::class)
 class S3ImageStorageAdapter(
     private val s3Client: S3Client,
