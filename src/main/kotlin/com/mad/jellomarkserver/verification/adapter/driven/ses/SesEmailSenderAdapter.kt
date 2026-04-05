@@ -4,6 +4,7 @@ import com.mad.jellomarkserver.verification.port.driven.EmailSenderPort
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.services.ses.SesClient
 import software.amazon.awssdk.services.ses.model.Body
@@ -13,6 +14,7 @@ import software.amazon.awssdk.services.ses.model.Message
 import software.amazon.awssdk.services.ses.model.SendEmailRequest
 
 @Component
+@Primary
 @ConditionalOnBean(SesClient::class)
 class SesEmailSenderAdapter(
     private val sesClient: SesClient,
