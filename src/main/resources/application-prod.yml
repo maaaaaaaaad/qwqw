@@ -15,9 +15,11 @@ spring:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
 
+resend:
+  api-key: ${RESEND_API_KEY}
+  from-email: noreply@jellomark.com
+
 aws:
-  ses:
-    sender-email: ${SES_SENDER_EMAIL}
   s3:
     bucket-name: ${S3_BUCKET_NAME}
     region: ${AWS_REGION:ap-northeast-2}
