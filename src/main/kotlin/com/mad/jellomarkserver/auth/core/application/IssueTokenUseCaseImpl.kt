@@ -8,6 +8,7 @@ import com.mad.jellomarkserver.auth.port.driven.RefreshTokenPort
 import com.mad.jellomarkserver.auth.port.driving.IssueTokenCommand
 import com.mad.jellomarkserver.auth.port.driving.IssueTokenUseCase
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class IssueTokenUseCaseImpl(
@@ -15,6 +16,7 @@ class IssueTokenUseCaseImpl(
     private val jwtProperties: JwtProperties,
     private val refreshTokenPort: RefreshTokenPort
 ) : IssueTokenUseCase {
+    @Transactional
     override fun execute(command: IssueTokenCommand): TokenPair {
         val accessToken = if (command.socialProvider != null && command.socialId != null) {
             jwtTokenProvider.generateAccessTokenForSocial(
