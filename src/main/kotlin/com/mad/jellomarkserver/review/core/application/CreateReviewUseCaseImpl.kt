@@ -1,9 +1,12 @@
 package com.mad.jellomarkserver.review.core.application
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
+import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.beautishop.port.driving.UpdateBeautishopStatsCommand
 import com.mad.jellomarkserver.beautishop.port.driving.UpdateBeautishopStatsUseCase
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.notification.port.driving.SendNotificationCommand
+import com.mad.jellomarkserver.notification.port.driving.SendNotificationUseCase
 import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.core.domain.exception.DuplicateReviewException
 import com.mad.jellomarkserver.review.core.domain.exception.EmptyReviewException
@@ -21,7 +24,9 @@ import java.util.*
 @Service
 class CreateReviewUseCaseImpl(
     private val shopReviewPort: ShopReviewPort,
-    private val updateBeautishopStatsUseCase: UpdateBeautishopStatsUseCase
+    private val updateBeautishopStatsUseCase: UpdateBeautishopStatsUseCase,
+    private val beautishopPort: BeautishopPort,
+    private val sendNotificationUseCase: SendNotificationUseCase
 ) : CreateReviewUseCase {
 
     @Transactional
@@ -49,6 +54,28 @@ class CreateReviewUseCaseImpl(
 
         val savedReview = shopReviewPort.save(review)
         updateBeautishopStatsUseCase.execute(UpdateBeautishopStatsCommand(command.shopId))
+        notifyOwner(savedReview, shopId)
         return savedReview
+    }
+
+    private fun notifyOwner(review: ShopReview, shopId: ShopId) {
+        val ownerId = beautishopPort.findOwnerIdByShopId(shopId) ?: return
+        val ratingText = review.rating?.let { "${it.value}점" } ?: ""
+        val contentPreview = review.content?.value?.take(30) ?: ""
+        val body = listOf(ratingText, contentPreview).filter { it.isNotEmpty() }.joinToString(" - ")
+
+        sendNotificationUseCase.execute(
+            SendNotificationCommand(
+                userId = ownerId.value.toString(),
+                userRole = "OWNER",
+                title = "새 리뷰가 등록되었습니다",
+                body = body,
+                type = "NEW_REVIEW",
+                data = mapOf(
+                    "shopId" to shopId.value.toString(),
+                    "reviewId" to review.id.value.toString()
+                )
+            )
+        )
     }
 }
