@@ -47,7 +47,7 @@ class BeautishopJpaEntity(
     var description: String?,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shop_id", nullable = false)
     @OrderBy("displayOrder ASC")
     var images: MutableList<ShopImageJpaEntity> = mutableListOf(),
 
