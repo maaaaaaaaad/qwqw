@@ -15,7 +15,7 @@ class ShopImageJpaEntity(
     @Column(name = "id", nullable = false)
     var id: UUID = UUID.randomUUID(),
 
-    @Column(name = "shop_id", nullable = false)
+    @Column(name = "shop_id", nullable = false, insertable = false, updatable = false)
     var shopId: UUID,
 
     @Column(name = "image_url", nullable = false, length = 2048)
