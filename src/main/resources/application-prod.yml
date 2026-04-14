@@ -19,6 +19,9 @@ resend:
   api-key: ${RESEND_API_KEY}
   from-email: noreply@jellomark.com
 
+public-data:
+  api-key: ${PUBLIC_DATA_API_KEY:}
+
 aws:
   s3:
     bucket-name: ${S3_BUCKET_NAME}
