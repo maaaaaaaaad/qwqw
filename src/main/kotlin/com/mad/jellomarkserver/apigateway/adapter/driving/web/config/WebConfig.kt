@@ -19,7 +19,8 @@ class WebConfig(
                 "/api/auth/refresh",
                 "/api/auth/kakao",
                 "/api/categories",
-                "/api/verification/**"
+                "/api/verification/**",
+                "/api/external-shops"
             )
     }
 }
