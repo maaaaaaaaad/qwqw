@@ -20,7 +20,8 @@ class WebConfig(
                 "/api/auth/kakao",
                 "/api/categories",
                 "/api/verification/**",
-                "/api/external-shops"
+                "/api/external-shops",
+                "/api/external-shops/sync"
             )
     }
 }
