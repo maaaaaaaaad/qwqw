@@ -30,7 +30,7 @@ class ExternalShopSyncScheduler(
     }
 
     companion object {
-        private const val RADIUS_METERS = 20000
+        private const val RADIUS_METERS = 10000
 
         private val MAJOR_CITIES = listOf(
             Triple("서울 강남", 37.4979, 127.0276),
