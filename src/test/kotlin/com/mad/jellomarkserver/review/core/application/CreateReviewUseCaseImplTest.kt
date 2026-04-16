@@ -1,8 +1,10 @@
 package com.mad.jellomarkserver.review.core.application
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
+import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.beautishop.port.driving.UpdateBeautishopStatsUseCase
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
+import com.mad.jellomarkserver.notification.port.driving.SendNotificationUseCase
 import com.mad.jellomarkserver.reservation.core.domain.model.ReservationId
 import com.mad.jellomarkserver.review.core.domain.exception.*
 import com.mad.jellomarkserver.review.core.domain.model.ShopReview
@@ -28,11 +30,17 @@ class CreateReviewUseCaseImplTest {
     @Mock
     private lateinit var updateBeautishopStatsUseCase: UpdateBeautishopStatsUseCase
 
+    @Mock
+    private lateinit var beautishopPort: BeautishopPort
+
+    @Mock
+    private lateinit var sendNotificationUseCase: SendNotificationUseCase
+
     private lateinit var useCase: CreateReviewUseCase
 
     @BeforeEach
     fun setup() {
-        useCase = CreateReviewUseCaseImpl(shopReviewPort, updateBeautishopStatsUseCase)
+        useCase = CreateReviewUseCaseImpl(shopReviewPort, updateBeautishopStatsUseCase, beautishopPort, sendNotificationUseCase)
     }
 
     @Test
