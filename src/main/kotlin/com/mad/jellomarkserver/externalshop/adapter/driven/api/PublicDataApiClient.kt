@@ -25,14 +25,14 @@ class PublicDataApiClient(
 
         while (true) {
             val url = UriComponentsBuilder
-                .fromHttpUrl("$BASE_URL/storeZoneInRadius")
+                .fromHttpUrl("$BASE_URL/storeListInRadius")
                 .queryParam("serviceKey", apiKey)
                 .queryParam("pageNo", pageNo)
                 .queryParam("numOfRows", numOfRows)
                 .queryParam("radius", radiusMeters)
                 .queryParam("cx", longitude)
                 .queryParam("cy", latitude)
-                .queryParam("indsMclsCd", NAIL_BEAUTY_CODE)
+                .queryParam("indsSclsCd", NAIL_SHOP_CODE)
                 .queryParam("type", "json")
                 .build(false)
                 .toUriString()
@@ -89,7 +89,7 @@ class PublicDataApiClient(
 
     companion object {
         private const val BASE_URL = "https://apis.data.go.kr/B553077/api/open/sdsc2"
-        private const val NAIL_BEAUTY_CODE = "Q12"
+        private const val NAIL_SHOP_CODE = "S20703"
     }
 }
 
