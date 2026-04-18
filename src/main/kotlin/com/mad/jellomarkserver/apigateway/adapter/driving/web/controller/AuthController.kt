@@ -3,12 +3,19 @@ package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.AuthenticateRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.LoginWithKakaoRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.RefreshTokenRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.ResetPasswordRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.AuthenticateResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.LoginWithKakaoResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.RefreshTokenResponse
+import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
+import com.mad.jellomarkserver.auth.core.domain.model.HashedPassword
+import com.mad.jellomarkserver.auth.core.domain.model.RawPassword
+import com.mad.jellomarkserver.auth.port.driven.AuthPort
 import com.mad.jellomarkserver.auth.port.driving.*
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoCommand
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoUseCase
+import com.mad.jellomarkserver.owner.core.domain.exception.OwnerNotFoundException
+import com.mad.jellomarkserver.verification.core.domain.exception.InvalidVerificationTokenException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +30,8 @@ class AuthController(
     private val issueTokenUseCase: IssueTokenUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val loginWithKakaoUseCase: LoginWithKakaoUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val logoutUseCase: LogoutUseCase,
+    private val authPort: AuthPort
 ) {
 
     @PostMapping("/api/auth/authenticate")
@@ -77,6 +85,29 @@ class AuthController(
             accessToken = tokenPair.accessToken,
             refreshToken = tokenPair.refreshToken
         )
+    }
+
+    @PostMapping("/api/auth/reset-password")
+    @ResponseStatus(HttpStatus.OK)
+    fun resetPassword(@RequestBody request: ResetPasswordRequest) {
+        if (request.emailVerificationToken.isBlank()) {
+            throw InvalidVerificationTokenException()
+        }
+
+        val email = request.email.trim().lowercase()
+        val auth = authPort.findByEmail(AuthEmail.of(email))
+            ?: throw OwnerNotFoundException(email)
+
+        val newHashedPassword = HashedPassword.fromRaw(RawPassword.of(request.newPassword))
+        val updatedAuth = com.mad.jellomarkserver.auth.core.domain.model.Auth.reconstruct(
+            id = auth.id,
+            email = auth.email,
+            hashedPassword = newHashedPassword,
+            userType = auth.userType,
+            createdAt = auth.createdAt,
+            updatedAt = java.time.Instant.now()
+        )
+        authPort.save(updatedAuth)
     }
 
     @PostMapping("/api/auth/logout")
