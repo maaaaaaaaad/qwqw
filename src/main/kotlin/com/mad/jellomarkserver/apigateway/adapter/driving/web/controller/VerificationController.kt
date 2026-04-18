@@ -4,9 +4,8 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SendVerifi
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.VerifyCodeRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.VerificationResponse
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerEmailException
-import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
+import com.mad.jellomarkserver.owner.core.domain.exception.OwnerNotFoundException
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail
-import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import com.mad.jellomarkserver.verification.core.domain.exception.InvalidVerificationCodeException
 import com.mad.jellomarkserver.verification.core.domain.model.VerificationToken
@@ -37,9 +36,17 @@ class VerificationController(
         when (request.type.uppercase()) {
             "EMAIL" -> {
                 val email = target.lowercase()
-                ownerPort.findByEmail(OwnerEmail.of(email))?.let {
-                    throw DuplicateOwnerEmailException(email)
+                val existingOwner = ownerPort.findByEmail(OwnerEmail.of(email))
+
+                when (request.purpose.uppercase()) {
+                    "RESET_PASSWORD" -> {
+                        if (existingOwner == null) throw OwnerNotFoundException(email)
+                    }
+                    else -> {
+                        if (existingOwner != null) throw DuplicateOwnerEmailException(email)
+                    }
                 }
+
                 sendVerificationCodeUseCase.execute(
                     SendVerificationCodeCommand(target = email, type = request.type)
                 )
