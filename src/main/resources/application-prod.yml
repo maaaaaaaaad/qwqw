@@ -22,6 +22,11 @@ resend:
 public-data:
   api-key: ${PUBLIC_DATA_API_KEY:}
 
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID:}
+  auth-token: ${TWILIO_AUTH_TOKEN:}
+  verify-service-sid: ${TWILIO_VERIFY_SERVICE_SID:}
+
 aws:
   s3:
     bucket-name: ${S3_BUCKET_NAME}
