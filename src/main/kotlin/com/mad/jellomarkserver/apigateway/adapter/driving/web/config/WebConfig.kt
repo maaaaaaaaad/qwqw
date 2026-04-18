@@ -20,6 +20,7 @@ class WebConfig(
                 "/api/auth/kakao",
                 "/api/categories",
                 "/api/verification/**",
+                "/api/auth/reset-password",
                 "/api/external-shops",
                 "/api/external-shops/sync"
             )
