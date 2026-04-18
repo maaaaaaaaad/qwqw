@@ -38,7 +38,7 @@ class VerificationController(
                 val email = target.lowercase()
                 val existingOwner = ownerPort.findByEmail(OwnerEmail.of(email))
 
-                when (request.purpose.uppercase()) {
+                when (request.purpose?.uppercase()) {
                     "RESET_PASSWORD" -> {
                         if (existingOwner == null) throw OwnerNotFoundException(email)
                     }
