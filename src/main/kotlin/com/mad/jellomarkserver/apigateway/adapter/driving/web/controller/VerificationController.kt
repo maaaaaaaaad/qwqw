@@ -4,8 +4,13 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.SendVerifi
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.VerifyCodeRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.VerificationResponse
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerEmailException
+import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerPhoneNumber
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
+import com.mad.jellomarkserver.verification.core.domain.exception.InvalidVerificationCodeException
+import com.mad.jellomarkserver.verification.core.domain.model.VerificationToken
+import com.mad.jellomarkserver.verification.port.driven.SmsVerificationPort
 import com.mad.jellomarkserver.verification.port.driving.SendVerificationCodeCommand
 import com.mad.jellomarkserver.verification.port.driving.SendVerificationCodeUseCase
 import com.mad.jellomarkserver.verification.port.driving.VerifyCodeCommand
@@ -20,31 +25,47 @@ import org.springframework.web.bind.annotation.RestController
 class VerificationController(
     private val sendVerificationCodeUseCase: SendVerificationCodeUseCase,
     private val verifyCodeUseCase: VerifyCodeUseCase,
-    private val ownerPort: OwnerPort
+    private val ownerPort: OwnerPort,
+    private val smsVerificationPort: SmsVerificationPort
 ) {
 
     @PostMapping("/api/verification/send")
     @ResponseStatus(HttpStatus.OK)
     fun sendVerificationCode(@RequestBody request: SendVerificationRequest) {
-        val target = request.target.trim().lowercase()
+        val target = request.target.trim()
 
-        if (request.type.uppercase() == "EMAIL") {
-            ownerPort.findByEmail(OwnerEmail.of(target))?.let {
-                throw DuplicateOwnerEmailException(target)
+        when (request.type.uppercase()) {
+            "EMAIL" -> {
+                val email = target.lowercase()
+                ownerPort.findByEmail(OwnerEmail.of(email))?.let {
+                    throw DuplicateOwnerEmailException(email)
+                }
+                sendVerificationCodeUseCase.execute(
+                    SendVerificationCodeCommand(target = email, type = request.type)
+                )
+            }
+            "SMS" -> {
+                smsVerificationPort.sendCode(target)
             }
         }
-
-        sendVerificationCodeUseCase.execute(
-            SendVerificationCodeCommand(target = target, type = request.type)
-        )
     }
 
     @PostMapping("/api/verification/verify")
     @ResponseStatus(HttpStatus.OK)
     fun verifyCode(@RequestBody request: VerifyCodeRequest): VerificationResponse {
-        val token = verifyCodeUseCase.execute(
-            VerifyCodeCommand(target = request.target, code = request.code, type = request.type)
-        )
-        return VerificationResponse(verified = true, verificationToken = token.value)
+        when (request.type.uppercase()) {
+            "SMS" -> {
+                val approved = smsVerificationPort.checkCode(request.target.trim(), request.code)
+                if (!approved) throw InvalidVerificationCodeException()
+                val token = VerificationToken.generate()
+                return VerificationResponse(verified = true, verificationToken = token.value)
+            }
+            else -> {
+                val token = verifyCodeUseCase.execute(
+                    VerifyCodeCommand(target = request.target, code = request.code, type = request.type)
+                )
+                return VerificationResponse(verified = true, verificationToken = token.value)
+            }
+        }
     }
 }
