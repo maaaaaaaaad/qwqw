@@ -29,6 +29,7 @@ class TwilioVerifyAdapter(
         val body = LinkedMultiValueMap<String, String>().apply {
             add("To", formatPhoneNumber(phoneNumber))
             add("Channel", "sms")
+            add("Locale", "ko")
         }
 
         val request = HttpEntity(body, buildHeaders())
