@@ -45,12 +45,12 @@ class MemberPersistenceAdapter(
     }
 
     override fun findBySocial(provider: SocialProvider, socialId: SocialId): Member? {
-        return jpaRepository.findBySocialProviderAndSocialId(provider.name, socialId.value)
+        return jpaRepository.findBySocialProviderAndSocialIdAndDeletedAtIsNull(provider.name, socialId.value)
             ?.let { mapper.toDomain(it) }
     }
 
     override fun findBySocialId(socialId: SocialId): Member? {
-        return jpaRepository.findBySocialId(socialId.value)
+        return jpaRepository.findBySocialIdAndDeletedAtIsNull(socialId.value)
             ?.let { mapper.toDomain(it) }
     }
 
@@ -58,5 +58,17 @@ class MemberPersistenceAdapter(
         if (ids.isEmpty()) return emptyList()
         return jpaRepository.findAllById(ids.map { it.value })
             .map { mapper.toDomain(it) }
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    override fun softDelete(id: MemberId) {
+        val entity = jpaRepository.findById(id.value).orElse(null) ?: return
+        val now = java.time.Instant.now()
+        entity.socialId = "withdrawn_${id.value}"
+        entity.nickname = "withdrawn_${id.value.toString().take(8)}"
+        entity.displayName = "탈퇴한 회원"
+        entity.deletedAt = now
+        entity.updatedAt = now
+        jpaRepository.saveAndFlush(entity)
     }
 }
