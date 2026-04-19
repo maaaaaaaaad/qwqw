@@ -8,6 +8,7 @@ import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerNicknam
 import com.mad.jellomarkserver.owner.core.domain.exception.DuplicateOwnerPhoneNumberException
 import com.mad.jellomarkserver.owner.core.domain.model.Owner
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerEmail
+import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
 import com.mad.jellomarkserver.owner.port.driven.OwnerPort
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Component
@@ -37,5 +38,11 @@ class OwnerPersistenceAdapter(
 
     override fun findByEmail(email: OwnerEmail): Owner? {
         return jpaRepository.findByEmail(email.value)?.let { mapper.toDomain(it) }
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    override fun delete(id: OwnerId) {
+        jpaRepository.deleteById(id.value)
+        jpaRepository.flush()
     }
 }
