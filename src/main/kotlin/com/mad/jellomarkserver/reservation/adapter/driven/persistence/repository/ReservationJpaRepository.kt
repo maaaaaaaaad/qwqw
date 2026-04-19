@@ -31,4 +31,6 @@ interface ReservationJpaRepository : JpaRepository<ReservationJpaEntity, UUID> {
         startTime: LocalTime,
         endTime: LocalTime
     ): Boolean
+
+    fun deleteByShopId(shopId: UUID)
 }
