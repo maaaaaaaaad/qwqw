@@ -6,4 +6,5 @@ import java.util.*
 
 interface TreatmentJpaRepository : JpaRepository<TreatmentJpaEntity, UUID> {
     fun findByShopId(shopId: UUID): List<TreatmentJpaEntity>
+    fun deleteByShopId(shopId: UUID)
 }
