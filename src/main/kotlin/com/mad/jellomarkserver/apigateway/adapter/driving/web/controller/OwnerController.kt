@@ -1,5 +1,6 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.WithdrawOwnerRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.BeautishopResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.OwnerResponse
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
@@ -8,9 +9,13 @@ import com.mad.jellomarkserver.beautishop.port.driving.GetOwnerBeautishopsUseCas
 import com.mad.jellomarkserver.category.port.driven.ShopCategoryPort
 import com.mad.jellomarkserver.owner.port.driving.GetCurrentOwnerCommand
 import com.mad.jellomarkserver.owner.port.driving.GetCurrentOwnerUseCase
+import com.mad.jellomarkserver.owner.port.driving.WithdrawOwnerCommand
+import com.mad.jellomarkserver.owner.port.driving.WithdrawOwnerUseCase
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -18,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController
 class OwnerController(
     private val getCurrentOwnerUseCase: GetCurrentOwnerUseCase,
     private val getOwnerBeautishopsUseCase: GetOwnerBeautishopsUseCase,
-    private val shopCategoryPort: ShopCategoryPort
+    private val shopCategoryPort: ShopCategoryPort,
+    private val withdrawOwnerUseCase: WithdrawOwnerUseCase
 ) {
     @GetMapping("/api/owners/me")
     @ResponseStatus(HttpStatus.OK)
@@ -39,5 +45,21 @@ class OwnerController(
             val categories = shopCategoryPort.findCategoriesByShopId(shop.id)
             BeautishopResponse.from(shop, categories)
         }
+    }
+
+    @PostMapping("/api/owners/me/withdraw")
+    @ResponseStatus(HttpStatus.OK)
+    fun withdraw(
+        @RequestBody body: WithdrawOwnerRequest,
+        request: HttpServletRequest
+    ) {
+        val email = request.getAttribute("email") as String
+        withdrawOwnerUseCase.withdraw(
+            WithdrawOwnerCommand(
+                email = email,
+                password = body.password,
+                reason = body.reason
+            )
+        )
     }
 }
