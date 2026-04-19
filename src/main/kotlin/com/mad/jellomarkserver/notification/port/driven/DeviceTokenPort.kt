@@ -7,6 +7,7 @@ import java.util.*
 interface DeviceTokenPort {
     fun save(deviceToken: DeviceToken): DeviceToken
     fun deleteByToken(token: String)
+    fun deleteAllByUserIdAndUserRole(userId: UUID, userRole: UserRole)
     fun findByUserIdAndUserRole(userId: UUID, userRole: UserRole): List<DeviceToken>
     fun findByToken(token: String): DeviceToken?
 }
