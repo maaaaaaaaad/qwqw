@@ -24,5 +24,6 @@ interface ShopReviewPort {
     fun findReviewedShopIdsByMemberId(memberId: MemberId): Set<ShopId>
     fun findReviewedReservationIdsByMemberId(memberId: MemberId): Set<ReservationId>
     fun delete(id: ReviewId)
+    fun deleteAllByShopId(shopId: ShopId)
     fun calculateStats(shopId: ShopId): ReviewStats
 }
