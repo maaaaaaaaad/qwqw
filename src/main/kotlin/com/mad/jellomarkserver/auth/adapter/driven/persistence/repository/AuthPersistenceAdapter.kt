@@ -33,4 +33,10 @@ class AuthPersistenceAdapter(
         val entity = jpaRepository.findByEmail(email.value)
         return entity?.let { mapper.toDomain(it) }
     }
+
+    @org.springframework.transaction.annotation.Transactional
+    override fun deleteByEmail(email: AuthEmail) {
+        jpaRepository.deleteByEmail(email.value)
+        jpaRepository.flush()
+    }
 }
