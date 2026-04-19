@@ -8,6 +8,7 @@ import com.mad.jellomarkserver.category.core.domain.exception.UnauthorizedShopAc
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
+import com.mad.jellomarkserver.member.core.domain.exception.InvalidWithdrawalReasonException
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.owner.core.domain.exception.*
 import com.mad.jellomarkserver.reservation.core.domain.exception.*
@@ -96,6 +97,16 @@ class ApiGatewayExceptionHandler {
     fun handleMemberNotFound(ex: MemberNotFoundException): ProblemDetail {
         log.warn("MemberNotFound: {}", ex.message)
         return withCode(HttpStatus.NOT_FOUND, ex)
+    }
+
+    @ExceptionHandler(InvalidWithdrawalReasonException::class)
+    fun handleInvalidWithdrawalReason(ex: InvalidWithdrawalReasonException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
+    }
+
+    @ExceptionHandler(com.mad.jellomarkserver.owner.core.domain.exception.InvalidWithdrawalReasonException::class)
+    fun handleOwnerInvalidWithdrawalReason(ex: com.mad.jellomarkserver.owner.core.domain.exception.InvalidWithdrawalReasonException): ProblemDetail {
+        return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
     }
 
     @ExceptionHandler(DuplicateOwnerNicknameException::class)
