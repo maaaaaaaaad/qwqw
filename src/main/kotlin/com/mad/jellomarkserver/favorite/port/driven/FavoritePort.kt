@@ -14,5 +14,7 @@ interface FavoritePort {
     fun findByMemberId(memberId: MemberId, pageable: Pageable): Page<Favorite>
     fun existsByMemberIdAndShopId(memberId: MemberId, shopId: ShopId): Boolean
     fun deleteByMemberIdAndShopId(memberId: MemberId, shopId: ShopId)
+    fun deleteAllByMemberId(memberId: MemberId)
+    fun deleteAllByShopId(shopId: ShopId)
     fun countByShopId(shopId: ShopId): Int
 }
