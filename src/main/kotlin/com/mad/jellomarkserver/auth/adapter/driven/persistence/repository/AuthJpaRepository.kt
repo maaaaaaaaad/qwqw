@@ -6,4 +6,5 @@ import java.util.*
 
 interface AuthJpaRepository : JpaRepository<AuthJpaEntity, UUID> {
     fun findByEmail(email: String): AuthJpaEntity?
+    fun deleteByEmail(email: String)
 }
