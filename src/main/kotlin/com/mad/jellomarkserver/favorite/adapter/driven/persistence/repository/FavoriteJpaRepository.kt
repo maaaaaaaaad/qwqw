@@ -11,5 +11,7 @@ interface FavoriteJpaRepository : JpaRepository<FavoriteJpaEntity, UUID> {
     fun findByMemberId(memberId: UUID, pageable: Pageable): Page<FavoriteJpaEntity>
     fun existsByMemberIdAndShopId(memberId: UUID, shopId: UUID): Boolean
     fun deleteByMemberIdAndShopId(memberId: UUID, shopId: UUID)
+    fun deleteByMemberId(memberId: UUID)
+    fun deleteByShopId(shopId: UUID)
     fun countByShopId(shopId: UUID): Int
 }
