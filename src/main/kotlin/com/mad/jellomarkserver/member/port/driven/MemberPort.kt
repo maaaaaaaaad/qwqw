@@ -11,4 +11,5 @@ interface MemberPort {
     fun findBySocial(provider: SocialProvider, socialId: SocialId): Member?
     fun findBySocialId(socialId: SocialId): Member?
     fun findByIds(ids: List<MemberId>): List<Member>
+    fun softDelete(id: MemberId)
 }
