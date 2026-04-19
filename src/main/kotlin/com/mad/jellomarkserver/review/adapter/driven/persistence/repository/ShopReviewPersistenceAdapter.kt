@@ -81,6 +81,12 @@ class ShopReviewPersistenceAdapter(
         jpaRepository.deleteById(id.value)
     }
 
+    @org.springframework.transaction.annotation.Transactional
+    override fun deleteAllByShopId(shopId: ShopId) {
+        jpaRepository.deleteByShopId(shopId.value)
+        jpaRepository.flush()
+    }
+
     override fun calculateStats(shopId: ShopId): ReviewStats {
         val count = jpaRepository.countByShopId(shopId.value)
         val average = jpaRepository.averageRatingByShopId(shopId.value)
