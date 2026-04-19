@@ -6,7 +6,11 @@ import com.mad.jellomarkserver.beautishop.core.domain.model.*
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
 import com.mad.jellomarkserver.beautishop.port.driving.DeleteBeautishopCommand
 import com.mad.jellomarkserver.beautishop.port.driving.DeleteBeautishopUseCase
+import com.mad.jellomarkserver.favorite.port.driven.FavoritePort
 import com.mad.jellomarkserver.owner.core.domain.model.OwnerId
+import com.mad.jellomarkserver.reservation.port.driven.ReservationPort
+import com.mad.jellomarkserver.review.port.driven.ShopReviewPort
+import com.mad.jellomarkserver.treatment.port.driven.TreatmentPort
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,11 +27,29 @@ class DeleteBeautishopUseCaseImplTest {
     @Mock
     private lateinit var beautishopPort: BeautishopPort
 
+    @Mock
+    private lateinit var treatmentPort: TreatmentPort
+
+    @Mock
+    private lateinit var reservationPort: ReservationPort
+
+    @Mock
+    private lateinit var reviewPort: ShopReviewPort
+
+    @Mock
+    private lateinit var favoritePort: FavoritePort
+
     private lateinit var useCase: DeleteBeautishopUseCase
 
     @BeforeEach
     fun setup() {
-        useCase = DeleteBeautishopUseCaseImpl(beautishopPort)
+        useCase = DeleteBeautishopUseCaseImpl(
+            beautishopPort = beautishopPort,
+            treatmentPort = treatmentPort,
+            reservationPort = reservationPort,
+            reviewPort = reviewPort,
+            favoritePort = favoritePort
+        )
     }
 
     @Test
@@ -44,6 +66,10 @@ class DeleteBeautishopUseCaseImplTest {
 
         useCase.delete(command)
 
+        verify(reviewPort).deleteAllByShopId(shop.id)
+        verify(favoritePort).deleteAllByShopId(shop.id)
+        verify(reservationPort).deleteAllByShopId(shop.id)
+        verify(treatmentPort).deleteAllByShopId(shop.id)
         verify(beautishopPort).delete(shop.id)
     }
 
