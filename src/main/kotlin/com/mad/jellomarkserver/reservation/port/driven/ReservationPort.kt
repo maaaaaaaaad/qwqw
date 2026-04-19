@@ -17,4 +17,5 @@ interface ReservationPort {
     fun findByShopIdAndDate(shopId: ShopId, date: LocalDate): List<Reservation>
     fun findByStatusAndDate(status: ReservationStatus, date: LocalDate): List<Reservation>
     fun existsOverlapping(shopId: ShopId, date: LocalDate, startTime: LocalTime, endTime: LocalTime): Boolean
+    fun deleteAllByShopId(shopId: ShopId)
 }
