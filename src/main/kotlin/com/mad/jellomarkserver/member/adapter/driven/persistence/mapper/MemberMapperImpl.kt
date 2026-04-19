@@ -14,7 +14,8 @@ class MemberMapperImpl : MemberMapper {
             nickname = domain.memberNickname.value,
             displayName = domain.displayName.value,
             createdAt = domain.createdAt,
-            updatedAt = domain.updatedAt
+            updatedAt = domain.updatedAt,
+            deletedAt = domain.deletedAt
         )
     }
 
@@ -31,7 +32,8 @@ class MemberMapperImpl : MemberMapper {
             memberNickname = memberNickname,
             displayName = displayName,
             createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
+            updatedAt = entity.updatedAt,
+            deletedAt = entity.deletedAt
         )
     }
 }
