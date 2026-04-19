@@ -575,13 +575,13 @@ class MemberPersistenceAdapterTest {
             updatedAt = updatedAt
         )
 
-        `when`(jpaRepository.findBySocialProviderAndSocialId(socialProvider.name, socialId.value)).thenReturn(entity)
+        `when`(jpaRepository.findBySocialProviderAndSocialIdAndDeletedAtIsNull(socialProvider.name, socialId.value)).thenReturn(entity)
         `when`(mapper.toDomain(entity)).thenReturn(member)
 
         val result = adapter.findBySocial(socialProvider, socialId)
 
         assertEquals(member, result)
-        verify(jpaRepository).findBySocialProviderAndSocialId(socialProvider.name, socialId.value)
+        verify(jpaRepository).findBySocialProviderAndSocialIdAndDeletedAtIsNull(socialProvider.name, socialId.value)
         verify(mapper).toDomain(entity)
     }
 
@@ -590,12 +590,12 @@ class MemberPersistenceAdapterTest {
         val socialProvider = SocialProvider.KAKAO
         val socialId = SocialId("nonexistent-id")
 
-        `when`(jpaRepository.findBySocialProviderAndSocialId(socialProvider.name, socialId.value)).thenReturn(null)
+        `when`(jpaRepository.findBySocialProviderAndSocialIdAndDeletedAtIsNull(socialProvider.name, socialId.value)).thenReturn(null)
 
         val result = adapter.findBySocial(socialProvider, socialId)
 
         assertNull(result)
-        verify(jpaRepository).findBySocialProviderAndSocialId(socialProvider.name, socialId.value)
+        verify(jpaRepository).findBySocialProviderAndSocialIdAndDeletedAtIsNull(socialProvider.name, socialId.value)
     }
 
     @Test
