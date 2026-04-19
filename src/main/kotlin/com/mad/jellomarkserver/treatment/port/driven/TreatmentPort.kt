@@ -10,4 +10,5 @@ interface TreatmentPort {
     fun findByIds(ids: List<TreatmentId>): List<Treatment>
     fun findByShopId(shopId: ShopId): List<Treatment>
     fun delete(id: TreatmentId)
+    fun deleteAllByShopId(shopId: ShopId)
 }
