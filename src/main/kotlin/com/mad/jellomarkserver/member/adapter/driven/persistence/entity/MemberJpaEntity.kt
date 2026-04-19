@@ -32,5 +32,8 @@ class MemberJpaEntity(
     var createdAt: Instant,
 
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: Instant
+    var updatedAt: Instant,
+
+    @Column(name = "deleted_at", nullable = true)
+    var deletedAt: Instant? = null
 )
