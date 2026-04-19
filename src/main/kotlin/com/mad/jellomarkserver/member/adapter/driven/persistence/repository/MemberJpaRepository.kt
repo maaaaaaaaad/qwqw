@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface MemberJpaRepository : JpaRepository<MemberJpaEntity, UUID> {
-    fun findBySocialProviderAndSocialId(socialProvider: String, socialId: String): MemberJpaEntity?
-    fun findBySocialId(socialId: String): MemberJpaEntity?
+    fun findBySocialProviderAndSocialIdAndDeletedAtIsNull(socialProvider: String, socialId: String): MemberJpaEntity?
+    fun findBySocialIdAndDeletedAtIsNull(socialId: String): MemberJpaEntity?
 }
