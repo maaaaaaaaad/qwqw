@@ -8,4 +8,5 @@ interface DeviceTokenJpaRepository : JpaRepository<DeviceTokenJpaEntity, UUID> {
     fun findByUserIdAndUserRole(userId: UUID, userRole: String): List<DeviceTokenJpaEntity>
     fun findByToken(token: String): DeviceTokenJpaEntity?
     fun deleteByToken(token: String)
+    fun deleteByUserIdAndUserRole(userId: UUID, userRole: String)
 }
