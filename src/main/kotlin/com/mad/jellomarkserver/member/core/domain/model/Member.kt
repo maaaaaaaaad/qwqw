@@ -10,7 +10,8 @@ class Member private constructor(
     val memberNickname: MemberNickname,
     val displayName: MemberDisplayName,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
+    val deletedAt: Instant? = null
 ) {
     companion object {
         fun create(
@@ -21,7 +22,7 @@ class Member private constructor(
             clock: Clock = Clock.systemUTC()
         ): Member {
             val now = Instant.now(clock)
-            return Member(MemberId.new(), socialProvider, socialId, memberNickname, displayName, now, now)
+            return Member(MemberId.new(), socialProvider, socialId, memberNickname, displayName, now, now, null)
         }
 
         fun reconstruct(
@@ -31,11 +32,14 @@ class Member private constructor(
             memberNickname: MemberNickname,
             displayName: MemberDisplayName,
             createdAt: Instant,
-            updatedAt: Instant
+            updatedAt: Instant,
+            deletedAt: Instant? = null
         ): Member {
-            return Member(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt)
+            return Member(id, socialProvider, socialId, memberNickname, displayName, createdAt, updatedAt, deletedAt)
         }
     }
+
+    fun isDeleted(): Boolean = deletedAt != null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
