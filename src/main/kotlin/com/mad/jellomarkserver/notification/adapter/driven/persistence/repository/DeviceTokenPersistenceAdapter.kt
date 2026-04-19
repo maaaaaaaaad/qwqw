@@ -26,6 +26,12 @@ class DeviceTokenPersistenceAdapter(
         repository.flush()
     }
 
+    @Transactional
+    override fun deleteAllByUserIdAndUserRole(userId: UUID, userRole: UserRole) {
+        repository.deleteByUserIdAndUserRole(userId, userRole.name)
+        repository.flush()
+    }
+
     override fun findByUserIdAndUserRole(userId: UUID, userRole: UserRole): List<DeviceToken> {
         return repository.findByUserIdAndUserRole(userId, userRole.name)
             .map { mapper.toDomain(it) }
