@@ -60,6 +60,16 @@ class FavoritePersistenceAdapter(
         jpaRepository.deleteByMemberIdAndShopId(memberId.value, shopId.value)
     }
 
+    @org.springframework.transaction.annotation.Transactional
+    override fun deleteAllByMemberId(memberId: MemberId) {
+        jpaRepository.deleteByMemberId(memberId.value)
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    override fun deleteAllByShopId(shopId: ShopId) {
+        jpaRepository.deleteByShopId(shopId.value)
+    }
+
     override fun countByShopId(shopId: ShopId): Int {
         return jpaRepository.countByShopId(shopId.value)
     }
