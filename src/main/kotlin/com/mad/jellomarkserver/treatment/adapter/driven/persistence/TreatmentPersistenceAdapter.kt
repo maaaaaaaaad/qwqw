@@ -39,4 +39,10 @@ class TreatmentPersistenceAdapter(
     override fun delete(id: TreatmentId) {
         repository.deleteById(id.value)
     }
+
+    @org.springframework.transaction.annotation.Transactional
+    override fun deleteAllByShopId(shopId: ShopId) {
+        repository.deleteByShopId(shopId.value)
+        repository.flush()
+    }
 }
