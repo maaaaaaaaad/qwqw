@@ -63,4 +63,10 @@ class ReservationPersistenceAdapter(
     ): Boolean {
         return repository.existsOverlapping(shopId.value, date, startTime, endTime)
     }
+
+    @org.springframework.transaction.annotation.Transactional
+    override fun deleteAllByShopId(shopId: ShopId) {
+        repository.deleteByShopId(shopId.value)
+        repository.flush()
+    }
 }
