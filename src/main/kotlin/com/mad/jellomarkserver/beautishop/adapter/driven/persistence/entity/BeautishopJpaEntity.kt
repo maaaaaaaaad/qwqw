@@ -51,6 +51,9 @@ class BeautishopJpaEntity(
     @OrderBy("displayOrder ASC")
     var images: MutableList<ShopImageJpaEntity> = mutableListOf(),
 
+    @Column(name = "menu_images", nullable = true, columnDefinition = "TEXT")
+    var menuImages: String? = null,
+
     @Column(name = "average_rating", nullable = false)
     var averageRating: Double = 0.0,
 
