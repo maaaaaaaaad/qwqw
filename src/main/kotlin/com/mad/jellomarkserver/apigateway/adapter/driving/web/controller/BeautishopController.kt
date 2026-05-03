@@ -61,7 +61,8 @@ class BeautishopController(
             longitude = request.longitude,
             operatingTime = request.operatingTime,
             shopDescription = request.shopDescription,
-            shopImages = request.shopImages
+            shopImages = request.shopImages,
+            menuImages = request.menuImages
         )
 
         val beautishop = createBeautishopUseCase.create(command)
@@ -99,7 +100,8 @@ class BeautishopController(
             ownerId = owner.id.value.toString(),
             operatingTime = request.operatingTime,
             shopDescription = request.shopDescription,
-            shopImages = request.shopImages
+            shopImages = request.shopImages,
+            menuImages = request.menuImages
         )
 
         val beautishop = updateBeautishopUseCase.update(command)
