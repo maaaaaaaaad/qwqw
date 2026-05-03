@@ -30,6 +30,7 @@ class BeautishopMapperImpl : BeautishopMapper {
             operatingTime = serializeOperatingTime(domain.operatingTime),
             description = domain.description?.value,
             images = imageEntities,
+            menuImages = serializeMenuImages(domain.menuImages),
             averageRating = domain.averageRating.value,
             reviewCount = domain.reviewCount.value,
             createdAt = domain.createdAt,
@@ -48,6 +49,7 @@ class BeautishopMapperImpl : BeautishopMapper {
         val description = entity.description?.let { ShopDescription.of(it) }
         val imageUrls = entity.images.sortedBy { it.displayOrder }.map { it.imageUrl }
         val images = ShopImages.ofNullable(imageUrls)
+        val menuImages = deserializeMenuImages(entity.menuImages)
         val averageRating = AverageRating.of(entity.averageRating)
         val reviewCount = ReviewCount.of(entity.reviewCount)
 
@@ -64,8 +66,19 @@ class BeautishopMapperImpl : BeautishopMapper {
             averageRating = averageRating,
             reviewCount = reviewCount,
             createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
+            updatedAt = entity.updatedAt,
+            menuImages = menuImages
         )
+    }
+
+    private fun serializeMenuImages(menuImages: MenuImages): String? {
+        if (menuImages.isEmpty()) return null
+        return menuImages.toStringList().joinToString("|")
+    }
+
+    private fun deserializeMenuImages(data: String?): MenuImages {
+        if (data.isNullOrBlank()) return MenuImages.empty()
+        return MenuImages.of(data.split("|").filter { it.isNotBlank() })
     }
 
     private fun serializeOperatingTime(operatingTime: OperatingTime): String {
