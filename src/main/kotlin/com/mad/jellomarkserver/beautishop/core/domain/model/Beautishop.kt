@@ -13,6 +13,7 @@ class Beautishop private constructor(
     val operatingTime: OperatingTime,
     val description: ShopDescription?,
     val images: ShopImages,
+    val menuImages: MenuImages,
     val averageRating: AverageRating,
     val reviewCount: ReviewCount,
     val createdAt: Instant,
@@ -28,6 +29,7 @@ class Beautishop private constructor(
             operatingTime: OperatingTime,
             description: ShopDescription?,
             images: ShopImages,
+            menuImages: MenuImages = MenuImages.empty(),
             clock: Clock = Clock.systemUTC()
         ): Beautishop {
             val now = Instant.now(clock)
@@ -41,6 +43,7 @@ class Beautishop private constructor(
                 operatingTime = operatingTime,
                 description = description,
                 images = images,
+                menuImages = menuImages,
                 averageRating = AverageRating.zero(),
                 reviewCount = ReviewCount.zero(),
                 createdAt = now,
@@ -61,7 +64,8 @@ class Beautishop private constructor(
             averageRating: AverageRating,
             reviewCount: ReviewCount,
             createdAt: Instant,
-            updatedAt: Instant
+            updatedAt: Instant,
+            menuImages: MenuImages = MenuImages.empty()
         ): Beautishop {
             return Beautishop(
                 id = id,
@@ -73,6 +77,7 @@ class Beautishop private constructor(
                 operatingTime = operatingTime,
                 description = description,
                 images = images,
+                menuImages = menuImages,
                 averageRating = averageRating,
                 reviewCount = reviewCount,
                 createdAt = createdAt,
@@ -85,6 +90,7 @@ class Beautishop private constructor(
         operatingTime: OperatingTime,
         description: ShopDescription?,
         images: ShopImages,
+        menuImages: MenuImages = MenuImages.empty(),
         clock: Clock = Clock.systemUTC()
     ): Beautishop {
         return Beautishop(
@@ -97,6 +103,7 @@ class Beautishop private constructor(
             operatingTime = operatingTime,
             description = description,
             images = images,
+            menuImages = menuImages,
             averageRating = this.averageRating,
             reviewCount = this.reviewCount,
             createdAt = this.createdAt,
@@ -118,6 +125,7 @@ class Beautishop private constructor(
             operatingTime = this.operatingTime,
             description = this.description,
             images = this.images,
+            menuImages = this.menuImages,
             averageRating = averageRating,
             reviewCount = reviewCount,
             createdAt = this.createdAt,
