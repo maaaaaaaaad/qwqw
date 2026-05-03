@@ -9,5 +9,6 @@ data class CreateBeautishopRequest(
     val longitude: Double,
     val operatingTime: Map<String, String>,
     val shopDescription: String?,
-    val shopImages: List<String>?
+    val shopImages: List<String>?,
+    val menuImages: List<String>? = null
 )
