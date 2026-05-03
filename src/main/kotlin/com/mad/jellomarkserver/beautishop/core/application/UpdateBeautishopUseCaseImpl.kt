@@ -33,11 +33,13 @@ class UpdateBeautishopUseCaseImpl(
         val operatingTime = command.operatingTime?.let { OperatingTime.of(it) } ?: shop.operatingTime
         val description = ShopDescription.ofNullable(command.shopDescription)
         val images = command.shopImages?.let { ShopImages.of(it) } ?: shop.images
+        val menuImages = command.menuImages?.let { MenuImages.of(it) } ?: shop.menuImages
 
         val updatedShop = shop.update(
             operatingTime = operatingTime,
             description = description,
-            images = images
+            images = images,
+            menuImages = menuImages
         )
 
         return beautishopPort.save(updatedShop, ownerId)
