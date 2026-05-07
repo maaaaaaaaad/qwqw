@@ -36,7 +36,15 @@ class RefreshTokenUseCaseImpl(
 
         val userType = savedRefreshToken.userType
 
-        val newAccessToken = jwtTokenProvider.generateAccessToken(identifier, userType)
+        val newAccessToken = if (userType == "MEMBER") {
+            jwtTokenProvider.generateAccessTokenForSocial(
+                socialProvider = "KAKAO",
+                socialId = identifier,
+                userType = userType
+            )
+        } else {
+            jwtTokenProvider.generateAccessToken(identifier, userType)
+        }
         val newRefreshTokenString = jwtTokenProvider.generateRefreshToken(identifier)
 
         refreshTokenPort.deleteByIdentifier(identifier)
