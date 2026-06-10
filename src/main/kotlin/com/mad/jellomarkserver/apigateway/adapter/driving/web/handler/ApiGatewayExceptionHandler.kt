@@ -63,6 +63,16 @@ class ApiGatewayExceptionHandler {
         return withCode(HttpStatus.BAD_GATEWAY, ex)
     }
 
+    @ExceptionHandler(InvalidAppleTokenException::class)
+    fun handleInvalidAppleToken(ex: InvalidAppleTokenException): ProblemDetail {
+        return withCode(HttpStatus.UNAUTHORIZED, ex)
+    }
+
+    @ExceptionHandler(AppleApiException::class)
+    fun handleAppleApiException(ex: AppleApiException): ProblemDetail {
+        return withCode(HttpStatus.BAD_GATEWAY, ex)
+    }
+
     @ExceptionHandler(InvalidAuthEmailException::class)
     fun handleInvalidAuthEmail(ex: InvalidAuthEmailException): ProblemDetail {
         return withCode(HttpStatus.UNPROCESSABLE_ENTITY, ex)
