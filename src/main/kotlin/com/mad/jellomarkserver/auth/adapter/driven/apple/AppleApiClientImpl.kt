@@ -35,7 +35,8 @@ class AppleApiClientImpl(
             jwtClaimsSetVerifier = DefaultJWTClaimsVerifier(
                 acceptedAudiences,
                 JWTClaimsSet.Builder().issuer(ISSUER).build(),
-                setOf("sub", "iss", "aud", "exp", "iat")
+                setOf("sub", "iss", "aud", "exp", "iat"),
+                emptySet()
             )
         }
     }
