@@ -31,3 +31,6 @@ aws:
   s3:
     bucket-name: ${S3_BUCKET_NAME}
     region: ${AWS_REGION:ap-northeast-2}
+
+apple:
+  client-ids: ${APPLE_CLIENT_IDS:com.jello.jellomark}
