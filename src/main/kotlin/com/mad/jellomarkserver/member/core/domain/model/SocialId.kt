@@ -13,5 +13,9 @@ data class SocialId(val value: String) {
         fun fromKakaoId(kakaoId: Long): SocialId {
             return SocialId(kakaoId.toString())
         }
+
+        fun fromAppleSub(appleSub: String): SocialId {
+            return SocialId(appleSub)
+        }
     }
 }
