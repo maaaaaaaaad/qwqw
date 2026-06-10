@@ -18,6 +18,7 @@ class WebConfig(
                 "/api/auth/authenticate",
                 "/api/auth/refresh",
                 "/api/auth/kakao",
+                "/api/auth/apple",
                 "/api/categories",
                 "/api/verification/**",
                 "/api/auth/reset-password",
