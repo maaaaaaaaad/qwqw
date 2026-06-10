@@ -1,10 +1,12 @@
 package com.mad.jellomarkserver.apigateway.adapter.driving.web.controller
 
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.AuthenticateRequest
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.LoginWithAppleRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.LoginWithKakaoRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.RefreshTokenRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.request.ResetPasswordRequest
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.AuthenticateResponse
+import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.LoginWithAppleResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.LoginWithKakaoResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.RefreshTokenResponse
 import com.mad.jellomarkserver.auth.core.domain.model.AuthEmail
@@ -12,6 +14,8 @@ import com.mad.jellomarkserver.auth.core.domain.model.HashedPassword
 import com.mad.jellomarkserver.auth.core.domain.model.RawPassword
 import com.mad.jellomarkserver.auth.port.driven.AuthPort
 import com.mad.jellomarkserver.auth.port.driving.*
+import com.mad.jellomarkserver.member.port.driving.LoginWithAppleCommand
+import com.mad.jellomarkserver.member.port.driving.LoginWithAppleUseCase
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoCommand
 import com.mad.jellomarkserver.member.port.driving.LoginWithKakaoUseCase
 import com.mad.jellomarkserver.owner.core.domain.exception.OwnerNotFoundException
@@ -30,6 +34,7 @@ class AuthController(
     private val issueTokenUseCase: IssueTokenUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val loginWithKakaoUseCase: LoginWithKakaoUseCase,
+    private val loginWithAppleUseCase: LoginWithAppleUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val authPort: AuthPort
 ) {
@@ -82,6 +87,21 @@ class AuthController(
         val tokenPair = loginWithKakaoUseCase.execute(command)
 
         return LoginWithKakaoResponse(
+            accessToken = tokenPair.accessToken,
+            refreshToken = tokenPair.refreshToken
+        )
+    }
+
+    @PostMapping("/api/auth/apple")
+    @ResponseStatus(HttpStatus.OK)
+    fun loginWithApple(@RequestBody request: LoginWithAppleRequest): LoginWithAppleResponse {
+        val command = LoginWithAppleCommand(
+            identityToken = request.identityToken,
+            fullName = request.fullName
+        )
+        val tokenPair = loginWithAppleUseCase.execute(command)
+
+        return LoginWithAppleResponse(
             accessToken = tokenPair.accessToken,
             refreshToken = tokenPair.refreshToken
         )
