@@ -51,5 +51,8 @@ class ReservationJpaEntity(
     var createdAt: Instant,
 
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: Instant
+    var updatedAt: Instant,
+
+    @Column(name = "designer_id", nullable = true)
+    var designerId: UUID? = null
 )
