@@ -9,6 +9,7 @@ data class ReservationResponse(
     val memberId: String,
     val treatmentId: String,
     val designerId: String?,
+    val designerName: String?,
     val shopName: String?,
     val treatmentName: String?,
     val treatmentPrice: Int?,
@@ -30,7 +31,8 @@ data class ReservationResponse(
             treatmentName: String? = null,
             treatmentPrice: Int? = null,
             treatmentDuration: Int? = null,
-            memberNickname: String? = null
+            memberNickname: String? = null,
+            designerName: String? = null
         ): ReservationResponse {
             return ReservationResponse(
                 id = reservation.id.value.toString(),
@@ -38,6 +40,7 @@ data class ReservationResponse(
                 memberId = reservation.memberId.value.toString(),
                 treatmentId = reservation.treatmentId.value.toString(),
                 designerId = reservation.designerId?.value?.toString(),
+                designerName = designerName,
                 shopName = shopName,
                 treatmentName = treatmentName,
                 treatmentPrice = treatmentPrice,
