@@ -3,6 +3,7 @@ package com.mad.jellomarkserver.reservation.core.application
 import com.mad.jellomarkserver.beautishop.core.domain.exception.BeautishopNotFoundException
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
+import com.mad.jellomarkserver.designer.core.domain.model.DesignerId
 import com.mad.jellomarkserver.reservation.core.domain.model.AvailableSlot
 import com.mad.jellomarkserver.reservation.core.domain.model.ReservationStatus
 import com.mad.jellomarkserver.reservation.port.driven.ReservationPort
@@ -31,6 +32,7 @@ class GetAvailableSlotsUseCaseImpl(
         val shopId = ShopId.from(UUID.fromString(query.shopId))
         val treatmentId = TreatmentId.from(UUID.fromString(query.treatmentId))
         val date = LocalDate.parse(query.date)
+        val designerId = query.designerId?.let { DesignerId.from(UUID.fromString(it)) }
 
         val shop = beautishopPort.findById(shopId)
             ?: throw BeautishopNotFoundException(query.shopId)
@@ -56,9 +58,9 @@ class GetAvailableSlotsUseCaseImpl(
         val durationMinutes = treatment.duration.value.toLong()
 
         val existingReservations = reservationPort.findByShopIdAndDate(shopId, date)
-        val activeReservations = existingReservations.filter {
-            it.status == ReservationStatus.PENDING || it.status == ReservationStatus.CONFIRMED
-        }
+        val activeReservations = existingReservations
+            .filter { it.status == ReservationStatus.PENDING || it.status == ReservationStatus.CONFIRMED }
+            .filter { designerId == null || it.designerId == designerId }
 
         val slots = mutableListOf<AvailableSlot>()
         var candidateStart = openTime
