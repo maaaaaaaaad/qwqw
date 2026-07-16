@@ -6,6 +6,8 @@ import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.Available
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.AvailableSlotsResponse
 import com.mad.jellomarkserver.apigateway.adapter.driving.web.response.ReservationResponse
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
+import com.mad.jellomarkserver.designer.core.domain.model.DesignerId
+import com.mad.jellomarkserver.designer.port.driven.DesignerPort
 import com.mad.jellomarkserver.member.core.domain.exception.MemberNotFoundException
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.core.domain.model.SocialId
@@ -44,7 +46,8 @@ class ReservationController(
     private val memberPort: MemberPort,
     private val ownerPort: OwnerPort,
     private val beautishopPort: BeautishopPort,
-    private val treatmentPort: TreatmentPort
+    private val treatmentPort: TreatmentPort,
+    private val designerPort: DesignerPort
 ) {
 
     @PostMapping("/api/reservations")
@@ -291,10 +294,14 @@ class ReservationController(
         val memberFuture = java.util.concurrent.CompletableFuture.supplyAsync {
             memberPort.findById(reservation.memberId)
         }
+        val designerFuture = java.util.concurrent.CompletableFuture.supplyAsync {
+            reservation.designerId?.let { designerPort.findById(it) }
+        }
 
         val shop = shopFuture.get()
         val treatment = treatmentFuture.get()
         val member = memberFuture.get()
+        val designer = designerFuture.get()
 
         return ReservationResponse.from(
             reservation = reservation,
@@ -302,7 +309,8 @@ class ReservationController(
             treatmentName = treatment?.name?.value,
             treatmentPrice = treatment?.price?.value,
             treatmentDuration = treatment?.duration?.value,
-            memberNickname = member?.memberNickname?.value
+            memberNickname = member?.memberNickname?.value,
+            designerName = designer?.name?.value
         )
     }
 
@@ -312,6 +320,7 @@ class ReservationController(
         val shopIds = reservations.map { it.shopId }.distinct()
         val treatmentIds = reservations.map { it.treatmentId }.distinct()
         val memberIds = reservations.map { MemberId.from(it.memberId.value) }.distinct()
+        val designerIds = reservations.mapNotNull { it.designerId }.distinct()
 
         val shops = beautishopPort.findByIds(shopIds)
             .associateBy { it.id }
@@ -319,11 +328,17 @@ class ReservationController(
             .associateBy { it.id }
         val members = memberPort.findByIds(memberIds)
             .associateBy { it.id }
+        val designers: Map<DesignerId, String> = if (designerIds.isEmpty()) {
+            emptyMap()
+        } else {
+            designerPort.findByIds(designerIds).associate { it.id to it.name.value }
+        }
 
         return reservations.map { reservation ->
             val shop = shops[reservation.shopId]
             val treatment = treatments[reservation.treatmentId]
             val member = members[reservation.memberId]
+            val designerName = reservation.designerId?.let { designers[it] }
 
             ReservationResponse.from(
                 reservation = reservation,
@@ -331,7 +346,8 @@ class ReservationController(
                 treatmentName = treatment?.name?.value,
                 treatmentPrice = treatment?.price?.value,
                 treatmentDuration = treatment?.duration?.value,
-                memberNickname = member?.memberNickname?.value
+                memberNickname = member?.memberNickname?.value,
+                designerName = designerName
             )
         }
     }
