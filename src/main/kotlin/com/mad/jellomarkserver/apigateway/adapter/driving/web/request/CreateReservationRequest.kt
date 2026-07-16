@@ -5,5 +5,6 @@ data class CreateReservationRequest(
     val treatmentId: String,
     val reservationDate: String,
     val startTime: String,
-    val memo: String?
+    val memo: String?,
+    val designerId: String? = null
 )
