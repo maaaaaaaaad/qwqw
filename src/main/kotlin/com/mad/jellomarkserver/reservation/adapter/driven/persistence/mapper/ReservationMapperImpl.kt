@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.reservation.adapter.driven.persistence.mapper
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
+import com.mad.jellomarkserver.designer.core.domain.model.DesignerId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.reservation.adapter.driven.persistence.entity.ReservationJpaEntity
 import com.mad.jellomarkserver.reservation.core.domain.model.*
@@ -16,6 +17,7 @@ class ReservationMapperImpl : ReservationMapper {
             shopId = domain.shopId.value,
             memberId = domain.memberId.value,
             treatmentId = domain.treatmentId.value,
+            designerId = domain.designerId?.value,
             reservationDate = domain.reservationDate,
             startTime = domain.startTime,
             endTime = domain.endTime,
@@ -33,6 +35,7 @@ class ReservationMapperImpl : ReservationMapper {
             shopId = ShopId.from(entity.shopId),
             memberId = MemberId.from(entity.memberId),
             treatmentId = TreatmentId.from(entity.treatmentId),
+            designerId = entity.designerId?.let { DesignerId.from(it) },
             reservationDate = entity.reservationDate,
             startTime = entity.startTime,
             endTime = entity.endTime,
