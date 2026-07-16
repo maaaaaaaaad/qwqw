@@ -69,7 +69,8 @@ class ReservationController(
             treatmentId = request.treatmentId,
             reservationDate = request.reservationDate,
             startTime = request.startTime,
-            memo = request.memo
+            memo = request.memo,
+            designerId = request.designerId
         )
 
         val reservation = createReservationUseCase.execute(command)
@@ -255,12 +256,14 @@ class ReservationController(
     fun getAvailableSlots(
         @PathVariable shopId: String,
         @RequestParam date: String,
-        @RequestParam treatmentId: String
+        @RequestParam treatmentId: String,
+        @RequestParam(required = false) designerId: String?
     ): AvailableSlotsResponse {
         val query = GetAvailableSlotsQuery(
             shopId = shopId,
             treatmentId = treatmentId,
-            date = date
+            date = date,
+            designerId = designerId
         )
         val result = getAvailableSlotsUseCase.execute(query)
         return AvailableSlotsResponse.from(result)
