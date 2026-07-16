@@ -1,6 +1,7 @@
 package com.mad.jellomarkserver.reservation.core.domain.model
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
+import com.mad.jellomarkserver.designer.core.domain.model.DesignerId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.reservation.core.domain.exception.InvalidReservationStatusTransitionException
 import com.mad.jellomarkserver.treatment.core.domain.model.TreatmentId
@@ -14,6 +15,7 @@ class Reservation private constructor(
     val shopId: ShopId,
     val memberId: MemberId,
     val treatmentId: TreatmentId,
+    val designerId: DesignerId?,
     val reservationDate: LocalDate,
     val startTime: LocalTime,
     val endTime: LocalTime,
@@ -32,6 +34,7 @@ class Reservation private constructor(
             startTime: LocalTime,
             endTime: LocalTime,
             memo: ReservationMemo?,
+            designerId: DesignerId? = null,
             clock: Clock = Clock.systemUTC()
         ): Reservation {
             val now = Instant.now(clock)
@@ -40,6 +43,7 @@ class Reservation private constructor(
                 shopId = shopId,
                 memberId = memberId,
                 treatmentId = treatmentId,
+                designerId = designerId,
                 reservationDate = reservationDate,
                 startTime = startTime,
                 endTime = endTime,
@@ -63,13 +67,15 @@ class Reservation private constructor(
             memo: ReservationMemo?,
             rejectionReason: RejectionReason?,
             createdAt: Instant,
-            updatedAt: Instant
+            updatedAt: Instant,
+            designerId: DesignerId? = null
         ): Reservation {
             return Reservation(
                 id = id,
                 shopId = shopId,
                 memberId = memberId,
                 treatmentId = treatmentId,
+                designerId = designerId,
                 reservationDate = reservationDate,
                 startTime = startTime,
                 endTime = endTime,
@@ -135,6 +141,7 @@ class Reservation private constructor(
             shopId = this.shopId,
             memberId = this.memberId,
             treatmentId = this.treatmentId,
+            designerId = this.designerId,
             reservationDate = this.reservationDate,
             startTime = this.startTime,
             endTime = this.endTime,
