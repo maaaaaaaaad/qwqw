@@ -5,6 +5,7 @@ import com.mad.jellomarkserver.auth.core.domain.exception.*
 import com.mad.jellomarkserver.beautishop.core.domain.exception.*
 import com.mad.jellomarkserver.category.core.domain.exception.CategoryNotFoundException
 import com.mad.jellomarkserver.category.core.domain.exception.UnauthorizedShopAccessException
+import com.mad.jellomarkserver.designer.core.domain.exception.*
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateMemberNicknameException
 import com.mad.jellomarkserver.member.core.domain.exception.DuplicateSocialAccountException
 import com.mad.jellomarkserver.member.core.domain.exception.InvalidMemberNicknameException
@@ -299,6 +300,36 @@ class ApiGatewayExceptionHandler {
 
     @ExceptionHandler(UnauthorizedTreatmentAccessException::class)
     fun handleUnauthorizedTreatmentAccess(ex: UnauthorizedTreatmentAccessException): ProblemDetail {
+        return withCode(HttpStatus.FORBIDDEN, ex)
+    }
+
+    @ExceptionHandler(InvalidDesignerNameException::class)
+    fun handleInvalidDesignerName(ex: InvalidDesignerNameException): ProblemDetail {
+        return withCode(HttpStatus.BAD_REQUEST, ex)
+    }
+
+    @ExceptionHandler(InvalidDesignerNicknameException::class)
+    fun handleInvalidDesignerNickname(ex: InvalidDesignerNicknameException): ProblemDetail {
+        return withCode(HttpStatus.BAD_REQUEST, ex)
+    }
+
+    @ExceptionHandler(InvalidDesignerIntroException::class)
+    fun handleInvalidDesignerIntro(ex: InvalidDesignerIntroException): ProblemDetail {
+        return withCode(HttpStatus.BAD_REQUEST, ex)
+    }
+
+    @ExceptionHandler(InvalidDesignerPhotosException::class)
+    fun handleInvalidDesignerPhotos(ex: InvalidDesignerPhotosException): ProblemDetail {
+        return withCode(HttpStatus.BAD_REQUEST, ex)
+    }
+
+    @ExceptionHandler(DesignerNotFoundException::class)
+    fun handleDesignerNotFound(ex: DesignerNotFoundException): ProblemDetail {
+        return withCode(HttpStatus.NOT_FOUND, ex)
+    }
+
+    @ExceptionHandler(UnauthorizedDesignerAccessException::class)
+    fun handleUnauthorizedDesignerAccess(ex: UnauthorizedDesignerAccessException): ProblemDetail {
         return withCode(HttpStatus.FORBIDDEN, ex)
     }
 
