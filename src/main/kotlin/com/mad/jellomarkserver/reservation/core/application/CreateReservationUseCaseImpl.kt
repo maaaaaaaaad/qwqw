@@ -2,6 +2,7 @@ package com.mad.jellomarkserver.reservation.core.application
 
 import com.mad.jellomarkserver.beautishop.core.domain.model.ShopId
 import com.mad.jellomarkserver.beautishop.port.driven.BeautishopPort
+import com.mad.jellomarkserver.designer.core.domain.model.DesignerId
 import com.mad.jellomarkserver.member.core.domain.model.MemberId
 import com.mad.jellomarkserver.member.port.driven.MemberPort
 import com.mad.jellomarkserver.notification.port.driving.SendNotificationCommand
@@ -64,6 +65,8 @@ class CreateReservationUseCaseImpl(
             )
         }
 
+        val designerId = command.designerId?.let { DesignerId.from(UUID.fromString(it)) }
+
         val reservation = Reservation.create(
             shopId = shopId,
             memberId = memberId,
@@ -72,6 +75,7 @@ class CreateReservationUseCaseImpl(
             startTime = startTime,
             endTime = endTime,
             memo = ReservationMemo.ofNullable(command.memo),
+            designerId = designerId,
             clock = clock
         )
 
